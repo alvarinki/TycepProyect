@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/inicioSesion">
+
+    <fragment
+        android:id="@+id/inicioSesion"
+        android:name="com.example.tycep_fe.fragments.InicioSesion"
+        android:label="fragment_inicio_sesion"
+        tools:layout="@layout/fragment_inicio_sesion" >
+        <action
+            android:id="@+id/action_inicioSesion_to_principal"
+            app:destination="@id/principal" />
+    </fragment>
+    <activity
+        android:id="@+id/principal"
+        android:name="com.example.tycep_fe.activities.Principal"
+        android:label="app_bar_principal"
+        tools:layout="@layout/app_bar_principal" />
+</navigation>
