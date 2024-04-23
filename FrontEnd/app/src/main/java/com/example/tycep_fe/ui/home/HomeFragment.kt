@@ -5,13 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tycep_fe.R
 import com.example.tycep_fe.adapter.ChatAdapter
 import com.example.tycep_fe.databinding.FragmentHomeBinding
+import com.example.tycep_fe.databinding.NavHeaderPrincipalBinding
 import com.example.tycep_fe.models.Chat
 import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.viewModels.UserViewModel
@@ -33,15 +36,16 @@ class HomeFragment : Fragment() {
     ): View {
 
 
-
-//        val homeViewModel =
-//            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.toolbar.setNavigationOnClickListener{
+            binding.drawerLayout.openDrawer(binding.navView)
+        }
 
-
+        val navHeaderBinding = NavHeaderPrincipalBinding.bind(binding.navView.getHeaderView(0))
+        navHeaderBinding.tvName.text="hola"
+        navHeaderBinding.tvUsername.text="adios"
         return root
     }
 
@@ -74,8 +78,9 @@ class HomeFragment : Fragment() {
             Chat(3, "Chat3", true, mensajesChat3)
         )
 
-
+        //findNavController().navigate(R.id.chat)
         initReciclerView(chats)
+
 //        userViewModel.profesor.observe(this) { profesor ->
 //            println("Llega")
 //            initReciclerView(profesor?.chats!!)
@@ -86,5 +91,6 @@ class HomeFragment : Fragment() {
         val recyclerView= view?.findViewById<RecyclerView>(R.id.recyclerChats)
         recyclerView?.layoutManager= LinearLayoutManager(view?.context)
         recyclerView?.adapter= ChatAdapter(chats)
+
     }
 }

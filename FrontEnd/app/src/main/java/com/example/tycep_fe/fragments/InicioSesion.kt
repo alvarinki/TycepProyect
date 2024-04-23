@@ -29,7 +29,7 @@ class InicioSesion : Fragment() {
     inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        findNavController().navigate(R.id.action_inicioSesion_to_principal)
+        findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
         // Inflate the layout for this fragment
         _binding= FragmentInicioSesionBinding.inflate(inflater, container, false)
 
@@ -37,7 +37,7 @@ class InicioSesion : Fragment() {
                 val loginRequestDto= LoginRequestDto(binding.editTextUsername.text.toString(), binding.editTextPassword.text.toString())
                 val userType:String= userViewModel.userLogin(loginRequestDto)
                 if(userType== "Profesor" || userType==" Tutor legal"){
-                    findNavController().navigate(R.id.action_inicioSesion_to_principal)
+                    findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
 
 //                    userViewModel._profesor.observe(viewLifecycleOwner) { profesor ->
 //                        // profesor se ha actualizado, navegar al nuevo Fragmento

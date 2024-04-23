@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.ActivityPrincipalBinding
+import com.example.tycep_fe.databinding.FragmentHomeBinding
 import com.example.tycep_fe.databinding.NavHeaderPrincipalBinding
 import com.example.tycep_fe.fragments.InicioSesionDirections
 import com.example.tycep_fe.viewModels.UserViewModel
@@ -36,10 +37,6 @@ class Principal : AppCompatActivity() {
 
         val navHeaderBinding = NavHeaderPrincipalBinding.bind(binding.userSlide.getHeaderView(0))
 
-
-
-
-        
         setSupportActionBar(binding.appBarPrincipal.toolbar)
 
         binding.appBarPrincipal.fab.setOnClickListener { view ->

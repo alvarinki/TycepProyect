@@ -11,12 +11,26 @@
         android:label="fragment_inicio_sesion"
         tools:layout="@layout/fragment_inicio_sesion" >
         <action
-            android:id="@+id/action_inicioSesion_to_principal"
-            app:destination="@id/principal" />
+            android:id="@+id/action_inicioSesion_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <activity
         android:id="@+id/principal"
         android:name="com.example.tycep_fe.activities.Principal"
         android:label="app_bar_principal"
         tools:layout="@layout/app_bar_principal" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.tycep_fe.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_chat"
+            app:destination="@id/chat" />
+    </fragment>
+    <fragment
+        android:id="@+id/chat"
+        android:name="com.example.tycep_fe.fragments.Chat"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>
