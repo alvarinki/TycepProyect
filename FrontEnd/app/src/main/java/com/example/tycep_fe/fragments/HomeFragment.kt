@@ -1,13 +1,14 @@
-package com.example.tycep_fe.ui.home
+package com.example.tycep_fe.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,7 @@ import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.viewModels.UserViewModel
 
 class HomeFragment : Fragment() {
-    private val userViewModel: UserViewModel by viewModels()
+    private lateinit var userViewModel: ViewModel
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -46,6 +47,10 @@ class HomeFragment : Fragment() {
         val navHeaderBinding = NavHeaderPrincipalBinding.bind(binding.navView.getHeaderView(0))
         navHeaderBinding.tvName.text="hola"
         navHeaderBinding.tvUsername.text="adios"
+
+
+
+
         return root
     }
 
@@ -79,15 +84,21 @@ class HomeFragment : Fragment() {
         )
 
         //findNavController().navigate(R.id.chat)
-        initReciclerView(chats)
+        //initReciclerView(chats)
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+        (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
+            println("Llega: $profesor")
 
-//        userViewModel.profesor.observe(this) { profesor ->
-//            println("Llega")
-//            initReciclerView(profesor?.chats!!)
-//
-//        }
+            profesor?.let {
+                // El profesor está disponible, navega al nuevo Fragmento
+                println("Profesor en home: "+ profesor)
+                initReciclerView(profesor.chats!!)
+            } ?: run {
+                // Manejar el caso en el que profesor es nulo
+            }
+        }
     }
-    fun initReciclerView(chats: Set<Chat>){
+    private fun initReciclerView(chats: Set<Chat>){
         val recyclerView= view?.findViewById<RecyclerView>(R.id.recyclerChats)
         recyclerView?.layoutManager= LinearLayoutManager(view?.context)
         recyclerView?.adapter= ChatAdapter(chats)

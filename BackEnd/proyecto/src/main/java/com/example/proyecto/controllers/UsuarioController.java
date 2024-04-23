@@ -82,78 +82,80 @@ public class UsuarioController {
         else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> userLogin(@RequestBody LoginRequest loginRequest){
-        PasswordEncoder passwordEncoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        Optional<Usuario> user= usuarioService.findUsuarioByUsuario(loginRequest.getUsername());
-        if(user.isPresent()){
-            //String encriptedPassword= user.get().getContrasena();
-            //if(encriptedPassword!=null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword)){
-                Usuario loggedUser= user.get();
-                String token= jwtUtil.create(loggedUser.getUsuario(), loggedUser.getId().toString());
-                if(user.get().getDtype().toString().equals("T")){
-                    return new ResponseEntity<>(new LoginResponseDto("Tutor Legal", token), HttpStatus.OK);
-                }
-                else if(user.get().getDtype().toString().equals("P")){
-                    return new ResponseEntity<>(new LoginResponseDto("Profesor", token) , HttpStatus.OK);
-                }
-                else return new ResponseEntity<>(new LoginResponseDto("Admin", token), HttpStatus.OK);
-            //}
-            //else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PostMapping("/recovery")
-    public ResponseEntity<?> userRecovery(@RequestHeader("Authorization") String token, @RequestBody String userType) {
-        jwtUtil.validate(token);
-
-        if(userType.equalsIgnoreCase("Profesor")){
-        System.out.println(userType);
-        int idUsuario = Integer.parseInt(jwtUtil.getValue(token));
-        System.out.println(idUsuario);
-        Profesor profesor = profesorService.findProfesorByUsuario_Id(idUsuario);
-        return ResponseEntity.ok().body(profesor);
-        }
-        else if(userType.equalsIgnoreCase("Tutor Legal")){
-            int idUsuario = Integer.parseInt(jwtUtil.getValue(token));
-            System.out.println(idUsuario);
-            TutorLegal tutorLegal= tutorService.findTutorLegalByUsuario_Id(idUsuario);
-            return ResponseEntity.ok().body(tutorLegal);
-        }
-        else if(userType.equalsIgnoreCase("Admin")){
-            int idUsuario = Integer.parseInt(jwtUtil.getValue(token));
-            Usuario user= usuarioService.findUsuarioById(idUsuario);
-            return ResponseEntity.ok().body(user);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-}
-
 //    @PostMapping("/login")
 //    public ResponseEntity<LoginResponseDto> userLogin(@RequestBody LoginRequest loginRequest){
 //        PasswordEncoder passwordEncoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //        Optional<Usuario> user= usuarioService.findUsuarioByUsuario(loginRequest.getUsername());
 //        if(user.isPresent()){
-//            String encriptedPassword= user.get().getContrasena();
-//            if(encriptedPassword!=null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword)){
+//            //String encriptedPassword= user.get().getContrasena();
+//            //if(encriptedPassword!=null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword)){
 //                Usuario loggedUser= user.get();
-//                String token= jwtUtil.create(loggedUser.getId().toString(), loggedUser.getUsuario());
+//                String token= jwtUtil.create(loggedUser.getUsuario(), loggedUser.getId().toString());
 //                if(user.get().getDtype().toString().equals("T")){
-//                    TutorLegal tutorLegal= tutorService.findTutorLegalByUsuario_Id(loggedUser.getId()).get();
-//                    return new ResponseEntity<>(new LoginResponseDto("Tutor Legal", tutorLegal, token), HttpStatus.OK);
+//                    return new ResponseEntity<>(new LoginResponseDto("Tutor Legal", token), HttpStatus.OK);
 //                }
 //                else if(user.get().getDtype().toString().equals("P")){
-//                    Profesor profesor= profesorService.findProfesorByUsuario_Id(loggedUser.getId());
-//                    System.out.println(profesor);
-//                    return new ResponseEntity<>(new LoginResponseDto("Profesor", profesor, token) , HttpStatus.OK);
+//                    return new ResponseEntity<>(new LoginResponseDto("Profesor", token) , HttpStatus.OK);
 //                }
-//                else return new ResponseEntity<>(new LoginResponseDto("Admin", loggedUser, token), HttpStatus.OK);
-//            }
-//            else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//                else return new ResponseEntity<>(new LoginResponseDto("Admin", token), HttpStatus.OK);
+//            //}
+//            //else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //        }
 //        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 //    }
+//
+//    @PostMapping("/recovery")
+//    public ResponseEntity<?> userRecovery(@RequestHeader("Authorization") String token, @RequestBody String userType) {
+//        jwtUtil.validate(token);
+//
+//        if(userType.equalsIgnoreCase("Profesor")){
+//        System.out.println(userType);
+//        int idUsuario = Integer.parseInt(jwtUtil.getValue(token));
+//        System.out.println(idUsuario);
+//        Profesor profesor = profesorService.findProfesorByUsuario_Id(idUsuario);
+//        return ResponseEntity.ok().body(profesor);
+//        }
+//        else if(userType.equalsIgnoreCase("Tutor Legal")){
+//            int idUsuario = Integer.parseInt(jwtUtil.getValue(token));
+//            System.out.println(idUsuario);
+//            TutorLegal tutorLegal= tutorService.findTutorLegalByUsuario_Id(idUsuario);
+//            return ResponseEntity.ok().body(tutorLegal);
+//        }
+//        else if(userType.equalsIgnoreCase("Admin")){
+//            int idUsuario = Integer.parseInt(jwtUtil.getValue(token));
+//            Usuario user= usuarioService.findUsuarioById(idUsuario);
+//            return ResponseEntity.ok().body(user);
+//        }
+//        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> userLogin(@RequestBody LoginRequest loginRequest){
+        PasswordEncoder passwordEncoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        Optional<Usuario> user= usuarioService.findUsuarioByUsuario(loginRequest.getUsername());
+        if(user.isPresent()){
+            String encriptedPassword= user.get().getContrasena();
+            if(encriptedPassword!=null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword)){
+                Usuario loggedUser= user.get();
+                String token= jwtUtil.create(loggedUser.getId().toString(), loggedUser.getUsuario());
+                if(user.get().getDtype().toString().equals("T")){
+                    TutorLegal tutorLegal= tutorService.findTutorLegalByUsuario_Id(loggedUser.getId());
+                    return new ResponseEntity<>(new LoginResponseDto("Tutor Legal", tutorLegal, token), HttpStatus.OK);
+                }
+                else if(user.get().getDtype().toString().equals("P")){
+                    Profesor profesor= profesorService.findProfesorByUsuario_Id(loggedUser.getId());
+                    System.out.println(profesor);
+                    return new ResponseEntity<>(new LoginResponseDto("Profesor", profesor, token) , HttpStatus.OK);
+                }
+                else return new ResponseEntity<>(new LoginResponseDto("Admin", loggedUser, token), HttpStatus.OK);
+            }
+            else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}
+
+
 
 
 

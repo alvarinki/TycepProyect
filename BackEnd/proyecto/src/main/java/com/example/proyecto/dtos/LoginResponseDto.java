@@ -9,6 +9,6 @@ import lombok.*;
 @ToString
 public class LoginResponseDto {
     private String userType;
-    //private Object userData;
+    private Object userData;
     private String token;
 }
