@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.Chat">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerMensajes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="723dp"
+        android:layout_marginTop="30dp"
+        android:layout_alignParentEnd="true"
+         />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/edMensaje"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recyclerMensajes"
+        android:layout_alignBaseline="@id/btEnvio"
+        android:layout_alignBottom="@id/btEnvio"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="117dp"
+        android:layout_marginBottom="2dp"
+        android:layout_toLeftOf="@id/btEnvio"
+        android:layout_toEndOf="@id/recyclerMensajes"
+        android:layout_toRightOf="@id/recyclerMensajes"
+        android:hint="Enter text here" />
+
+    <Button
+        android:id="@+id/btEnvio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Send"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" />
+
+    <TextView
+        android:id="@+id/tvChatName"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textAlignment="gravity" />
+
+</RelativeLayout>
