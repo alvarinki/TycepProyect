@@ -13,6 +13,7 @@ import com.example.tycep_fe.R
 import com.example.tycep_fe.adapter.ChatAdapter
 import com.example.tycep_fe.databinding.FragmentHomeBinding
 import com.example.tycep_fe.models.Chat
+import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.viewModels.UserViewModel
 
 class HomeFragment : Fragment() {
@@ -31,13 +32,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        println(userViewModel.profesor.value)
 
-        userViewModel.profesor.observe(this) { profesor ->
-            println("Llega")
-            initReciclerView(profesor?.chats!!)
-
-        }
 
 //        val homeViewModel =
 //            ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -55,6 +50,38 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val mensajesChat1 = setOf(
+            Mensaje(1, 1, "Hola", "2024-04-23", "Usuario1"),
+            Mensaje(2, 1, "¿Cómo estás?", "2024-04-23", "Usuario2")
+        )
+
+        val mensajesChat2 = setOf(
+            Mensaje(3, 2, "¡Hola a todos!", "2024-04-22", "Usuario3"),
+            Mensaje(4, 2, "¿Qué tal?", "2024-04-22", "Usuario4")
+        )
+
+        val mensajesChat3 = setOf(
+            Mensaje(5, 3, "Buenos días", "2024-04-21", "Usuario5"),
+            Mensaje(6, 3, "¿Cómo va todo?", "2024-04-21", "Usuario6")
+        )
+
+        // Crear la lista de chats
+        val chats = setOf(
+            Chat(1, "Chat1", true, mensajesChat1),
+            Chat(2, "Chat2", false, mensajesChat2),
+            Chat(3, "Chat3", true, mensajesChat3)
+        )
+
+
+        initReciclerView(chats)
+//        userViewModel.profesor.observe(this) { profesor ->
+//            println("Llega")
+//            initReciclerView(profesor?.chats!!)
+//
+//        }
+    }
     fun initReciclerView(chats: Set<Chat>){
         val recyclerView= view?.findViewById<RecyclerView>(R.id.recyclerChats)
         recyclerView?.layoutManager= LinearLayoutManager(view?.context)

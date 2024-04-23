@@ -25,25 +25,25 @@ class InicioSesion : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+
+    inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        findNavController().navigate(R.id.action_inicioSesion_to_principal)
         // Inflate the layout for this fragment
         _binding= FragmentInicioSesionBinding.inflate(inflater, container, false)
 
         binding.btnSignIn.setOnClickListener{
                 val loginRequestDto= LoginRequestDto(binding.editTextUsername.text.toString(), binding.editTextPassword.text.toString())
                 val userType:String= userViewModel.userLogin(loginRequestDto)
-                if(userType== "client"){
+                if(userType== "Profesor" || userType==" Tutor legal"){
+                    findNavController().navigate(R.id.action_inicioSesion_to_principal)
+
 //                    userViewModel._profesor.observe(viewLifecycleOwner) { profesor ->
 //                        // profesor se ha actualizado, navegar al nuevo Fragmento
 //
 //                    }
-                    Handler().postDelayed({
-                        println("Valor de profesor: "+userViewModel.profesor.value)
-                        findNavController().navigate(R.id.action_inicioSesion_to_principal)
-                        // Aquí puedes observar el valor de profesor o realizar otras acciones después del retraso
-                    }, 2000)
+
                 }
 
 

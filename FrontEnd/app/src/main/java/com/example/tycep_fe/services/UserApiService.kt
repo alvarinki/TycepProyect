@@ -21,6 +21,8 @@ interface UserApiService{
     @POST("user/login")
     suspend fun loginUser(@Body loginRequestDto: LoginRequestDto): Response<LoginResponseDto>
 
+    @POST("user/recovery")
+    suspend fun userRecovery(@Header("Authorization") token:String, userType:String): Response<Any>
 }
 
 object UserApi{

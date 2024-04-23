@@ -10,4 +10,6 @@ public interface UsuarioService {
     Usuario saveUsuario(Usuario user);
 
     Optional<Usuario> findUsuarioByUsuario(String nombreUsuario);
+
+    Usuario findUsuarioById(int id);
 }

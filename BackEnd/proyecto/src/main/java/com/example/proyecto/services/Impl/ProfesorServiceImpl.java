@@ -14,7 +14,7 @@ public class ProfesorServiceImpl implements ProfesorService {
 
     @Override
     public Profesor findProfesorByUsuario_Id(Integer userId) {
-        return profesorRepo.findProfesorById(userId);
+        return profesorRepo.findProfesorById(userId).orElse(null);
     }
 
     @Override

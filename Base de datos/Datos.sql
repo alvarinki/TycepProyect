@@ -1,16 +1,16 @@
 -- Valores de ejemplo para la tabla Usuario
 INSERT INTO Usuario (usuario, contrasena, nombre, apellidos, dtype) VALUES
-('usuario1', 'password1', 'Juan', 'Gómez', 'P'),
-('usuario2', 'password2', 'María', 'López', 'T'),
-('usuario3', 'password3', 'Pedro', 'Martínez', 'P'),
-('usuario4', 'password4', 'Jose', 'Fernández', 'T'),
-('usuario5', 'password5', 'Eduardo', 'Martínez', 'P');
+('usuario1', 'password1', 'Juan', 'Gomez', 'P'),
+('usuario2', 'password2', 'Maria', 'Lopez', 'T'),
+('usuario3', 'password3', 'Pedro', 'Martinez', 'P'),
+('usuario4', 'password4', 'Jose', 'Fernandez', 'T'),
+('usuario5', 'password5', 'Eduardo', 'Martinez', 'P');
 
 -- Valores de ejemplo para la tabla Tutor_legal
 INSERT INTO Tutor_legal (usuario_id, telef_contacto, domicilio) VALUES
-(1, '123456789', 'Calle Mayor, 123'),
+(1mensaje, '123456789', 'Calle Mayor, 123'),
 (2, '987654321', 'Avenida Libertad, 456'),
-(3, '555555555', 'Plaza España, 789');
+(3, '555555555', 'Plaza Espana, 789');
 
 -- Valores de ejemplo para la tabla Profesor
 INSERT INTO Profesor (usuario_id, dni, correo) VALUES
@@ -21,12 +21,12 @@ INSERT INTO Profesor (usuario_id, dni, correo) VALUES
 INSERT INTO Curso (nombre) VALUES
 ('DAM 2B'),
 ('DAW 1A'),
-('3º ESO A');
+('3o ESO A');
 -- Valores de ejemplo para la tabla Alumno
 INSERT INTO Alumno (nombre, apellidos, id_curso) VALUES
-('Luis', 'Gómez Gutiérrez', 1),
-('Ana', 'Fernández Pérez', 1),
-('Carlos', 'Ruiz García', 2);
+('Luis', 'Gomez Gutierrez', 1),
+('Ana', 'Fernandez Perez', 1),
+('Carlos', 'Ruiz Garcia', 2);
 
 
 
@@ -43,7 +43,7 @@ INSERT INTO Profesor_Curso (id_profesor, id_curso) VALUES
 
 -- Valores de ejemplo para la tabla Horario
 INSERT INTO Horario (asignatura, dia, hora, id_curso) VALUES
-('Matemáticas', 'L', '1', 1),
+('Matematicas', 'L', '1', 1),
 ('Historia', 'M', '2', 1),
 ('Ciencias Naturales', 'X', '3', 1);
 
@@ -73,8 +73,8 @@ INSERT INTO Usuario_Chat (id_usuario, id_chat) VALUES
 
 -- Valores de ejemplo para la tabla Mensaje
 INSERT INTO Mensaje (id_usuario, id_chat, contenido, fecha) VALUES
-(1, 1, 'Hola, ¿cómo estás?', '2024-03-01'),
-(2, 1, 'Bien, gracias. ¿Y tú?', '2024-03-01'),
+(1, 1, 'Hola, ¿como estas?', '2024-03-01'),
+(2, 1, 'Bien, gracias. ¿Y tu?', '2024-03-01'),
 (3, 2, '¿Alguien puede ayudarme con la tarea?', '2024-03-02');
 
 SELECT * FROM profesor;

@@ -21,8 +21,9 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    public Optional<TutorLegal> findTutorLegalByUsuario_Id(Integer userId) {
-        return tutorRepo.findTutorLegalById(userId);
+    public TutorLegal findTutorLegalByUsuario_Id(Integer userId) {
+        Optional<TutorLegal> tutorLegal = tutorRepo.findById(userId);
+        return tutorLegal.orElse(null);
     }
 
 }

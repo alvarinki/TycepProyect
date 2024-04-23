@@ -9,4 +9,5 @@ class UserRepository {
 
     suspend fun userLogin(loginRequestDto: LoginRequestDto):Response<LoginResponseDto> = UserApi.retrofitService.loginUser(loginRequestDto)
 
+    suspend fun userRecovery(token:String, userType:String):Response<Any> = UserApi.retrofitService.userRecovery(token, userType)
 }

@@ -27,4 +27,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Optional<Usuario> findUsuarioByUsuario(String nombreUsuario) {
         return  usuarioRepo.findUsuarioByUsuario(nombreUsuario);
     }
+
+    @Override
+    public Usuario findUsuarioById(int id) {
+        Optional<Usuario> user= usuarioRepo.findUsuarioById(id);
+        return user.orElse(null);
+    }
 }

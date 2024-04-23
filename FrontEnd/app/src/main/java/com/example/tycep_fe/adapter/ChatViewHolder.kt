@@ -10,7 +10,7 @@ class ChatViewHolder(view:View): RecyclerView.ViewHolder(view) {
 
     val binding= ChatsRecyclerBinding.bind(view)
     fun render(chat: Chat){
-        binding.tvChatName.text=chat.nombreChat
-        binding.tvLastMessage.text= chat.mensajes.toList()[chat.mensajes.size-1].toString()
+        binding.tvChatName.text=chat.nombreChat.toString()
+        binding.tvLastMessage.text= chat.mensajes.toList()[chat.mensajes.size-1].contenido
     }
 }
