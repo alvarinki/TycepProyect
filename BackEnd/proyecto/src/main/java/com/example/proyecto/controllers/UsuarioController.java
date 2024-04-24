@@ -82,6 +82,34 @@ public class UsuarioController {
         else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> userLogin(@RequestBody LoginRequest loginRequest){
+        PasswordEncoder passwordEncoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        Optional<Usuario> user= usuarioService.findUsuarioByUsuario(loginRequest.getUsername());
+        if(user.isPresent()){
+            String encriptedPassword= user.get().getContrasena();
+            if(encriptedPassword!=null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword)){
+                Usuario loggedUser= user.get();
+                String token= jwtUtil.create(loggedUser.getId().toString(), loggedUser.getUsuario());
+                if(user.get().getDtype().toString().equals("T")){
+                    TutorLegal tutorLegal= tutorService.findTutorLegalByUsuario_Id(loggedUser.getId());
+                    return new ResponseEntity<>(new LoginResponseDto("Tutor Legal", tutorLegal, token), HttpStatus.OK);
+                }
+                else if(user.get().getDtype().toString().equals("P")){
+                    Profesor profesor= profesorService.findProfesorByUsuario_Id(loggedUser.getId());
+                    System.out.println(profesor);
+                    return new ResponseEntity<>(new LoginResponseDto("Profesor", profesor, token) , HttpStatus.OK);
+                }
+                else return new ResponseEntity<>(new LoginResponseDto("Admin", loggedUser, token), HttpStatus.OK);
+            }
+            else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}
+
 //    @PostMapping("/login")
 //    public ResponseEntity<LoginResponseDto> userLogin(@RequestBody LoginRequest loginRequest){
 //        PasswordEncoder passwordEncoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -128,34 +156,6 @@ public class UsuarioController {
 //        }
 //        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //    }
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> userLogin(@RequestBody LoginRequest loginRequest){
-        PasswordEncoder passwordEncoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        Optional<Usuario> user= usuarioService.findUsuarioByUsuario(loginRequest.getUsername());
-        if(user.isPresent()){
-            String encriptedPassword= user.get().getContrasena();
-            if(encriptedPassword!=null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword)){
-                Usuario loggedUser= user.get();
-                String token= jwtUtil.create(loggedUser.getId().toString(), loggedUser.getUsuario());
-                if(user.get().getDtype().toString().equals("T")){
-                    TutorLegal tutorLegal= tutorService.findTutorLegalByUsuario_Id(loggedUser.getId());
-                    return new ResponseEntity<>(new LoginResponseDto("Tutor Legal", tutorLegal, token), HttpStatus.OK);
-                }
-                else if(user.get().getDtype().toString().equals("P")){
-                    Profesor profesor= profesorService.findProfesorByUsuario_Id(loggedUser.getId());
-                    System.out.println(profesor);
-                    return new ResponseEntity<>(new LoginResponseDto("Profesor", profesor, token) , HttpStatus.OK);
-                }
-                else return new ResponseEntity<>(new LoginResponseDto("Admin", loggedUser, token), HttpStatus.OK);
-            }
-            else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-}
-
-
 
 
 

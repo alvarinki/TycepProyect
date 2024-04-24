@@ -22,7 +22,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/side_nav_bar"
-            app:title="Toolbar" />
+            app:title="Inicio" />
 
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView

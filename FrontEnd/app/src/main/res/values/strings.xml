@@ -22,4 +22,9 @@
     <string name="menu_home">Inicio</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_studentData">Datos de alumnos</string>
+    <string name="menu_schedule">Horario</string>
+    <string name="menu_abscenses">Faltas</string>
+    <string name="menu_config">Configuración</string>
+    <string name="menu_exit">Cerrar sesión</string>
 </resources>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.horario">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- TextView encima de la tabla -->
+        <TextView
+            android:id="@+id/table_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Encabezado de la tabla"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <!-- Tabla -->
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <!-- Encabezado de la tabla (opcional) -->
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/d1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Lunes" />
+
+                <TextView
+                    android:id="@+id/d2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Martes" />
+
+                <TextView
+                    android:id="@+id/d3"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Miércoles" />
+
+                <TextView
+                    android:id="@+id/d4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Jueves" />
+
+                <TextView
+                    android:id="@+id/d5"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Viernes" />
+            </TableRow>
+
+            <!-- Filas de la tabla -->
+            <TableRow
+                android:id="@+id/row1">
+                <!-- Columna 1 -->
+                <TextView
+                    android:id="@+id/row1_col1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 2 -->
+                <TextView
+                    android:id="@+id/row1_col2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 3 -->
+                <TextView
+                    android:id="@+id/row1_col3"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 4 -->
+                <TextView
+                    android:id="@+id/row1_col4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 5 -->
+                <TextView
+                    android:id="@+id/row1_col5"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+            </TableRow>
+            <TableRow
+                android:id="@+id/row2">
+                <!-- Columna 1 -->
+                <TextView
+                    android:id="@+id/row2_col1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 2 -->
+                <TextView
+                    android:id="@+id/row2_col2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 3 -->
+                <TextView
+                    android:id="@+id/row2_col3"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 4 -->
+                <TextView
+                    android:id="@+id/row2_col4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 5 -->
+                <TextView
+                    android:id="@+id/row2_col5"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+            </TableRow>
+            <TableRow
+                android:id="@+id/row3">
+                <!-- Columna 1 -->
+                <TextView
+                    android:id="@+id/row3_col1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 2 -->
+                <TextView
+                    android:id="@+id/row3_col2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 3 -->
+                <TextView
+                    android:id="@+id/row3_col3"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 4 -->
+                <TextView
+                    android:id="@+id/row3_col4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 5 -->
+                <TextView
+                    android:id="@+id/row3_col5"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+            </TableRow>
+            <TableRow
+                android:id="@+id/row4">
+                <!-- Columna 1 -->
+                <TextView
+                    android:id="@+id/row4_col"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Recreo"
+                    />
+
+            </TableRow>
+            <TableRow
+                android:id="@+id/row5">
+                <!-- Columna 1 -->
+                <TextView
+                    android:id="@+id/row5_col1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 2 -->
+                <TextView
+                    android:id="@+id/row5_col2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 3 -->
+                <TextView
+                    android:id="@+id/row5_col3"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 4 -->
+                <TextView
+                    android:id="@+id/row5_col4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 5 -->
+                <TextView
+                    android:id="@+id/row5_col5"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+            </TableRow>
+            <TableRow
+                android:id="@+id/row6">
+                <!-- Columna 1 -->
+                <TextView
+                    android:id="@+id/row6_col1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 2 -->
+                <TextView
+                    android:id="@+id/row6_col2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 3 -->
+                <TextView
+                    android:id="@+id/row6_col3"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 4 -->
+                <TextView
+                    android:id="@+id/row6_col4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 5 -->
+                <TextView
+                    android:id="@+id/row6_col5"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+            </TableRow>
+            <TableRow
+                android:id="@+id/row7">
+                <!-- Columna 1 -->
+                <TextView
+                    android:id="@+id/row7_col1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 2 -->
+                <TextView
+                    android:id="@+id/row7_col2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 3 -->
+                <TextView
+                    android:id="@+id/row7_col3"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 4 -->
+                <TextView
+                    android:id="@+id/row7_col4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+                <!-- Columna 5 -->
+                <TextView
+                    android:id="@+id/row7_col5"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"/>
+            </TableRow>
+
+            <!-- Más filas aquí... -->
+
+        </TableLayout>
+    </LinearLayout>
+
+
+
+</FrameLayout>

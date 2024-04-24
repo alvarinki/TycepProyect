@@ -55,6 +55,9 @@ class InicioSesion : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Línea para adelantar mientras arreglo carga de datos
+        findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         binding.btnSignIn.setOnClickListener{
             val loginRequestDto= LoginRequestDto(binding.editTextUsername.text.toString(), binding.editTextPassword.text.toString())
