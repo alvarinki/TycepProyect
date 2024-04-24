@@ -6,6 +6,7 @@ class Prefs (val context: Context) {
 
     val SHARED_NAME= "recordarUsuario"
     val SHARED_TOKEN= "token"
+    val SHARED_DATA= "data"
 
 
     val storage = context.getSharedPreferences(SHARED_NAME, 0)
@@ -17,6 +18,14 @@ class Prefs (val context: Context) {
     fun getToken(): String? {
         return storage.getString(SHARED_TOKEN, "")
 
+    }
+
+    fun saveData(data: String){
+        storage.edit().putString(SHARED_DATA, data).apply()
+    }
+
+    fun getData():String?{
+        return storage.getString(SHARED_DATA, "")
     }
 
     fun clearToken(){

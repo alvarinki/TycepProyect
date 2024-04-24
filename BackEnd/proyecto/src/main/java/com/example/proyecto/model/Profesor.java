@@ -1,6 +1,7 @@
 package com.example.proyecto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,11 +39,12 @@ public class Profesor extends Usuario{
     @JoinTable(name="Profesor_Curso", joinColumns =
             {@JoinColumn(name = "id_profesor")},
             inverseJoinColumns = {@JoinColumn(name = "id_curso")})
+    @JsonIgnore
     private Set<Curso> cursos= new LinkedHashSet<>();
 
-//    @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinTable(name="profesor_asignatura", joinColumns =
-//            {@JoinColumn(name="id_profesor")},
-//            inverseJoinColumns = {@JoinColumn(name = "id_asignatura")})
-//    private Set<Horario> horario= new LinkedHashSet<>();
+    @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name="profesor_asignatura", joinColumns =
+            {@JoinColumn(name="id_profesor")},
+            inverseJoinColumns = {@JoinColumn(name = "id_asignatura")})
+    private Set<Asignatura> asignaturas= new LinkedHashSet<>();
 }

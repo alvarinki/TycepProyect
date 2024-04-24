@@ -7,7 +7,7 @@ data class Horario(
     @SerializedName("id")
     val id:Int,
     @SerializedName("asignatura")
-    val asignatura:String,
+    val asignatura:Asignatura,
     @SerializedName("dia")
     val dia:Dia,
     @SerializedName("hora")

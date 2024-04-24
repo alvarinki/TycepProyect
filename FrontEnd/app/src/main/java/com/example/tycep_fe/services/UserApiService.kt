@@ -2,6 +2,7 @@ package com.example.tycep_fe.services
 
 import com.example.tycep_fe.Dtos.LoginRequestDto
 import com.example.tycep_fe.Dtos.LoginResponseDto
+import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.models.Usuario
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -23,6 +24,9 @@ interface UserApiService{
 
     @POST("user/recovery")
     suspend fun userRecovery(@Header("Authorization") token:String, userType:String): Response<Any>
+
+    @POST("message/subir")
+    suspend fun uploadMessage(@Body message: Mensaje)
 }
 
 object UserApi{

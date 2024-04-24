@@ -1,25 +1,20 @@
 package com.example.proyecto.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "horario")
 public class Horario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
-    @Column(name = "asignatura")
-    private String asignatura;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "dia")
@@ -30,5 +25,9 @@ public class Horario {
 
     @Column(name = "id_curso")
     private Integer idCurso;
+
+    @ManyToOne()
+    @JoinColumn(name = "id_asignatura")
+    private Asignatura asignatura;
 
 }

@@ -1,17 +1,21 @@
 package com.example.tycep_fe.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.recyclerrecorridos.preferences.Prefs
+import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
 import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.ChatsRecyclerBinding
 import com.example.tycep_fe.models.Chat
+import kotlinx.coroutines.NonDisposableHandle.parent
 
-class ChatAdapter(private val chats:Set<Chat>) :  RecyclerView.Adapter<ChatAdapter.ViewHolder>(){
+class ChatAdapter(private val chats:Set<Chat>, private val context: Context) :  RecyclerView.Adapter<ChatAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ChatsRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,6 +27,8 @@ class ChatAdapter(private val chats:Set<Chat>) :  RecyclerView.Adapter<ChatAdapt
         holder.render(chat)
         holder.itemView.setOnClickListener{
             println(holder.itemView.context)
+            prefs= Prefs(context)
+            prefs.saveData(chat.id.toString())
             holder.itemView.findNavController().navigate(R.id.action_homeFragment_to_chat)
         }
     }

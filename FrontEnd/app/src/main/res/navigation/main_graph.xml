@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/chat"
-        android:name="com.example.tycep_fe.fragments.Chat"
+        android:name="com.example.tycep_fe.fragments.Chats"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat" />
 </navigation>

@@ -10,7 +10,7 @@ import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.MessageRecyclerBinding
 import com.example.tycep_fe.models.Mensaje
 
-class MessageAdapter(private val messages:MutableList<Mensaje>): RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+class MessageAdapter(private val messages:MutableSet<Mensaje>, private val nombreUsuario:String): RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
 
 
@@ -31,7 +31,7 @@ class MessageAdapter(private val messages:MutableList<Mensaje>): RecyclerView.Ad
         val layoutParamsUser = tvUser.layoutParams as ConstraintLayout.LayoutParams
         val layoutParamsMessage = tvMessage.layoutParams as ConstraintLayout.LayoutParams
 
-        if (message.nombreUsuario == "Usuario1") {
+        if (message.nombreUsuario == nombreUsuario) {
             // Alinea el TextView del usuario a la derecha
             layoutParamsUser.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
             layoutParamsUser.startToStart = ConstraintLayout.LayoutParams.UNSET // Elimina la restricción de alineación al inicio
