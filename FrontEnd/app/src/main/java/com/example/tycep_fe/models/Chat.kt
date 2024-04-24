@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Chat(
     @SerializedName("id")
-    val id:Int,
+    val id:Int?,
     @SerializedName("nombreChat")
     val nombreChat:String,
     @SerializedName("boletin")

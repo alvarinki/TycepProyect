@@ -8,7 +8,7 @@ INSERT INTO Usuario (usuario, contrasena, nombre, apellidos, dtype) VALUES
 
 -- Valores de ejemplo para la tabla Tutor_legal
 INSERT INTO Tutor_legal (usuario_id, telef_contacto, domicilio) VALUES
-(1mensaje, '123456789', 'Calle Mayor, 123'),
+('1mensaje', '123456789', 'Calle Mayor, 123'),
 (2, '987654321', 'Avenida Libertad, 456'),
 (3, '555555555', 'Plaza Espana, 789');
 
@@ -77,9 +77,18 @@ INSERT INTO Mensaje (id_usuario, id_chat, contenido, fecha) VALUES
 (2, 1, 'Bien, gracias. ¿Y tu?', '2024-03-01'),
 (3, 2, '¿Alguien puede ayudarme con la tarea?', '2024-03-02');
 
-SELECT * FROM profesor;
-
-SELECT * FROM profesor_curso;
+INSERT INTO Mensaje (id_usuario, id_chat, contenido, fecha) 
+VALUES 
+(1, 1, 'Hola mundo', CURDATE()),
+(2, 1, '¿Cómo están todos?', '2024-04-23'),
+(2, 1, 'Este es un mensaje largo con muchos detalles sobre el tema discutido en el chat.', '2024-04-22'),
+(3, 1, '¡Buenos días!', CURDATE());
+mensaje
 
 ALTER TABLE Faltas MODIFY hora INT NOT NULL;
 
+SET NAMES 'utf8mb4';
+
+
+institucion
+urbembajadacalibrainstitucionusuario_chatasignaturainstitucionasignaturainstitucion

@@ -39,4 +39,10 @@ public class Profesor extends Usuario{
             {@JoinColumn(name = "id_profesor")},
             inverseJoinColumns = {@JoinColumn(name = "id_curso")})
     private Set<Curso> cursos= new LinkedHashSet<>();
+
+//    @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JoinTable(name="profesor_asignatura", joinColumns =
+//            {@JoinColumn(name="id_profesor")},
+//            inverseJoinColumns = {@JoinColumn(name = "id_asignatura")})
+//    private Set<Horario> horario= new LinkedHashSet<>();
 }

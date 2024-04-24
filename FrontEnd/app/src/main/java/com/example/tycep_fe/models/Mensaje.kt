@@ -1,11 +1,10 @@
 package com.example.tycep_fe.models
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDate
 
 data class Mensaje(
     @SerializedName("id")
-    val id:Int,
+    val id: Int?,
     @SerializedName("idChat")
     val idChat:Int,
     @SerializedName("contenido")
