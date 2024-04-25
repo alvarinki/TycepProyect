@@ -86,6 +86,7 @@ class UserViewModel(): ViewModel() {
             val response=profesorRepo.getCursosFromProfesor(idProfesor!!)
             if(response.isSuccessful){
                 val cursos= response.body()
+                println(cursos)
                 _profesor.postValue(_profesor.value.apply { this?.cursos=cursos })
             }
         }

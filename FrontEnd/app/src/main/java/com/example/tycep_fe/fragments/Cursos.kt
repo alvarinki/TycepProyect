@@ -33,8 +33,10 @@ class Cursos : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+
         userViewModel._profesor.observe(viewLifecycleOwner) { profesor ->
-            profesor?.let {
+            profesor.cursos?.let {
+                println("Cursos a última hora "+profesor.cursos)
                 initReciclerView(profesor.cursos!!)
             }
         }
@@ -75,7 +77,7 @@ class Cursos : Fragment() {
         )
 
         val cursos: Set<Curso> = setOf(curso1, curso2, curso3, curso4, curso5)
-        initReciclerView(cursos)
+        //initReciclerView(cursos)
     }
 
     private fun initReciclerView(courses: Set<Curso>){

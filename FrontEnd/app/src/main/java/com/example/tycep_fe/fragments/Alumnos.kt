@@ -29,22 +29,32 @@ class Alumnos : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+        val idCurso: Int? = prefs.getData()?.toInt()
+        (userViewModel as UserViewModel).getAlumnosFromCurso(idCurso!!)
+        (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
+            profesor?.let {
+                initReciclerView(profesor.cursos?.filter { c -> c.id== idCurso}!![0].alumnos)
+            }
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_alumnos, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val idCurso: Int? = prefs.getData()?.toInt()
+        (userViewModel as UserViewModel).getAlumnosFromCurso(idCurso!!)
+        (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
+            profesor?.let {
+                initReciclerView(profesor.cursos?.filter { c -> c.id== idCurso}!![0].alumnos)
+            }
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-//        val idCurso: Int? = prefs.getData()?.toInt()
-//        (userViewModel as UserViewModel).getAlumnosFromCurso(idCurso!!)
-//        (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
-//            profesor?.let {
-//                initReciclerView(profesor.cursos?.filter { c -> c.id== idCurso}!![0].alumnos)
-//            }
-//        }
+
 
 
         val listaAlumnos = setOf(
