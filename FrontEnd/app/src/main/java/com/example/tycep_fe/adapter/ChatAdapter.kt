@@ -11,14 +11,14 @@ import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
 import com.example.tycep_fe.R
-import com.example.tycep_fe.databinding.ChatsRecyclerBinding
+import com.example.tycep_fe.databinding.ChatItemBinding
 import com.example.tycep_fe.models.Chat
 import kotlinx.coroutines.NonDisposableHandle.parent
 
 class ChatAdapter(private val chats:Set<Chat>, private val context: Context) :  RecyclerView.Adapter<ChatAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ChatsRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ChatItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -38,7 +38,7 @@ class ChatAdapter(private val chats:Set<Chat>, private val context: Context) :  
 
 
 
-    inner class ViewHolder(private val binding: ChatsRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ChatItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun render(chat: Chat){
             binding.tvChatName.text=chat.nombreChat.toString()
             binding.tvLastMessage.text= chat.mensajes.toList()[chat.mensajes.size-1].contenido

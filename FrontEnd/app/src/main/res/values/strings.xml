@@ -27,4 +27,6 @@
     <string name="menu_abscenses">Faltas</string>
     <string name="menu_config">Configuración</string>
     <string name="menu_exit">Cerrar sesión</string>
+    <string name="studentName_example">Maria Julieta Jiménez-Colubi del Castillo de Osvaldo</string>
+    <string name="studentExample">María del mar Lopez Cañizares Segovia García Fernández López</string>
 </resources>

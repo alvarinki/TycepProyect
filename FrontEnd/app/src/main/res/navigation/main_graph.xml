@@ -22,10 +22,37 @@
         <action
             android:id="@+id/action_homeFragment_to_chat"
             app:destination="@id/chat" />
+        <action
+            android:id="@+id/action_homeFragment_to_recyclerAlumnos"
+            app:destination="@id/recyclerAlumnos" />
+        <action
+            android:id="@+id/action_homeFragment_to_cursos"
+            app:destination="@id/cursos" />
     </fragment>
     <fragment
         android:id="@+id/chat"
         android:name="com.example.tycep_fe.fragments.Chats"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/recyclerAlumnos"
+        android:name="com.example.tycep_fe.fragments.Alumnos"
+        android:label="fragment_alumnos"
+        tools:layout="@layout/fragment_alumnos" >
+        <action
+            android:id="@+id/action_recyclerAlumnos_to_showStudent"
+            app:destination="@id/showStudent" />
+    </fragment>
+    <fragment
+        android:id="@+id/cursos"
+        android:name="com.example.tycep_fe.fragments.Cursos"
+        android:label="Cursos" >
+        <action
+            android:id="@+id/action_cursos_to_recyclerAlumnos"
+            app:destination="@id/recyclerAlumnos" />
+    </fragment>
+    <fragment
+        android:id="@+id/showStudent"
+        android:name="com.example.tycep_fe.fragments.showStudent"
+        android:label="showStudent" />
 </navigation>

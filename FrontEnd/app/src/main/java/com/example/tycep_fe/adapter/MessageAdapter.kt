@@ -7,16 +7,12 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tycep_fe.R
-import com.example.tycep_fe.databinding.MessageRecyclerBinding
+import com.example.tycep_fe.databinding.MessageItemBinding
 import com.example.tycep_fe.models.Mensaje
 
 class MessageAdapter(private val messages:MutableSet<Mensaje>, private val nombreUsuario:String): RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
-
-
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val binding = MessageRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = MessageItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MessageViewHolder(binding)
     }
 
@@ -57,7 +53,7 @@ class MessageAdapter(private val messages:MutableSet<Mensaje>, private val nombr
         tvMessage.layoutParams = layoutParamsMessage
     }
 
-    inner class MessageViewHolder(private val binding: MessageRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class MessageViewHolder(private val binding: MessageItemBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun render(mensaje: Mensaje){
             binding.tvmessage.text=mensaje.contenido

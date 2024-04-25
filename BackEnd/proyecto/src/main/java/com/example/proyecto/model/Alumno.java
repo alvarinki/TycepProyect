@@ -37,6 +37,7 @@ public class Alumno {
     private Integer idCurso;
 
     @OneToMany(mappedBy = "idAlumno")
+    @JsonIgnore
     private Set<Falta> faltas = new LinkedHashSet<>();
 
 //    @OneToMany(mappedBy = "alumno", cascade = CascadeType.ALL, orphanRemoval = true)

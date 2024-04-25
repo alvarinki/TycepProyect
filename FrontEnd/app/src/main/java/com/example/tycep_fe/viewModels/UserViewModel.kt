@@ -9,10 +9,12 @@ import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
 import com.example.tycep_fe.Dtos.LoginRequestDto
 import com.example.tycep_fe.Dtos.LoginResponseDto
+import com.example.tycep_fe.models.Curso
 import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.models.Profesor
 import com.example.tycep_fe.models.TutorLegal
 import com.example.tycep_fe.models.Usuario
+import com.example.tycep_fe.repositories.ProfesorRepository
 import com.example.tycep_fe.repositories.UserRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -21,15 +23,18 @@ import java.util.logging.Handler
 
 class UserViewModel(): ViewModel() {
 
-    private val repository= UserRepository()
-
+    private val userRepo= UserRepository()
+    private val profesorRepo= ProfesorRepository()
     val admin= MutableLiveData<Usuario>()
     val _tutorLegal= MutableLiveData<TutorLegal>()
-    val _profesor= MutableLiveData<Profesor>()
+    var _profesor= MutableLiveData<Profesor>()
 
     val profesor: LiveData<Profesor>
         get() = _profesor
 
+    fun setProfesorValue(profesor: Profesor){
+        _profesor.postValue(profesor)
+    }
     val tutorLegal: LiveData<TutorLegal>
         get() = _tutorLegal
 
@@ -38,7 +43,7 @@ class UserViewModel(): ViewModel() {
         var token=""
         var typeUser=""
         viewModelScope.launch {
-            val response:Response<LoginResponseDto> =repository.userLogin(loginRequestDto)
+            val response:Response<LoginResponseDto> =userRepo.userLogin(loginRequestDto)
             if(response.isSuccessful){
                 token= response.body()?.token.toString()
                 typeUser= response.body()?.userType.toString()
@@ -71,8 +76,30 @@ class UserViewModel(): ViewModel() {
 
      fun uploadMessage(message: Mensaje){
         viewModelScope.launch {
-            repository.uploadMessage(message)
+            userRepo.uploadMessage(message)
         }
+    }
+
+    fun getCursosFromProfesor(){
+        val idProfesor=_profesor.value?.id
+        viewModelScope.launch{
+            val response=profesorRepo.getCursosFromProfesor(idProfesor!!)
+            if(response.isSuccessful){
+                val cursos= response.body()
+                _profesor.postValue(_profesor.value.apply { this?.cursos=cursos })
+            }
+        }
+    }
+
+    fun getAlumnosFromCurso(idCurso:Int){
+        viewModelScope.launch{
+            val response= profesorRepo.getAlumnosFromCurso(idCurso)
+            if(response.isSuccessful){
+                val alumnos= response.body()
+                _profesor.postValue(_profesor.value.apply { this?.cursos?.filter{curso -> curso.id==idCurso}?.get(0)?.alumnos=alumnos!!})
+            }
+        }
+
     }
 }
 

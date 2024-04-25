@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tycep_fe.R
@@ -65,12 +66,12 @@ class HomeFragment : Fragment() {
         //Línea para pruebas
         //findNavController().navigate(R.id.action_homeFragment_to_chat)
 
-//        val mensajesChat1 = setOf(
-//            Mensaje(1, 1, "Hola", "2024-04-23", "Usuario1"),
-//            Mensaje(2, 1, "¿Cómo estás?", "2024-04-23", "Usuario1"),
-//            Mensaje(3, 2, "¡Hola a todos!", "2024-04-22", "Usuario3"),
-//            Mensaje(4, 2, "¿Qué tal?", "2024-04-22", "Usuario1")
-//        )
+        val mensajesChat1 = setOf(
+            Mensaje(1, 1, "Hola", "2024-04-23", "Usuario1"),
+            Mensaje(2, 1, "¿Cómo estás?", "2024-04-23", "Usuario1"),
+            Mensaje(3, 2, "¡Hola a todos!", "2024-04-22", "Usuario3"),
+            Mensaje(4, 2, "¿Qué tal?", "2024-04-22", "Usuario1")
+        )
 
         val mensajesChat2 = setOf(
             Mensaje(3, 2, "¡Hola a todos!", "2024-04-22", "Usuario3"),
@@ -82,14 +83,38 @@ class HomeFragment : Fragment() {
             Mensaje(6, 3, "¿Cómo va todo?", "2024-04-21", "Usuario6")
         )
 
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.nav_studentdata_or_course->{
+                    findNavController().navigate(R.id.action_homeFragment_to_cursos)
+                    true
+                }
+                R.id.nav_schedule->{
+                    true
+                }
+                R.id.nav_absences->{
+
+                    true
+                }
+                R.id.nav_configuration->{
+                    true
+                }
+                R.id.nav_exit ->{
+
+                    true
+                }
+
+                else -> false
+            }
+        }
         // Crear la lista de chats
-//        val chats = setOf(
-//            Chat(1, "Chat1", true, mensajesChat1),
-//            Chat(2, "Chat2", false, mensajesChat2),
-//            Chat(3, "Chat3", true, mensajesChat3)
-//        )
+        val chats = setOf(
+            Chat(1, "Chat1", true, mensajesChat1),
+            Chat(2, "Chat2", false, mensajesChat2),
+            Chat(3, "Chat3", true, mensajesChat3)
+        )
         //Mensajes de pruebas
-        //initReciclerView(chats)
+        initReciclerView(chats)
         menuItemChange= binding.navView.menu.findItem(R.id.nav_studentdata_or_course)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
@@ -98,6 +123,7 @@ class HomeFragment : Fragment() {
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 when(menuItem.itemId){
                     R.id.nav_studentdata_or_course->{
+                        findNavController().navigate(R.id.action_homeFragment_to_cursos)
                         true
                     }
                     R.id.nav_schedule->{

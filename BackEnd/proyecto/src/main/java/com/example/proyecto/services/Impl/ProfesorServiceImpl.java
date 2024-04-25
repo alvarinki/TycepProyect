@@ -1,16 +1,25 @@
 package com.example.proyecto.services.Impl;
 
+import com.example.proyecto.model.Alumno;
+import com.example.proyecto.model.Curso;
 import com.example.proyecto.model.Profesor;
+import com.example.proyecto.repositories.CursoRepository;
 import com.example.proyecto.repositories.ProfesorRepository;
 import com.example.proyecto.services.ProfesorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ProfesorServiceImpl implements ProfesorService {
 
     @Autowired
     ProfesorRepository profesorRepo;
+
+    @Autowired
+    CursoRepository cursoRepo;
 
     @Override
     public Profesor findProfesorByUsuario_Id(Integer userId) {
@@ -21,4 +30,14 @@ public class ProfesorServiceImpl implements ProfesorService {
     public Profesor saveProfesor(Profesor profesor) {
         return profesorRepo.save(profesor);
     }
+
+    @Override
+    public Set<Curso> getCursosFromProfesor(int id) {
+        Optional<Profesor> profe= profesorRepo.findProfesorById(id);
+        return profe.map(Profesor::getCursos).orElse(null);
+    }
+
+
+
+
 }

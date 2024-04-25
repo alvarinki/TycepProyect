@@ -10,4 +10,6 @@ public interface TutorService {
     TutorLegal saveTutor(TutorLegal tutor);
 
     TutorLegal findTutorLegalByUsuario_Id(Integer userId);
+
+
 }

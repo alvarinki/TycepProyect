@@ -23,7 +23,7 @@ data class Profesor(
     @SerializedName("correo")
     val correo:String,
     @SerializedName("cursos")
-    val cursos:Set<Curso>?,
+    var cursos:Set<Curso>?,
     @SerializedName("asignaturas")
     val asignaturas:Set<Asignatura>
 )

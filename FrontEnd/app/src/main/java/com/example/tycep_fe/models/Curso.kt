@@ -8,7 +8,7 @@ data class Curso(
     @SerializedName("nombre")
     val nombre:String,
     @SerializedName("alumnos")
-    val alumnos: Set<Alumno>,
+    var alumnos: Set<Alumno>,
     @SerializedName("horarios")
     val horario:Set<Horario>
 )

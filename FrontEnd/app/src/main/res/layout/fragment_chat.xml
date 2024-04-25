@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.Chats"
     android:backgroundTint="@color/black"
-
     >
 
     <androidx.recyclerview.widget.RecyclerView

@@ -33,7 +33,7 @@ class InicioSesion : Fragment() {
     inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+
         // Inflate the layout for this fragment
         _binding= FragmentInicioSesionBinding.inflate(inflater, container, false)
 
@@ -58,7 +58,7 @@ class InicioSesion : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //Línea para adelantar mientras arreglo carga de datos
-        //findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+        findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         binding.btnSignIn.setOnClickListener{

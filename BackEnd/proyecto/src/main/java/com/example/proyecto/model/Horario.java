@@ -3,18 +3,20 @@ package com.example.proyecto.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
 @Entity
-@ToString
 @Table(name = "horario")
 public class Horario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_asignatura")
+    private Asignatura asignatura;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "dia")
@@ -25,9 +27,5 @@ public class Horario {
 
     @Column(name = "id_curso")
     private Integer idCurso;
-
-    @ManyToOne()
-    @JoinColumn(name = "id_asignatura")
-    private Asignatura asignatura;
 
 }

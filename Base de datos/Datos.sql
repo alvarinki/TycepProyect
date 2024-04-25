@@ -89,6 +89,36 @@ ALTER TABLE Faltas MODIFY hora INT NOT NULL;
 
 SET NAMES 'utf8mb4';
 
+CREATE TABLE Asignatura (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255)
+);
+
+CREATE TABLE Profesor_Asignatura (
+    id_profesor INT,
+    id_asignatura INT,
+    PRIMARY KEY (id_profesor, id_asignatura),
+    FOREIGN KEY (id_profesor) REFERENCES Profesor(usuario_id),
+    FOREIGN KEY (id_asignatura) REFERENCES Asignatura(id)
+);
+
+CREATE TABLE Curso_Asignatura (
+    id_curso IinstitucionasignaturaNT,
+    id_asignatura INT,
+    PRIMARY KEY (id_curso, id_asignatura),
+    FOREIGN KEY (id_curso) REFERENCES Curso(id),
+    FOREIGN KEY (id_asignatura) REFERENCES Asignatura(id)
+);
+
+ALTER TABLE horario DROP COLUMN asignaturacursocurso;
+
+ALTER TABLE horario
+ADD COLUMN id_asignatura IhorariocursoNT,
+ADD CONSTRAINT FK_Horario_Asignatura FOREIGN KEY (id_asignatura) REFERENCES Asignatura(id);
+
+
+ALTER TABLE curso ADD COLUMN foto VARCHAR(255);
+
 
 institucion
 urbembajadacalibrainstitucionusuario_chatasignaturainstitucionasignaturainstitucion
