@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication
 import com.example.tycep_fe.R
-import com.example.tycep_fe.databinding.StudentsItemBinding
+
+import com.example.tycep_fe.databinding.TwospanItemBinding
 import com.example.tycep_fe.models.Alumno
 import com.squareup.picasso.Picasso
 
-class AlumnosAdapter (private val alumnos:Set<Alumno>, private val context: Context) :  RecyclerView.Adapter<AlumnosAdapter.AlumnosViewHolder>(){
+class PAlumnosAdapter (private val alumnos:Set<Alumno>, private val context: Context) :  RecyclerView.Adapter<PAlumnosAdapter.AlumnosViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlumnosViewHolder {
-        val binding = StudentsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = TwospanItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AlumnosViewHolder(binding)
 
     }
@@ -36,7 +37,7 @@ class AlumnosAdapter (private val alumnos:Set<Alumno>, private val context: Cont
         }
     }
 
-    inner class AlumnosViewHolder(private val binding: StudentsItemBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class AlumnosViewHolder(private val binding: TwospanItemBinding): RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun render(alumno: Alumno){
             binding.tvStudent.text=alumno.nombre+" "+alumno.apellidos

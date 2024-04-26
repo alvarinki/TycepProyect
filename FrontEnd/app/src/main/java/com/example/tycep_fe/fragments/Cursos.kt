@@ -6,13 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tycep_fe.R
-import com.example.tycep_fe.adapter.AlumnosAdapter
 import com.example.tycep_fe.adapter.CoursesAdapter
-import com.example.tycep_fe.models.Alumno
 import com.example.tycep_fe.models.Curso
 import com.example.tycep_fe.viewModels.UserViewModel
 
@@ -33,13 +30,13 @@ class Cursos : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-
-        userViewModel._profesor.observe(viewLifecycleOwner) { profesor ->
-            profesor.cursos?.let {
-                println("Cursos a última hora "+profesor.cursos)
-                initReciclerView(profesor.cursos!!)
-            }
-        }
+//      CÓDIGO COMENTADO PARA FUNCIONAR SIN CONE, DESCOMENTAR PARA QUE FUNCIONE CON ELLA
+//        userViewModel._profesor.observe(viewLifecycleOwner) { profesor ->
+//            profesor.cursos?.let {
+//                println("Cursos a última hora "+profesor.cursos)
+//                initReciclerView(profesor.cursos!!)
+//            }
+//        }
 
         val curso1 = Curso(
             id = 1,
@@ -77,7 +74,8 @@ class Cursos : Fragment() {
         )
 
         val cursos: Set<Curso> = setOf(curso1, curso2, curso3, curso4, curso5)
-        //initReciclerView(cursos)
+        //Init de prueba sin conexión a API REST
+        initReciclerView(cursos)
     }
 
     private fun initReciclerView(courses: Set<Curso>){

@@ -11,5 +11,9 @@ public interface FaltaService {
 
     List<Falta> saveFaltas(List<Falta> faltas);
 
+    Falta updateFalta(Falta falta);
+
     void deleteFalta(Falta falta);
+
+    Falta findFaltaById(int id);
 }

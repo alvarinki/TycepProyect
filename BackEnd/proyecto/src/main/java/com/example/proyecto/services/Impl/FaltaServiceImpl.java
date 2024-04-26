@@ -27,8 +27,18 @@ public class FaltaServiceImpl implements FaltaService {
     }
 
     @Override
+    public Falta updateFalta(Falta falta) {
+        return faltaRepo.save(falta);
+    }
+
+    @Override
     public void deleteFalta(Falta falta) {
          faltaRepo.delete(falta);
+    }
+
+    @Override
+    public Falta findFaltaById(int id) {
+         return faltaRepo.findFaltaById(id);
     }
 
 }

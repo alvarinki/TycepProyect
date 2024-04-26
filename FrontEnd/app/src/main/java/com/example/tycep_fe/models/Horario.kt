@@ -1,6 +1,5 @@
 package com.example.tycep_fe.models
 
-import androidx.resourceinspection.annotation.Attribute.IntMap
 import com.google.gson.annotations.SerializedName
 
 data class Horario(
@@ -11,5 +10,9 @@ data class Horario(
     @SerializedName("dia")
     val dia:Dia,
     @SerializedName("hora")
-    val hora:Int
+    val hora:Int,
+    @SerializedName("aula")
+    val aula:Int,
+    @SerializedName("id_profesor")
+    val idProfesor: Int
 )

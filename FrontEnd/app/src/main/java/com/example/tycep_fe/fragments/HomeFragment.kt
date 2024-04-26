@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recyclerrecorridos.preferences.Prefs
+import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
 import com.example.tycep_fe.R
 import com.example.tycep_fe.adapter.ChatAdapter
 import com.example.tycep_fe.databinding.FragmentHomeBinding
@@ -83,38 +86,42 @@ class HomeFragment : Fragment() {
             Mensaje(5, 3, "Buenos días", "2024-04-21", "Usuario5"),
             Mensaje(6, 3, "¿Cómo va todo?", "2024-04-21", "Usuario6")
         )
+        //Código momentáneo para pasar entre fragments
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.nav_studentdata_or_course->{
 
-//        binding.navView.setNavigationItemSelectedListener { menuItem ->
-//            when(menuItem.itemId){
-//                R.id.nav_studentdata_or_course->{
-//                    (userViewModel as UserViewModel).getCursosFromProfesor()
-//                    findNavController().navigate(R.id.action_homeFragment_to_cursos)
-//                    true
-//                }
-//                R.id.nav_schedule->{
-//                    true
-//                }
-//                R.id.nav_absences->{
-//
-//                    true
-//                }
-//                R.id.nav_configuration->{
-//                    true
-//                }
-//                R.id.nav_exit ->{
-//
-//                    true
-//                }
-//
-//                else -> false
-//            }
-//        }
+                    findNavController().navigate(R.id.action_homeFragment_to_cursos)
+                    true
+                }
+                R.id.nav_schedule->{
+                    findNavController().navigate(R.id.action_homeFragment_to_horario)
+                    true
+                }
+                R.id.nav_absences->{
+
+                    true
+                }
+                R.id.nav_configuration->{
+                    true
+                }
+                R.id.nav_exit ->{
+                    prefs = Prefs(requireContext())
+                    prefs.clearToken()
+                    finishAffinity(this.requireActivity())
+                    true
+                }
+
+                else -> false
+            }
+        }
         // Crear la lista de chats
         val chats = setOf(
             Chat(1, "Chat1", true, mensajesChat1),
             Chat(2, "Chat2", false, mensajesChat2),
             Chat(3, "Chat3", true, mensajesChat3)
         )
+
         //Mensajes de pruebas
         //initReciclerView(chats)
         menuItemChange= binding.navView.menu.findItem(R.id.nav_studentdata_or_course)
@@ -140,7 +147,9 @@ class HomeFragment : Fragment() {
                         true
                     }
                     R.id.nav_exit ->{
-
+                        prefs = Prefs(requireContext())
+                        prefs.clearToken()
+                        finishAffinity(this.requireActivity())
                         true
                     }
 
@@ -175,7 +184,9 @@ class HomeFragment : Fragment() {
                         true
                     }
                     R.id.nav_exit ->{
-
+                        prefs = Prefs(requireContext())
+                        prefs.clearToken()
+                        finishAffinity(this.requireActivity())
                         true
                     }
 
@@ -198,6 +209,7 @@ class HomeFragment : Fragment() {
         recyclerView?.adapter= ChatAdapter(chats, requireContext())
 
     }
+
 
 
 }

@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_homeFragment_to_cursos"
             app:destination="@id/cursos" />
+        <action
+            android:id="@+id/action_homeFragment_to_horario"
+            app:destination="@id/horario" />
     </fragment>
     <fragment
         android:id="@+id/chat"
@@ -54,5 +57,19 @@
     <fragment
         android:id="@+id/showStudent"
         android:name="com.example.tycep_fe.fragments.showStudent"
-        android:label="showStudent" />
+        android:label="showStudent" >
+        <action
+            android:id="@+id/action_showStudent_to_faltas"
+            app:destination="@id/faltas" />
+    </fragment>
+    <fragment
+        android:id="@+id/horario"
+        android:name="com.example.tycep_fe.fragments.horario"
+        android:label="fragment_horario"
+        tools:layout="@layout/fragment_horario" />
+    <fragment
+        android:id="@+id/faltas"
+        android:name="com.example.tycep_fe.fragments.AlFaltas"
+        android:label="fragment_faltas"
+        tools:layout="@layout/fragment_faltas" />
 </navigation>

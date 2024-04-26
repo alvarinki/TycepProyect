@@ -119,6 +119,7 @@ ADD CONSTRAINT FK_Horario_Asignatura FOREIGN KEY (id_asignatura) REFERENCES Asig
 
 ALTER TABLE curso ADD COLUMN foto VARCHAR(255);
 
+ALTER TABLE horario ADD COLUMN aula INT;
 
-institucion
-urbembajadacalibrainstitucionusuario_chatasignaturainstitucionasignaturainstitucion
+ALTER TABLE horario ADD COLUMN id_profesor INT , ADD CONSTRAINT FK_Horario_Profesor FOREIGN key horario (id_profesor) REFERENCES profesor(usuario_id);;
+

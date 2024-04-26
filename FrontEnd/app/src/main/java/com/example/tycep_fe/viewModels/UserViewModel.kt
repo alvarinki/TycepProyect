@@ -9,6 +9,7 @@ import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
 import com.example.tycep_fe.Dtos.LoginRequestDto
 import com.example.tycep_fe.Dtos.LoginResponseDto
+import com.example.tycep_fe.activities.MainActivity
 import com.example.tycep_fe.models.Curso
 import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.models.Profesor
@@ -26,6 +27,7 @@ class UserViewModel(): ViewModel() {
     private val userRepo= UserRepository()
     private val profesorRepo= ProfesorRepository()
     val admin= MutableLiveData<Usuario>()
+    val token= MutableLiveData<String>()
     val _tutorLegal= MutableLiveData<TutorLegal>()
     var _profesor= MutableLiveData<Profesor>()
 
@@ -39,14 +41,13 @@ class UserViewModel(): ViewModel() {
         get() = _tutorLegal
 
 
-    fun userLogin(loginRequestDto: LoginRequestDto): String{
-        var token=""
-        var typeUser=""
+    fun userLogin(loginRequestDto: LoginRequestDto){
+
+
         viewModelScope.launch {
             val response:Response<LoginResponseDto> =userRepo.userLogin(loginRequestDto)
             if(response.isSuccessful){
-                token= response.body()?.token.toString()
-                typeUser= response.body()?.userType.toString()
+
                 if(response.body()?.userType== "Profesor"){
                 val user= response.body()?.userData
 
@@ -62,16 +63,14 @@ class UserViewModel(): ViewModel() {
                     val tutor: TutorLegal=  Gson().fromJson(Gson().toJson(user), TutorLegal::class.java)
                     _tutorLegal.postValue(tutor)
                 }
-                else {typeUser="admins"}
-
 
                 println("Token en typeUser: "+response.body()?.token.toString())
-
+                token.postValue(response.body()?.token.toString())
 
             }
 
         }
-       return token
+
     }
 
      fun uploadMessage(message: Mensaje){

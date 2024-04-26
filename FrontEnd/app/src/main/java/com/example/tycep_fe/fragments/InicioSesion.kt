@@ -37,20 +37,6 @@ class InicioSesion : Fragment() {
         // Inflate the layout for this fragment
         _binding= FragmentInicioSesionBinding.inflate(inflater, container, false)
 
-
-//                       val response: LoginResponseDto?= loginResponse.body()
-//                        if(response?.userType == "Profesor"){
-//                            Toast.makeText(requireContext(), "Es profesor", Toast.LENGTH_SHORT)
-//                                .show()
-//                            userViewModel.tutorLegal.postValue(response.userData as TutorLegal?)
-//
-//                        }
-//                        else if(response?.userType== "TutorLegal"){
-//                            Toast.makeText(requireContext(), "Es tutor legal/ padre", Toast.LENGTH_SHORT)
-//                                .show()
-//                            userViewModel.tutorLegal.postValue(response.userData as TutorLegal?)
-//                            findNavController().navigate(R.id.action_inicioSesion_to_principal)
-//                        }
         return binding.root
     }
 
@@ -58,7 +44,7 @@ class InicioSesion : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //Línea para adelantar mientras arreglo carga de datos
-        //findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+        findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         binding.btnSignIn.setOnClickListener{

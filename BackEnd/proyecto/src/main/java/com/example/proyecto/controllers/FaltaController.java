@@ -41,5 +41,13 @@ public class FaltaController {
         faltaService.deleteFalta(falta);
     }
 
-
+    @PostMapping("/update")
+    public ResponseEntity<Falta> updateFalta(@RequestBody Falta falta) {
+        Falta f=faltaService.findFaltaById(falta.getId());
+        if(f==null) return ResponseEntity.notFound().build();
+        else {
+            faltaService.updateFalta(f);
+            return ResponseEntity.ok(f);
+        }
+    }
 }

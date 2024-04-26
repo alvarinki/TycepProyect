@@ -28,4 +28,9 @@ public class Horario {
     @Column(name = "id_curso")
     private Integer idCurso;
 
+    @Column(name = "aula")
+    private Integer aula;
+
+    @Column(name = "id_profesor")
+    private Integer idProfesor;
 }
