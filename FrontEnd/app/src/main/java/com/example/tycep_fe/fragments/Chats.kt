@@ -47,7 +47,6 @@ class Chats : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner){ profesor ->
-            println("Llega a chats: "+profesor.toString())
             val idChat= prefs.getData().toString().toInt()
             selectedChatMessages=profesor.chats?.filter{ chat -> chat.id== idChat }!![0].mensajes.toMutableList()
             initRecyclerView(selectedChatMessages)
@@ -60,12 +59,13 @@ class Chats : Fragment() {
             recyclerView?.adapter= adapter
             binding.btEnvio.setOnClickListener{
                 val messageContent:String= binding.edMensaje.text.toString()
-
                 val newMessage= Mensaje(null, 1, messageContent, LocalDate.now().toString(), profesor.usuario)
                 selectedChatMessages.add(0, newMessage)
-                (userViewModel as UserViewModel).uploadMessage(newMessage)
+
                 adapter.notifyItemInserted(0)
                 recyclerView?.smoothScrollToPosition(selectedChatMessages.size-1)
+                val token:String= prefs.getToken().toString()
+                (userViewModel as UserViewModel).uploadMessage(newMessage, token)
                 binding.edMensaje.text=null
             }
         }

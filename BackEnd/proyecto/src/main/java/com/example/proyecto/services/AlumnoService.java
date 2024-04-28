@@ -8,4 +8,6 @@ import java.util.Set;
 public interface AlumnoService {
 
     Set<Alumno> findAlumnosByIdCurso(int idCurso);
+
+    Alumno findAlumnoById(int id);
 }

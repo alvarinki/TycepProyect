@@ -26,7 +26,7 @@ interface UserApiService{
     suspend fun userRecovery(@Header("Authorization") token:String, userType:String): Response<Any>
 
     @POST("message/subir")
-    suspend fun uploadMessage(@Body message: Mensaje)
+    suspend fun uploadMessage(@Body message: Mensaje, @Header(value = "token") token:String)
 }
 
 object UserApi{

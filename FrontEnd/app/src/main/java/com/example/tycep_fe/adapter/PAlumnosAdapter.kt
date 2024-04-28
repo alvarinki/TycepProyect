@@ -18,7 +18,6 @@ class PAlumnosAdapter (private val alumnos:Set<Alumno>, private val context: Con
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlumnosViewHolder {
         val binding = TwospanItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AlumnosViewHolder(binding)
-
     }
 
     override fun getItemCount(): Int = alumnos.size
@@ -31,9 +30,7 @@ class PAlumnosAdapter (private val alumnos:Set<Alumno>, private val context: Con
             println(holder.itemView.context)
             TokenUsuarioApplication.prefs = Prefs(context)
             TokenUsuarioApplication.prefs.saveData(alumno.id.toString())
-            holder.itemView.findNavController().navigate(R.id.action_recyclerAlumnos_to_showStudent
-
-            )
+            holder.itemView.findNavController().navigate(R.id.action_recyclerAlumnos_to_showStudent)
         }
     }
 

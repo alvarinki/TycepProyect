@@ -31,12 +31,12 @@ class Cursos : Fragment() {
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
 //      CÓDIGO COMENTADO PARA FUNCIONAR SIN CONE, DESCOMENTAR PARA QUE FUNCIONE CON ELLA
-//        userViewModel._profesor.observe(viewLifecycleOwner) { profesor ->
-//            profesor.cursos?.let {
-//                println("Cursos a última hora "+profesor.cursos)
-//                initReciclerView(profesor.cursos!!)
-//            }
-//        }
+        userViewModel._profesor.observe(viewLifecycleOwner) { profesor ->
+            profesor.cursos?.let {
+                println("Cursos a última hora "+profesor.cursos)
+                initReciclerView(profesor.cursos!!)
+            }
+        }
 
         val curso1 = Curso(
             id = 1,
@@ -75,7 +75,7 @@ class Cursos : Fragment() {
 
         val cursos: Set<Curso> = setOf(curso1, curso2, curso3, curso4, curso5)
         //Init de prueba sin conexión a API REST
-        initReciclerView(cursos)
+        //initReciclerView(cursos)
     }
 
     private fun initReciclerView(courses: Set<Curso>){

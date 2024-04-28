@@ -44,16 +44,16 @@ class InicioSesion : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //Línea para adelantar mientras arreglo carga de datos
-        findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+        //findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         binding.btnSignIn.setOnClickListener{
             val loginRequestDto= LoginRequestDto(binding.editTextUsername.text.toString(), binding.editTextPassword.text.toString())
-            val token:String= (userViewModel as UserViewModel).userLogin(loginRequestDto)
-            println("Token pre prefs "+token)
+            (userViewModel as UserViewModel).userLogin(loginRequestDto)
+            //println("Token pre prefs "+token)
             prefs= Prefs(requireContext())
             prefs.clearToken()
-            prefs.saveToken(token)
+            //prefs.saveToken(token)
 
             findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
 

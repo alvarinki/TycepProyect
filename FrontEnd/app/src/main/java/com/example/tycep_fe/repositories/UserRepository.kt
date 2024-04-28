@@ -13,5 +13,5 @@ class UserRepository {
 
     suspend fun userRecovery(token:String, userType:String):Response<Any> = UserApi.retrofitService.userRecovery(token, userType)
 
-    suspend fun uploadMessage(message: Mensaje) = UserApi.retrofitService.uploadMessage(message)
+    suspend fun uploadMessage(message: Mensaje, token:String) = UserApi.retrofitService.uploadMessage(message, token)
 }
