@@ -70,6 +70,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //Línea para pruebas
         //findNavController().navigate(R.id.action_homeFragment_to_chat)
+        findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         (userViewModel as UserViewModel).token.observe(viewLifecycleOwner){ token -> prefs.saveToken(token) }
         val mensajesChat1 = setOf(
@@ -89,34 +90,34 @@ class HomeFragment : Fragment() {
             Mensaje(6, 3, "¿Cómo va todo?", "2024-04-21", "Usuario6")
         )
         //Código momentáneo para pasar entre fragments
-//        binding.navView.setNavigationItemSelectedListener { menuItem ->
-//            when(menuItem.itemId){
-//                R.id.nav_studentdata_or_course->{
-//
-//                    findNavController().navigate(R.id.action_homeFragment_to_cursos)
-//                    true
-//                }
-//                R.id.nav_schedule->{
-//                    findNavController().navigate(R.id.action_homeFragment_to_horario)
-//                    true
-//                }
-//                R.id.nav_absences->{
-//
-//                    true
-//                }
-//                R.id.nav_configuration->{
-//                    true
-//                }
-//                R.id.nav_exit ->{
-//                    prefs = Prefs(requireContext())
-//                    prefs.clearToken()
-//                    finishAffinity(this.requireActivity())
-//                    true
-//                }
-//
-//                else -> false
-//            }
-//        }
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.nav_studentdata_or_course->{
+
+                    findNavController().navigate(R.id.action_homeFragment_to_cursos)
+                    true
+                }
+                R.id.nav_schedule->{
+                    findNavController().navigate(R.id.action_homeFragment_to_horario)
+                    true
+                }
+                R.id.nav_absences->{
+                    findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
+                    true
+                }
+                R.id.nav_configuration->{
+                    true
+                }
+                R.id.nav_exit ->{
+                    prefs = Prefs(requireContext())
+                    prefs.clearToken()
+                    finishAffinity(this.requireActivity())
+                    true
+                }
+
+                else -> false
+            }
+        }
         // Crear la lista de chats
         val chats = setOf(
             Chat(1, "Chat1", true, mensajesChat1),
@@ -144,7 +145,7 @@ class HomeFragment : Fragment() {
                         true
                     }
                     R.id.nav_absences->{
-
+                        findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
                         true
                     }
                     R.id.nav_configuration->{

@@ -18,13 +18,14 @@ import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.ui.ReverseLinearLayoutManager
 import com.example.tycep_fe.viewModels.UserViewModel
 import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
 
 
 class Chats : Fragment() {
     private lateinit var userViewModel: ViewModel
     private lateinit var binding:FragmentChatBinding
     private lateinit var adapter: MessageAdapter
-    private lateinit var username:String
     private lateinit var selectedChatMessages: MutableList<Mensaje>
 
 
@@ -49,8 +50,8 @@ class Chats : Fragment() {
         (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner){ profesor ->
             val idChat= prefs.getData().toString().toInt()
             selectedChatMessages=profesor.chats?.filter{ chat -> chat.id== idChat }!![0].mensajes.toMutableList()
-            initRecyclerView(selectedChatMessages)
-            val recyclerView= view?.findViewById<RecyclerView>(R.id.recyclerMensajes)
+            //initRecyclerView(selectedChatMessages)
+            val recyclerView= view.findViewById<RecyclerView>(R.id.recyclerMensajes)
             recyclerView?.layoutManager= LinearLayoutManager(this.context)
                 //ReverseLinearLayoutManager(this.requireContext())
             val sortedMessages:LinkedHashSet<Mensaje> = java.util.LinkedHashSet<Mensaje>()
@@ -69,6 +70,7 @@ class Chats : Fragment() {
                 binding.edMensaje.text=null
             }
         }
+        var dia= obtenerNombreDiaSemana(LocalDate.now())
 
 //        val mensajesChat1 = mutableListOf(
 //            Mensaje(1, 1, "Hola", "2024-04-23", "Usuario1"),
@@ -76,13 +78,12 @@ class Chats : Fragment() {
 //            Mensaje(3, 2, "¡Hola a todos!", "2024-04-22", "Usuario3"),
 //            Mensaje(4, 2, "¿Qué tal?", "2024-04-22", "Usuario1")
 //        )
-        //initRecyclerView(mensajesChat1)
+
 
     }
 
-    private fun initRecyclerView(messages: MutableList<Mensaje>){
-
+    private fun obtenerNombreDiaSemana(localDate: LocalDate): String {
+        val dayOfWeek = localDate.dayOfWeek
+        return dayOfWeek.getDisplayName(TextStyle.FULL, Locale("es"))
     }
-
-
 }

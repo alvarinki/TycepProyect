@@ -44,7 +44,7 @@ class InicioSesion : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //Línea para adelantar mientras arreglo carga de datos
-        //findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+        findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         binding.btnSignIn.setOnClickListener{

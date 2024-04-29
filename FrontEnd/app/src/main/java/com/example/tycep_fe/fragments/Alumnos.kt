@@ -54,7 +54,6 @@ class Alumnos : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//      Aquí puedes agregar la lógica para manejar el botón de "volver"
 //        val listaAlumnos = setOf(
 //            Alumno(
 //                id = 1,

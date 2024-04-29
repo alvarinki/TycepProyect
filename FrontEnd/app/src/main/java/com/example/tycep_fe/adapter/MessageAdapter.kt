@@ -5,10 +5,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tycep_fe.R
+import com.example.tycep_fe.activities.MainActivity
 import com.example.tycep_fe.databinding.MessageItemBinding
 import com.example.tycep_fe.models.Mensaje
+import com.example.tycep_fe.viewModels.UserViewModel
 
 class MessageAdapter(private val messages:MutableSet<Mensaje>, private val nombreUsuario:String): RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
@@ -23,6 +26,7 @@ class MessageAdapter(private val messages:MutableSet<Mensaje>, private val nombr
         holder.render(message)
         val tvUser = holder.itemView.findViewById<TextView>(R.id.tvUser)
         val tvMessage = holder.itemView.findViewById<TextView>(R.id.tvmessage)
+
 
         val layoutParamsUser = tvUser.layoutParams as ConstraintLayout.LayoutParams
         val layoutParamsMessage = tvMessage.layoutParams as ConstraintLayout.LayoutParams

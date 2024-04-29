@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_homeFragment_to_horario"
             app:destination="@id/horario" />
+        <action
+            android:id="@+id/action_homeFragment_to_pselectHorario"
+            app:destination="@id/pselectHorario" />
     </fragment>
     <fragment
         android:id="@+id/chat"
@@ -72,4 +75,17 @@
         android:name="com.example.tycep_fe.fragments.AlFaltas"
         android:label="fragment_faltas"
         tools:layout="@layout/fragment_faltas" />
+    <fragment
+        android:id="@+id/pselectHorario"
+        android:name="com.example.tycep_fe.fragments.PselectHorario"
+        android:label="PselectHorario" >
+        <action
+            android:id="@+id/action_pselectHorario_to_PFaltas"
+            app:destination="@id/PFaltas" />
+    </fragment>
+    <fragment
+        android:id="@+id/PFaltas"
+        android:name="com.example.tycep_fe.fragments.PFaltas"
+        android:label="fragment_p_faltas"
+        tools:layout="@layout/fragment_p_faltas" />
 </navigation>
