@@ -22,5 +22,5 @@ data class TutorLegal(
     @SerializedName("domicilio")
     val domicilio:String,
     @SerializedName("alumnos")
-    val alumnos:Set<Alumno>?
+    var alumnos:Set<Alumno>?
 )

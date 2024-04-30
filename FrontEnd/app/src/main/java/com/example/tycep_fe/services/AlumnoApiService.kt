@@ -18,7 +18,7 @@ interface AlumnoApiService{
     @POST("alumno/getAlumno")
     suspend fun getAlumnoById(@Body idAlumno:Int, @Header(value="token") token:String): Response<Alumno>
 
-}
+ }
 
 object AlumnoApi{
     val retrofitService: AlumnoApiService by lazy { retrofit.create(AlumnoApiService::class.java) }

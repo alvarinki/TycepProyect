@@ -29,4 +29,21 @@
     <string name="menu_exit">Cerrar sesión</string>
     <string name="studentName_example">Maria Julieta Jiménez-Colubi del Castillo de Osvaldo</string>
     <string name="studentExample">María del mar Lopez Cañizares Segovia García Fernández López</string>
+    <string name="sendButton_abscenses">Enviar</string>
+    <string name="user_save">Guardado de usuario</string>
+    <string name="themes">Temas</string>
+    <string name="letter_size">Tamaño de letra</string>
+    <string-array name="themes_array">
+        <item>Oscuro</item>
+        <item>Claro</item>
+    </string-array>
+    <string-array name="font_sizes_array">
+        <item>Pequeña</item>
+        <item>Mediana</item>
+        <item>Grande</item>
+    </string-array>
+    <string-array name="user_save_array">
+        <item>Recordar usuario</item>
+        <item>No recordar usuario</item>
+    </string-array>
 </resources>

@@ -14,28 +14,12 @@ import com.example.tycep_fe.models.Curso
 import com.example.tycep_fe.models.Dia
 import com.example.tycep_fe.models.Horario
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [horario.newInstance] factory method to
- * create an instance of this fragment.
- */
 class horario : Fragment() {
     private lateinit var _binding: FragmentHorarioBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-
-
-
-
     }
 
     override fun onCreateView(
@@ -73,9 +57,11 @@ class horario : Fragment() {
             alumnos = emptySet(),
             horario = horarios
         )
-        cargarHorariosDeCurso(curso5.horario.filter { h -> h.idProfesor== 1 }.toSet())
+        cargarHorarios(curso5.horario.filter { h -> h.idProfesor== 1 }.toSet())
+
+
     }
-    private fun cargarHorariosDeCurso(horarios: Set<Horario>) {
+    private fun cargarHorarios(horarios: Set<Horario>) {
         val tableLayout = _binding.tableLayout
         // Iterar sobre los horarios
         for (horario in horarios) {
@@ -96,9 +82,16 @@ class horario : Fragment() {
             }
             // Establecer el nombre de la asignatura en el TextView
             textView?.text = asignatura + "\n" + horario.aula
+
         }
     }
 
-
+    private fun cargarHorarioProfesor(idProfesor: Int, cursosProfesor:Set<Curso>):Set<Horario>{
+        var horarios: MutableList<Horario> = emptyList<Horario>().toMutableList()
+        for(cursos in cursosProfesor){
+            horarios.addAll(cursos.horario.filter { h -> h.idProfesor==idProfesor })
+        }
+        return horarios.toSet()
+    }
 
 }

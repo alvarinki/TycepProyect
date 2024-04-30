@@ -28,8 +28,8 @@ public class FaltaController {
         else return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/forAlumno")
-    public ResponseEntity<?> putFaltasToAlumno(@RequestBody List<Falta> faltas,  @RequestHeader String token) {
+    @PostMapping("/forAlumnos")
+    public ResponseEntity<?> putFaltasToAlumnos(@RequestBody List<Falta> faltas,  @RequestHeader String token) {
         jwtUtil.validate(token);
         if(faltaService.saveFaltas(faltas)!=null) return ResponseEntity.ok(faltas);
         else return ResponseEntity.notFound().build();

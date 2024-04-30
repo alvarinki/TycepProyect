@@ -6,8 +6,7 @@ import com.example.proyecto.services.TutorService;
 import com.example.proyecto.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +21,9 @@ public class TutorController {
     @Autowired
     TutorService tutorService;
 
-    public ResponseEntity<Set<Alumno>> getAlumnosFromTutorLegal(int idTutor){
+    @PostMapping("/getAlumnos")
+    public ResponseEntity<Set<Alumno>> getAlumnosFromTutorLegal(@RequestBody int idTutor, @RequestHeader String token){
+        jwtUtil.validate(token);
         TutorLegal tutorLegal= tutorService.findTutorLegalByUsuario_Id(idTutor);
         if(tutorLegal != null){
             Set<Alumno> alumnos = tutorLegal.getAlumnos();

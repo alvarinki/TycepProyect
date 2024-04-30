@@ -17,6 +17,7 @@ import com.example.tycep_fe.models.Profesor
 import com.example.tycep_fe.models.TutorLegal
 import com.example.tycep_fe.models.Usuario
 import com.example.tycep_fe.repositories.ProfesorRepository
+import com.example.tycep_fe.repositories.TutorRepository
 import com.example.tycep_fe.repositories.UserRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -28,13 +29,14 @@ class UserViewModel(): ViewModel() {
     //Repositorios
     private val userRepo= UserRepository()
     private val profesorRepo= ProfesorRepository()
+    private val tutorRepo= TutorRepository()
 
     //Token
     val token= MutableLiveData<String>()
 
     //Usuarios
     val admin= MutableLiveData<Usuario>()
-    val _tutorLegal= MutableLiveData<TutorLegal>()
+    var _tutorLegal= MutableLiveData<TutorLegal>()
     var _profesor= MutableLiveData<Profesor>()
     val profesor: LiveData<Profesor>
         get() = _profesor
@@ -106,6 +108,18 @@ class UserViewModel(): ViewModel() {
         }
 
     }
+
+    fun getTutorsAlumnos(idTutor: Int, token: String){
+        viewModelScope.launch {
+            val response= tutorRepo.getTutorsAlumnos(idTutor, token)
+            if(response.isSuccessful){
+                val tutorsalumnos= response.body()
+                _tutorLegal.postValue(_tutorLegal.value.apply { this?.alumnos = tutorsalumnos })
+            }
+        }
+    }
+
+
 }
 
 //    fun userLogin(loginRequestDto: LoginRequestDto):String{

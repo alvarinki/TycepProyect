@@ -64,6 +64,9 @@
         <action
             android:id="@+id/action_showStudent_to_faltas"
             app:destination="@id/faltas" />
+        <action
+            android:id="@+id/action_showStudent_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/horario"
@@ -87,5 +90,9 @@
         android:id="@+id/PFaltas"
         android:name="com.example.tycep_fe.fragments.PFaltas"
         android:label="fragment_p_faltas"
-        tools:layout="@layout/fragment_p_faltas" />
+        tools:layout="@layout/fragment_p_faltas" >
+        <action
+            android:id="@+id/action_PFaltas_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

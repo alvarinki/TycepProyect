@@ -23,10 +23,12 @@ import com.example.tycep_fe.databinding.FragmentHomeBinding
 import com.example.tycep_fe.databinding.NavHeaderPrincipalBinding
 import com.example.tycep_fe.models.Chat
 import com.example.tycep_fe.models.Mensaje
+import com.example.tycep_fe.viewModels.AlumnoViewModel
 import com.example.tycep_fe.viewModels.UserViewModel
 
 class HomeFragment : Fragment() {
     private lateinit var userViewModel: ViewModel
+    private lateinit var alumnoViewModel: ViewModel
     private var _binding: FragmentHomeBinding? = null
     private lateinit var navHeaderBinding: NavHeaderPrincipalBinding
     private lateinit var menuItemChange:MenuItem
@@ -72,6 +74,7 @@ class HomeFragment : Fragment() {
         //findNavController().navigate(R.id.action_homeFragment_to_chat)
         findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+        alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
         (userViewModel as UserViewModel).token.observe(viewLifecycleOwner){ token -> prefs.saveToken(token) }
         val mensajesChat1 = setOf(
             Mensaje(1, 1, "Hola", "2024-04-23", "Usuario1"),
@@ -142,6 +145,8 @@ class HomeFragment : Fragment() {
                         true
                     }
                     R.id.nav_schedule->{
+                        (alumnoViewModel as AlumnoViewModel)._alumno.postValue(null)
+                        findNavController().navigate(R.id.action_homeFragment_to_horario)
                         true
                     }
                     R.id.nav_absences->{
@@ -176,9 +181,12 @@ class HomeFragment : Fragment() {
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 when(menuItem.itemId){
                     R.id.nav_studentdata_or_course->{
+                        //(userViewModel as UserViewModel)
+                        findNavController().navigate(R.id.action_homeFragment_to_recyclerAlumnos)
                         true
                     }
                     R.id.nav_schedule->{
+
                         true
                     }
                     R.id.nav_absences->{
