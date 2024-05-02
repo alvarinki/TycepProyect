@@ -70,6 +70,7 @@ class showStudent : Fragment() {
                 }
                 (userViewModel as UserViewModel)._tutorLegal.observe(viewLifecycleOwner){tutor ->
                     if(tutor.alumnos?.size!! ==1){
+
                         findNavController().navigate(R.id.action_showStudent_to_homeFragment)
                     }
 
@@ -82,8 +83,8 @@ class showStudent : Fragment() {
             val token:String= prefs.getToken().toString()
             (alumnoViewModel as AlumnoViewModel).getFaltasFromAlumno(token)
             (alumnoViewModel as AlumnoViewModel)._alumno.observe(requireActivity()){ alumno ->
-                alumno.faltas.let {
-                    findNavController().navigate(R.id.action_showStudent_to_faltas)
+                alumno.let {
+                    findNavController().navigate(R.id.faltasAlumno)
                 }
             }
         }

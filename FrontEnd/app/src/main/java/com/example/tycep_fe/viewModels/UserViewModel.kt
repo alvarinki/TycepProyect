@@ -59,19 +59,17 @@ class UserViewModel(): ViewModel() {
                 val user= response.body()?.userData
 
                 val profe:Profesor= Gson().fromJson(Gson().toJson(user), Profesor::class.java)
-                println("Profesor casteado: $profe")
+
                 _profesor.postValue(profe)
 
                 }
                 else if(response.body()?.userType== "Tutor Legal"){
                     val user= response.body()?.userData
-                    println(user).toString()
-                    println(Gson().toJson(user))
+
                     val tutor: TutorLegal=  Gson().fromJson(Gson().toJson(user), TutorLegal::class.java)
                     _tutorLegal.postValue(tutor)
                 }
                 else typeUser="Admin"
-                println("Token en typeUser: "+response.body()?.token.toString())
                 token.postValue(response.body()?.token.toString())
 
             }
@@ -92,7 +90,7 @@ class UserViewModel(): ViewModel() {
             val response=profesorRepo.getCursosFromProfesor(idProfesor!!)
             if(response.isSuccessful){
                 val cursos= response.body()
-                println(cursos)
+
                 _profesor.postValue(_profesor.value.apply { this?.cursos=cursos })
             }
         }

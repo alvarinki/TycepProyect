@@ -26,7 +26,7 @@ class ChatAdapter(private val chats:Set<Chat>, private val context: Context) :  
         val chat= chats.toList()[position]
         holder.render(chat)
         holder.itemView.setOnClickListener{
-            println(holder.itemView.context)
+
             prefs= Prefs(context)
             prefs.saveData(chat.id.toString())
             holder.itemView.findNavController().navigate(R.id.action_homeFragment_to_chat)

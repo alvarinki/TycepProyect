@@ -26,7 +26,7 @@ class CoursesAdapter (private val courses: Set<Curso>, private val context: Cont
         holder.render(course)
 
         holder.itemView.setOnClickListener{
-            println(holder.itemView.context)
+
             TokenUsuarioApplication.prefs = Prefs(context)
             TokenUsuarioApplication.prefs.saveData(course.id.toString())
             holder.itemView.findNavController().navigate(R.id.action_cursos_to_recyclerAlumnos)

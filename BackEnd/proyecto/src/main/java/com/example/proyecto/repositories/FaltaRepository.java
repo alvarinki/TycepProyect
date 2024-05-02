@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface FaltaRepository extends JpaRepository<Falta, Integer> {
 
-    Set<Falta> findFaltasByIdAlumno_Id(int alumnoId);
+    Set<Falta> findFaltasByIdAlumno(int alumnoId);
 
     Falta findFaltaById(int id);
 }

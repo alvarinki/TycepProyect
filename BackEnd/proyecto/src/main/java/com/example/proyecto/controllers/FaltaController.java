@@ -31,6 +31,7 @@ public class FaltaController {
     @PostMapping("/forAlumnos")
     public ResponseEntity<?> putFaltasToAlumnos(@RequestBody List<Falta> faltas,  @RequestHeader String token) {
         jwtUtil.validate(token);
+        System.out.println(faltas.toString());
         if(faltaService.saveFaltas(faltas)!=null) return ResponseEntity.ok(faltas);
         else return ResponseEntity.notFound().build();
     }

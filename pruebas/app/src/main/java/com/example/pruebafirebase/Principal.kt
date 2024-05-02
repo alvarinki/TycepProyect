@@ -1,15 +1,14 @@
-
-package com.example.tycep_fe.fragments
+package com.example.pruebafirebase
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.tycep_fe.R
 
-class AlFaltas : Fragment() {
+class Principal : Fragment() {
 
+    private val realtime= RealtimeManager(requireContext())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +19,9 @@ class AlFaltas : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_faltas, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_principal, container, false)
     }
+
+
 }

@@ -62,22 +62,18 @@
         android:name="com.example.tycep_fe.fragments.showStudent"
         android:label="showStudent" >
         <action
-            android:id="@+id/action_showStudent_to_faltas"
-            app:destination="@id/faltas" />
-        <action
             android:id="@+id/action_showStudent_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_showStudent_to_faltasAlumno"
+            app:destination="@id/faltasAlumno" />
     </fragment>
     <fragment
         android:id="@+id/horario"
         android:name="com.example.tycep_fe.fragments.horario"
         android:label="fragment_horario"
         tools:layout="@layout/fragment_horario" />
-    <fragment
-        android:id="@+id/faltas"
-        android:name="com.example.tycep_fe.fragments.AlFaltas"
-        android:label="fragment_faltas"
-        tools:layout="@layout/fragment_faltas" />
+
     <fragment
         android:id="@+id/pselectHorario"
         android:name="com.example.tycep_fe.fragments.PselectHorario"
@@ -95,4 +91,9 @@
             android:id="@+id/action_PFaltas_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/faltasAlumno"
+        android:name="com.example.tycep_fe.fragments.FaltasAlumno"
+        android:label="fragment_faltas_alumno"
+        tools:layout="@layout/fragment_faltas_alumno" />
 </navigation>

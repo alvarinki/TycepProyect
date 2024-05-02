@@ -51,7 +51,7 @@ class PFaltas : Fragment() {
                 nombre = "Juan",
                 apellidos = "Pérez",
                 foto = "https://www.lucaedu.com/wp-content/uploads/2022/02/alumnos-motivados.jpg",
-                idCurso = 101,
+                idCurso = 1,
                 faltas = null
             ),
             Alumno(
@@ -59,7 +59,7 @@ class PFaltas : Fragment() {
                 nombre = "María",
                 apellidos = "González",
                 foto="https://www.lucaedu.com/wp-content/uploads/2022/02/alumnos-motivados.jpg",
-                idCurso = 101,
+                idCurso = 1,
                 faltas = null
             ),
             Alumno(
@@ -67,7 +67,7 @@ class PFaltas : Fragment() {
                 nombre = "Pedro",
                 apellidos = "López",
                 foto="https://www.lucaedu.com/wp-content/uploads/2022/02/alumnos-motivados.jpg",
-                idCurso = 102,
+                idCurso = 1,
                 faltas = null
             ),
             Alumno(
@@ -75,7 +75,7 @@ class PFaltas : Fragment() {
                 nombre = "Ana",
                 apellidos = "Martínez",
                 foto = "https://www.lucaedu.com/wp-content/uploads/2022/02/alumnos-motivados.jpg",
-                idCurso = 102,
+                idCurso = 1,
                 faltas = null
             ),
             Alumno(
@@ -83,7 +83,7 @@ class PFaltas : Fragment() {
                 nombre = "Luis Elustondo",
                 apellidos = "Sánchez Segovia",
                 foto = "https://www.lucaedu.com/wp-content/uploads/2022/02/alumnos-motivados.jpg",
-                idCurso = 103,
+                idCurso = 1,
                 faltas = null
             )
         )
@@ -98,6 +98,7 @@ class PFaltas : Fragment() {
             val faltas:List<Falta> = generateAbscenses(adapter.getFaltas())
             var alumnoViewModel= ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
             val token:String= prefs.getToken().toString()
+            println(faltas)
             alumnoViewModel.putFaltas(faltas, token)
 
 
@@ -117,7 +118,7 @@ class PFaltas : Fragment() {
             val booleano = justificacion=="J"
 
             val idAlumno= chuleta.substring(1).toInt()
-
+            println("IdAlumno: $idAlumno")
             val falta=Falta(null, hora, fecha, idAlumno, booleano)
             println(falta)
             faltasDefinitivas.add(falta)

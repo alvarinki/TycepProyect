@@ -2,15 +2,13 @@ package com.example.proyecto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -30,9 +28,7 @@ public class Falta {
     @Column(name = "justificada")
     private boolean justificada;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_alumno")
-    @JsonIgnore
-    private Alumno idAlumno;
+    @Column(name = "id_Alumno")
+    private int idAlumno;
 
 }

@@ -18,7 +18,7 @@ public class FaltaServiceImpl implements FaltaService {
 
     @Override
     public Set<Falta> findFaltasByIdAlumno(int alumnoId) {
-        return faltaRepo.findFaltasByIdAlumno_Id(alumnoId);
+        return faltaRepo.findFaltasByIdAlumno(alumnoId);
     }
 
     @Override

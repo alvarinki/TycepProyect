@@ -33,7 +33,7 @@ class Cursos : Fragment() {
 //      CÓDIGO COMENTADO PARA FUNCIONAR SIN CONE, DESCOMENTAR PARA QUE FUNCIONE CON ELLA
         userViewModel._profesor.observe(viewLifecycleOwner) { profesor ->
             profesor.cursos?.let {
-                println("Cursos a última hora "+profesor.cursos)
+
                 initReciclerView(profesor.cursos!!)
             }
         }

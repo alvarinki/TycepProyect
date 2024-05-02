@@ -27,7 +27,7 @@ class PAlumnosAdapter (private val alumnos:Set<Alumno>, private val context: Con
         holder.render(alumno)
 
         holder.itemView.setOnClickListener{
-            println(holder.itemView.context)
+
             TokenUsuarioApplication.prefs = Prefs(context)
             TokenUsuarioApplication.prefs.saveData(alumno.id.toString())
             holder.itemView.findNavController().navigate(R.id.action_recyclerAlumnos_to_showStudent)

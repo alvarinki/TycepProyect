@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //Línea para pruebas
         //findNavController().navigate(R.id.action_homeFragment_to_chat)
-        findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
+        //findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
         (userViewModel as UserViewModel).token.observe(viewLifecycleOwner){ token -> prefs.saveToken(token) }
@@ -93,34 +93,34 @@ class HomeFragment : Fragment() {
             Mensaje(6, 3, "¿Cómo va todo?", "2024-04-21", "Usuario6")
         )
         //Código momentáneo para pasar entre fragments
-        binding.navView.setNavigationItemSelectedListener { menuItem ->
-            when(menuItem.itemId){
-                R.id.nav_studentdata_or_course->{
-
-                    findNavController().navigate(R.id.action_homeFragment_to_cursos)
-                    true
-                }
-                R.id.nav_schedule->{
-                    findNavController().navigate(R.id.action_homeFragment_to_horario)
-                    true
-                }
-                R.id.nav_absences->{
-                    findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
-                    true
-                }
-                R.id.nav_configuration->{
-                    true
-                }
-                R.id.nav_exit ->{
-                    prefs = Prefs(requireContext())
-                    prefs.clearToken()
-                    finishAffinity(this.requireActivity())
-                    true
-                }
-
-                else -> false
-            }
-        }
+//        binding.navView.setNavigationItemSelectedListener { menuItem ->
+//            when(menuItem.itemId){
+//                R.id.nav_studentdata_or_course->{
+//
+//                    findNavController().navigate(R.id.action_homeFragment_to_cursos)
+//                    true
+//                }
+//                R.id.nav_schedule->{
+//                    findNavController().navigate(R.id.action_homeFragment_to_horario)
+//                    true
+//                }
+//                R.id.nav_absences->{
+//                    findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
+//                    true
+//                }
+//                R.id.nav_configuration->{
+//                    true
+//                }
+//                R.id.nav_exit ->{
+//                    prefs = Prefs(requireContext())
+//                    prefs.clearToken()
+//                    finishAffinity(this.requireActivity())
+//                    true
+//                }
+//
+//                else -> false
+//            }
+//        }
         // Crear la lista de chats
         val chats = setOf(
             Chat(1, "Chat1", true, mensajesChat1),
@@ -135,7 +135,7 @@ class HomeFragment : Fragment() {
         menuItemChange= binding.navView.menu.findItem(R.id.nav_studentdata_or_course)
 
         (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
-            println("Llega: $profesor")
+
             menuItemChange.setTitle("Cursos")
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 when(menuItem.itemId){
@@ -168,7 +168,7 @@ class HomeFragment : Fragment() {
             }
             profesor?.let {
                 // El profesor está disponible, navega al nuevo Fragmento
-                println("Profesor en home: "+ profesor)
+
                 initReciclerView(profesor.chats!!)
             } ?: run {
                 // Manejar el caso en el que profesor es nulo
@@ -209,7 +209,7 @@ class HomeFragment : Fragment() {
 
             tutorLegal?.let {
                 // El profesor está disponible, navega al nuevo Fragmento
-                println("Tutor en home: "+ tutorLegal)
+
                 initReciclerView(tutorLegal.chats!!)
             } ?: run {
                 // Manejar el caso en el que profesor es nulo
