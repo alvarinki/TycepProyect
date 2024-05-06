@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvHora"
+        android:layout_width="45dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="4dp"
+        android:gravity="center"
+        android:text="Hora:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvFecha"
+        android:layout_width="99dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="4dp"
+        android:gravity="center"
+        android:text="Fecha:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/tvHora"
+        app:layout_constraintTop_toTopOf="@id/tvHora" />
+
+    <TextView
+        android:id="@+id/tvJustificacion"
+        android:layout_width="44dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="1dp"
+        android:gravity="center"
+        android:text="Justificada:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/ivEditar"
+        app:layout_constraintStart_toEndOf="@+id/tvAsignatura"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/tvAsignatura"
+        android:layout_width="99dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="1dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/tvJustificacion"
+        app:layout_constraintStart_toEndOf="@+id/tvFecha"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ivEditar"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toEndOf="@+id/tvJustificacion"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ivEliminar"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivEditar"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

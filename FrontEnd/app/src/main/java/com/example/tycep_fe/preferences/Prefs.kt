@@ -1,7 +1,6 @@
 package com.example.recyclerrecorridos.preferences
 
 import android.content.Context
-import com.example.tycep_fe.models.Horario
 
 class Prefs (val context: Context) {
 

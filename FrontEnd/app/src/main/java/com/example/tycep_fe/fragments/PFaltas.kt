@@ -96,7 +96,7 @@ class PFaltas : Fragment() {
         binding.floatingButton.setOnClickListener{
             prefs= Prefs(requireContext())
             val faltas:List<Falta> = generateAbscenses(adapter.getFaltas())
-            var alumnoViewModel= ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
+            val alumnoViewModel= ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
             val token:String= prefs.getToken().toString()
             println(faltas)
             alumnoViewModel.putFaltas(faltas, token)
