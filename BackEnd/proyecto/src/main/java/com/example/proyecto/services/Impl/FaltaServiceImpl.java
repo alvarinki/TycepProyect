@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class FaltaServiceImpl implements FaltaService {
@@ -18,7 +19,7 @@ public class FaltaServiceImpl implements FaltaService {
 
     @Override
     public Set<Falta> findFaltasByIdAlumno(int alumnoId) {
-        return faltaRepo.findFaltasByIdAlumno(alumnoId);
+        return new HashSet<>(faltaRepo.findFaltasByIdAlumno(alumnoId));
     }
 
     @Override

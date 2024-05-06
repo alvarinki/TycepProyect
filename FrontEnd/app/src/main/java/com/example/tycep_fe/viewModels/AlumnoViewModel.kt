@@ -43,5 +43,11 @@ class AlumnoViewModel: ViewModel() {
         }
     }
 
+    fun deleteFaltaFromAlumno(falta:Falta, token: String){
+        viewModelScope.launch {
+            faltasRepo.deleteFaltaFromAlumno(falta, token)
+        }
+    }
+
 
 }

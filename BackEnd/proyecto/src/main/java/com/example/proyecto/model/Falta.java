@@ -31,4 +31,6 @@ public class Falta {
     @Column(name = "id_Alumno")
     private int idAlumno;
 
+    @Column(name = "asignatura")
+    private String asignatura;
 }

@@ -112,6 +112,7 @@ class PFaltas : Fragment() {
         var faltasDefinitivas: MutableList<Falta> = emptyList<Falta>().toMutableList()
         val fecha:String= LocalDate.now().toString()
         val hora:Int= prefs.getData()!!.split(",")[1].toInt()
+        val asignatura:String= prefs.getData()!!.split(",")[2]
         for(chuleta in chuletaFaltas){
             val justificacion = chuleta.substring(0, 1)
 
@@ -119,7 +120,7 @@ class PFaltas : Fragment() {
 
             val idAlumno= chuleta.substring(1).toInt()
             println("IdAlumno: $idAlumno")
-            val falta=Falta(null, hora, fecha, idAlumno, booleano)
+            val falta=Falta(null, hora, fecha, asignatura, idAlumno, booleano)
             println(falta)
             faltasDefinitivas.add(falta)
         }

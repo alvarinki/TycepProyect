@@ -80,13 +80,15 @@ class showStudent : Fragment() {
             return@setOnKeyListener false // Devuelve false para indicar que no has manejado el evento
         }
         _binding?.btnToAbscenses?.setOnClickListener{
-            val token:String= prefs.getToken().toString()
-            (alumnoViewModel as AlumnoViewModel).getFaltasFromAlumno(token)
-            (alumnoViewModel as AlumnoViewModel)._alumno.observe(requireActivity()){ alumno ->
-                alumno.let {
-                    findNavController().navigate(R.id.faltasAlumno)
-                }
-            }
+
+            findNavController().navigate(R.id.faltasAlumno)
+//            val token:String= prefs.getToken().toString()
+//            (alumnoViewModel as AlumnoViewModel).getFaltasFromAlumno(token)
+//            (alumnoViewModel as AlumnoViewModel)._alumno.observe(requireActivity()){ alumno ->
+//                alumno.let {
+//                    findNavController().navigate(R.id.faltasAlumno)
+//                }
+//            }
         }
     }
 }

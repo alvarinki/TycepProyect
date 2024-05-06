@@ -39,6 +39,7 @@ public class FaltaController {
     @PostMapping("/deleteFromAlumno")
     public void deleteFaltaFromAlumno(@RequestBody Falta falta,  @RequestHeader String token) {
         jwtUtil.validate(token);
+        System.out.println(falta);
         faltaService.deleteFalta(falta);
     }
 

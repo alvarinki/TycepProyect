@@ -9,4 +9,6 @@ import retrofit2.http.Header
 class FaltaRepository {
     suspend fun getFaltasFromAlumno(idAlumno:Int, token:String): Response<Set<Falta>> = FaltaApi.retrofitService.getFaltasFromAlumno(idAlumno, token)
     suspend fun putFaltasForAlumnos(@Body faltas:List<Falta>, @Header(value="token") token: String)= FaltaApi.retrofitService.putFaltasForAlumnos(faltas, token)
+
+    suspend fun deleteFaltaFromAlumno(@Body falta: Falta, @Header(value = "token") token: String) = FaltaApi.retrofitService.deleteFaltaFromAlumno(falta, token)
 }

@@ -23,6 +23,9 @@ interface FaltaApiService{
 
     @POST("faltas/forAlumnos")
     suspend fun putFaltasForAlumnos(@Body faltas:List<Falta>, @Header(value="token") token: String)
+
+    @POST("faltas/deleteFromAlumno")
+    suspend fun deleteFaltaFromAlumno(@Body falta: Falta, @Header(value = "token") token: String)
 }
 
 object FaltaApi{
