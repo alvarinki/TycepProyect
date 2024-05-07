@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/faltas">
+    app:startDestination="@id/inicioAdmin">
 
 
     <fragment
@@ -11,4 +11,9 @@
         android:name="com.example.pruebapantallas.Faltas"
         android:label="fragment_faltas"
         tools:layout="@layout/fragment_faltas" />
+    <fragment
+        android:id="@+id/inicioAdmin"
+        android:name="com.example.pruebapantallas.InicioAdmin"
+        android:label="fragment_inicio_admin"
+        tools:layout="@layout/fragment_inicio_admin" />
 </navigation>

@@ -12,4 +12,6 @@ public interface UsuarioService {
     Optional<Usuario> findUsuarioByUsuario(String nombreUsuario);
 
     Usuario findUsuarioById(int id);
+
+
 }

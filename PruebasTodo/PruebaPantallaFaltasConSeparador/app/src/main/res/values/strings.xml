@@ -2,4 +2,7 @@
     <string name="app_name">PruebaPantallas</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="insert">Insertar datos</string>
+    <string name="delete">Eliminar datos de la bd</string>
+    <string name="generate">Crear cursos o grupos</string>
 </resources>

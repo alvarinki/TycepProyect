@@ -1,0 +1,2 @@
+Manuel;Fernández Martínez;34266613R;manolo@gmail.com;Geografía,Biología
+Paquito;González Martínez;78356428R;paco@gmail.com;Mates,Inglés

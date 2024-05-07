@@ -28,4 +28,14 @@ public class AlumnoServiceImpl implements AlumnoService {
         Optional<Alumno> alumno= alumnoRepo.findAlumnoById(id);
         return alumno.orElse(null);
     }
+
+    @Override
+    public Optional<Alumno> findAlumnoByNombre(String nombre) {
+        return alumnoRepo.findAlumnoByNombre(nombre);
+    }
+
+    @Override
+    public Optional<Alumno> findAlumnoByDni(String dni) {
+        return alumnoRepo.findAlumnoByDni(dni);
+    }
 }

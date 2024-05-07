@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- boton_custom.xml -->
+    <shape>
+        <corners android:radius="0dp" />
+        <solid android:color="@color/colorPrimaryDark" /> <!-- Cambia esto al color deseado -->
+        <padding
+            android:left="10dp"
+            android:top="10dp"
+            android:right="10dp"
+            android:bottom="10dp" />
+        <size
+            android:width="150dp"
+            android:height="150dp" />
+        <gradient
+            android:startColor="@color/colorPrimaryDark"
+            android:endColor="@color/colorPrimary"
+            android:angle="270" />
+    </shape>
+
+</selector>

@@ -13,4 +13,8 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Integer> {
     Set<Alumno> getAlumnosByIdCurso(int id);
 
     Optional<Alumno> findAlumnoById(int id);
+
+    Optional<Alumno> findAlumnoByNombre(String nombre);
+
+   Optional<Alumno> findAlumnoByDni(String dni);
 }

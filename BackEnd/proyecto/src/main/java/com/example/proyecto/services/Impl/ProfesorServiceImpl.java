@@ -1,6 +1,5 @@
 package com.example.proyecto.services.Impl;
 
-import com.example.proyecto.model.Alumno;
 import com.example.proyecto.model.Curso;
 import com.example.proyecto.model.Profesor;
 import com.example.proyecto.repositories.CursoRepository;
@@ -21,6 +20,7 @@ public class ProfesorServiceImpl implements ProfesorService {
     @Autowired
     CursoRepository cursoRepo;
 
+
     @Override
     public Profesor findProfesorByUsuario_Id(Integer userId) {
         return profesorRepo.findProfesorById(userId).orElse(null);
@@ -36,8 +36,4 @@ public class ProfesorServiceImpl implements ProfesorService {
         Optional<Profesor> profe= profesorRepo.findProfesorById(id);
         return profe.map(Profesor::getCursos).orElse(null);
     }
-
-
-
-
 }

@@ -1,16 +1,15 @@
 package com.example.proyecto.controllers;
 
+import com.example.proyecto.FileManagers.FileManager;
 import com.example.proyecto.dtos.*;
 import com.example.proyecto.model.Profesor;
 import com.example.proyecto.model.TutorLegal;
-import com.example.proyecto.model.TutorLegalAlumno;
 import com.example.proyecto.model.Usuario;
-import com.example.proyecto.services.Impl.TutorServiceImpl;
+import com.example.proyecto.services.AsignaturaService;
 import com.example.proyecto.services.ProfesorService;
 import com.example.proyecto.services.TutorService;
 import com.example.proyecto.services.UsuarioService;
 import com.example.proyecto.util.JWTUtil;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,7 +40,13 @@ public class UsuarioController {
     ProfesorService profesorService;
 
     @Autowired
+    AsignaturaService asignaturaService;
+
+    @Autowired
     JWTUtil jwtUtil;
+
+    @Autowired
+    private FileManager fileManager;
 
     @PostMapping("/register/tutor")
     public ResponseEntity<TutorLegal> tutorRegistration(@RequestBody TutorLegal tutor){
@@ -107,7 +114,43 @@ public class UsuarioController {
         }
         else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+    @PostMapping("/admin/registerProfesores")
+    public ResponseEntity<?> registerProfesores(@RequestBody String ruta){
+        try {
+            List<Profesor> profesores= fileManager.mapProfesores(ruta);
+            return ResponseEntity.ok(profesores);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().build();
+
+        }
+    }
+
+    @PostMapping("/admin/registerTutores")
+    public ResponseEntity<?> registerTutores(@RequestBody String ruta){
+        try {
+            List<TutorLegal> tutores= fileManager.mapTutores(ruta);
+            return ResponseEntity.ok(tutores);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().build();
+
+        }
+    }
+
+    @PostMapping("/admin/registerAdmins")
+    public ResponseEntity<?> registerAdmins(@RequestBody String ruta){
+        try {
+            List<Usuario> admins= fileManager.mapAdmins(ruta);
+            return ResponseEntity.ok(admins);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().build();
+
+        }
+    }
 }
+
+
 
 //    @PostMapping("/login")
 //    public ResponseEntity<LoginResponseDto> userLogin(@RequestBody LoginRequest loginRequest){

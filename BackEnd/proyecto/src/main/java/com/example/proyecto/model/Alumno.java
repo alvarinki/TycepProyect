@@ -36,6 +36,9 @@ public class Alumno {
     @Column(name = "id_curso")
     private Integer idCurso;
 
+    @Column(name = "dni")
+    private String dni;
+
     @OneToMany(mappedBy = "idAlumno")
     @JsonIgnore
     private Set<Falta> faltas = new LinkedHashSet<>();
