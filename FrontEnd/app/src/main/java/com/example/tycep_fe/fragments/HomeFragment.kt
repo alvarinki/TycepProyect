@@ -2,10 +2,15 @@ package com.example.tycep_fe.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,6 +30,8 @@ import com.example.tycep_fe.models.Chat
 import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.viewModels.AlumnoViewModel
 import com.example.tycep_fe.viewModels.UserViewModel
+import java.util.Timer
+import java.util.TimerTask
 
 class HomeFragment : Fragment() {
     private lateinit var userViewModel: ViewModel
@@ -33,6 +40,7 @@ class HomeFragment : Fragment() {
     private lateinit var navHeaderBinding: NavHeaderPrincipalBinding
     private lateinit var menuItemChange:MenuItem
     private lateinit var bundle: Bundle
+    private var backPressed =0
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -70,12 +78,18 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //Línea para pruebas
+        //Líneas para pruebas
         //findNavController().navigate(R.id.action_homeFragment_to_chat)
         //findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
-        (userViewModel as UserViewModel).token.observe(viewLifecycleOwner){ token -> prefs.saveToken(token) }
+        (userViewModel as UserViewModel).token.observe(viewLifecycleOwner){ token ->
+            prefs= Prefs(requireContext())
+            prefs.saveToken(token)
+        }
+
+
+
         val mensajesChat1 = setOf(
             Mensaje(1, 1, "Hola", "2024-04-23", "Usuario1"),
             Mensaje(2, 1, "¿Cómo estás?", "2024-04-23", "Usuario1"),
@@ -215,6 +229,35 @@ class HomeFragment : Fragment() {
                 // Manejar el caso en el que profesor es nulo
             }
         }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(backPressed==0){
+                    Toast.makeText(requireContext(), "Clique de nuevo para salir de la aplicación", Toast.LENGTH_SHORT).show()
+                    backPressed++
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        backPressed = 0
+                        println("Entra aqui")
+                    }, 2000)
+                }
+                else{
+                    finishAffinity(requireActivity())
+
+
+                    val timer = Timer()
+                    timer?.schedule(object : TimerTask() {
+                        override fun run() {
+                            backPressed = 0
+                            println("Entra aqui")
+                        }
+                    }, 2000.toLong())
+                }
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+
     }
     private fun initReciclerView(chats: Set<Chat>){
         val recyclerView= view?.findViewById<RecyclerView>(R.id.recyclerChats)

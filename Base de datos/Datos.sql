@@ -103,7 +103,7 @@ CREATE TABLE Profesor_Asignatura (
 );
 
 CREATE TABLE Curso_Asignatura (
-    id_curso IinstitucionasignaturaNT,
+    id_curso INT,
     id_asignatura INT,
     PRIMARY KEY (id_curso, id_asignatura),
     FOREIGN KEY (id_curso) REFERENCES Curso(id),
@@ -113,7 +113,7 @@ CREATE TABLE Curso_Asignatura (
 ALTER TABLE horario DROP COLUMN asignaturacursocurso;
 
 ALTER TABLE horario
-ADD COLUMN id_asignatura IhorariocursoNT,
+ADD COLUMN id_asignatura INT,
 ADD CONSTRAINT FK_Horario_Asignatura FOREIGN KEY (id_asignatura) REFERENCES Asignatura(id);
 
 
@@ -121,5 +121,9 @@ ALTER TABLE curso ADD COLUMN foto VARCHAR(255);
 
 ALTER TABLE horario ADD COLUMN aula INT;
 
-ALTER TABLE horario ADD COLUMN id_profesor INT , ADD CONSTRAINT FK_Horario_Profesor FOREIGN key horario (id_profesor) REFERENCES profesor(usuario_id);;
+ALTER TABLE horario ADD COLUMN id_profesor INT , ADD CONSTRAINT FK_Horario_Profesor FOREIGN key horario (id_profesor) REFERENCES profesor(usuario_id);
+
+alter table faltas add COLUMN asignatura varchar(70);
+
+alter table alumno add column dni varchar(9)
 

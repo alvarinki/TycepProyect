@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -99,6 +100,7 @@ class FaltasAlumno : Fragment() {private lateinit var binding:FragmentFaltasAlum
         recyclerView.layoutManager= LinearLayoutManager(view?.context)
         if(faltas.isNullOrEmpty()){
             //binding.tvNoFaltas.text="No hay faltas disponibles"
+            Toast.makeText(requireContext(), "No hay faltas disponibles", Toast.LENGTH_SHORT).show()
         }
         else {
             val faltasOrdenadas:LinkedHashSet<Falta>  = faltas.sortedWith(compareByDescending<Falta> { it.fecha }.thenBy { it.hora }).toSet() as LinkedHashSet<Falta>

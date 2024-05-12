@@ -103,7 +103,7 @@ class PFaltas : Fragment() {
 
 
             //Comentado para evitar bucle durante pruebas
-            //findNavController().navigate(R.id.action_PFaltas_to_homeFragment)
+            findNavController().navigate(R.id.action_PFaltas_to_homeFragment)
         }
     }
 
@@ -120,10 +120,11 @@ class PFaltas : Fragment() {
 
             val idAlumno= chuleta.substring(1).toInt()
             println("IdAlumno: $idAlumno")
-            val falta=Falta(null, hora, fecha, asignatura, idAlumno, booleano)
+            val falta=Falta(null, hora, asignatura, fecha, idAlumno, booleano)
             println(falta)
             faltasDefinitivas.add(falta)
         }
+
         return faltasDefinitivas
     }
 

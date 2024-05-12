@@ -93,19 +93,37 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> userLogin(@RequestBody LoginRequest loginRequest){
+
         PasswordEncoder passwordEncoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        Optional<Usuario> user= usuarioService.findUsuarioByUsuario(loginRequest.getUsername());
+        Optional<Usuario> user;
+
+        if(loginRequest.getToken().isEmpty()){
+            user= usuarioService.findUsuarioByUsuario(loginRequest.getUsername());
+            System.out.println("Pasa por aquí");
+            System.out.println(user);
+        }
+        else{
+            user= usuarioService.findUsuarioByUsuario(jwtUtil.getValue(loginRequest.getToken()));
+            System.out.println(jwtUtil.getValue(loginRequest.getToken()));
+        }
+
+
         if(user.isPresent()){
             String encriptedPassword= user.get().getContrasena();
-            if(encriptedPassword!=null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword)){
+            if((encriptedPassword!=null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword))||!loginRequest.getToken().isBlank()){
+                String token=loginRequest.getToken();
                 Usuario loggedUser= user.get();
-                String token= jwtUtil.create(loggedUser.getId().toString(), loggedUser.getUsuario());
+                if(loginRequest.getToken().isBlank()){
+                    token= jwtUtil.create(loggedUser.getId().toString(), loggedUser.getUsuario());
+                }
+
                 if(user.get().getDtype().toString().equals("T")){
                     TutorLegal tutorLegal= tutorService.findTutorLegalByUsuario_Id(loggedUser.getId());
                     return new ResponseEntity<>(new LoginResponseDto("Tutor Legal", tutorLegal, token), HttpStatus.OK);
                 }
                 else if(user.get().getDtype().toString().equals("P")){
                     Profesor profesor= profesorService.findProfesorByUsuario_Id(loggedUser.getId());
+                    System.out.println(profesor + "\n" + token);
                     return new ResponseEntity<>(new LoginResponseDto("Profesor", profesor, token) , HttpStatus.OK);
                 }
                 else return new ResponseEntity<>(new LoginResponseDto("Admin", loggedUser, token), HttpStatus.OK);
