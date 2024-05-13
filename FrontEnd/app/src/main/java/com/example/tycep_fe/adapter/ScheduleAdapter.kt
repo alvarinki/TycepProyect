@@ -38,7 +38,7 @@ class ScheduleAdapter(private val schedules: Set<Horario>, private val context: 
         holder.render(schedule)
         holder.itemView.setOnClickListener{
             prefs= Prefs(context)
-            prefs.saveData(schedule.id.toString()+","+schedule.hora.toString()+","+schedule.asignatura+","+schedule.idCurso)
+            prefs.saveData(schedule.id.toString()+","+schedule.hora.toString()+","+schedule.asignatura.nombre+","+schedule.idCurso)
             holder.itemView.findNavController().navigate(R.id.action_pselectHorario_to_PFaltas)
         }
     }

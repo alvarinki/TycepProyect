@@ -22,12 +22,26 @@ public class FaltaServiceImpl implements FaltaService {
     }
 
     @Override
-    public List<Falta> saveFaltas(List<Falta> faltas) {
-        return faltaRepo.saveAll(faltas);
+    public void saveFaltas(List<Falta> faltas) {
+        for (Falta falta : faltas) {
+            Falta f=faltaRepo.findFaltaByHoraAndIdAlumnoAndFecha(falta.getHora(), falta.getIdAlumno(), falta.getFecha());
+            if(f!=null){
+                falta.setId(f.getId());
+                faltaRepo.save(falta);
+            }
+            else {
+                faltaRepo.save(falta);
+            }
+        }
     }
 
     @Override
     public Falta updateFalta(Falta falta) {
+        return faltaRepo.save(falta);
+    }
+
+    @Override
+    public Falta saveFalta(Falta falta) {
         return faltaRepo.save(falta);
     }
 

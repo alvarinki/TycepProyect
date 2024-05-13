@@ -42,6 +42,8 @@ class InicioSesion : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val prefs= Prefs(requireContext())
+        //Linea para pruebas
+        //prefs.clearToken()
         println(prefs.getToken())
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         if(prefs.getToken()?.length!! >4){

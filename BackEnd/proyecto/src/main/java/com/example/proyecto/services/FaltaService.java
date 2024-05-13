@@ -9,9 +9,11 @@ import java.util.Set;
 public interface FaltaService {
     Set<Falta> findFaltasByIdAlumno(int alumnoId);
 
-    List<Falta> saveFaltas(List<Falta> faltas);
+    void saveFaltas(List<Falta> faltas);
 
     Falta updateFalta(Falta falta);
+
+    Falta saveFalta(Falta falta);
 
     void deleteFalta(Falta falta);
 
