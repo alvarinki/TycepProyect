@@ -11,6 +11,8 @@ data class Horario(
     val dia:Dia,
     @SerializedName("hora")
     val hora:Int,
+    @SerializedName("idCurso")
+    val idCurso: Int,
     @SerializedName("aula")
     val aula:Int,
     @SerializedName("id_profesor")

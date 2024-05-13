@@ -39,16 +39,16 @@ class horario : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val horarios = setOf(
-            Horario(id = 1, asignatura = Asignatura(id = 1, nombre = "Matemáticas"), dia = Dia.L, hora = 1, 222,1),
-            Horario(id = 2, asignatura = Asignatura(id = 2, nombre = "Física"), dia = Dia.M, hora = 2, 213, 1),
-            Horario(id = 3, asignatura = Asignatura(id = 3, nombre = "Química"), dia = Dia.X, hora = 3, 453, 1),
-            Horario(id = 4, asignatura = Asignatura(id = 4, nombre = "Historia"), dia = Dia.J, hora = 4, 126, 1),
-            Horario(id = 5, asignatura = Asignatura(id = 5, nombre = "Literatura"), dia = Dia.V, hora = 5, 98, 1),
-            Horario(id = 6, asignatura = Asignatura(id = 6, nombre = "Biología"), dia = Dia.L, hora = 6, 65, 1),
-            Horario(id = 7, asignatura = Asignatura(id = 7, nombre = "Geografía"), dia = Dia.M, hora = 1, 13, 2),
-            Horario(id = 8, asignatura = Asignatura(id = 8, nombre = "Inglés"), dia = Dia.X, hora = 2, 91, 3),
-            Horario(id = 9, asignatura = Asignatura(id = 9, nombre = "Educación Física"), dia = Dia.J, hora = 3, 310, 4),
-            Horario(id = 10, asignatura = Asignatura(id = 10, nombre = "Arte"), dia = Dia.V, hora = 4, 322, 5)
+            Horario(id = 1, asignatura = Asignatura(id = 1, nombre = "Matemáticas"), dia = Dia.L, hora = 1, 1,1, 4),
+            Horario(id = 2, asignatura = Asignatura(id = 2, nombre = "Física"), dia = Dia.M, hora = 2, 1, 1, 4),
+            Horario(id = 3, asignatura = Asignatura(id = 3, nombre = "Química"), dia = Dia.X, hora = 3, 1, 1, 4),
+            Horario(id = 4, asignatura = Asignatura(id = 4, nombre = "Historia"), dia = Dia.J, hora = 4, 1, 1, 4),
+            Horario(id = 5, asignatura = Asignatura(id = 5, nombre = "Literatura"), dia = Dia.V, hora = 5, 1, 1, 4),
+            Horario(id = 6, asignatura = Asignatura(id = 6, nombre = "Biología"), dia = Dia.L, hora = 6, 1, 1, 4),
+            Horario(id = 7, asignatura = Asignatura(id = 7, nombre = "Geografía"), dia = Dia.M, hora = 1, 1, 2, 4),
+            Horario(id = 8, asignatura = Asignatura(id = 8, nombre = "Inglés"), dia = Dia.X, hora = 2, 1, 3, 4),
+            Horario(id = 9, asignatura = Asignatura(id = 9, nombre = "Educación Física"), dia = Dia.J, hora = 3, 1, 4, 4),
+            Horario(id = 10, asignatura = Asignatura(id = 10, nombre = "Arte"), dia = Dia.V, hora = 4, 1, 5, 4)
         )
 
         val curso5 = Curso(

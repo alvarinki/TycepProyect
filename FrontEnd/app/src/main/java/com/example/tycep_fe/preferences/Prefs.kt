@@ -20,7 +20,6 @@ class Prefs (val context: Context) {
 
     fun getToken(): String? {
         return storage.getString(SHARED_TOKEN, "")
-
     }
 
     fun saveData(data: String){

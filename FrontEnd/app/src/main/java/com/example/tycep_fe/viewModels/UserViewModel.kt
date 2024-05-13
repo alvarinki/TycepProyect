@@ -12,6 +12,8 @@ import com.example.tycep_fe.Dtos.LoginResponseDto
 import com.example.tycep_fe.activities.MainActivity
 import com.example.tycep_fe.models.Alumno
 import com.example.tycep_fe.models.Curso
+import com.example.tycep_fe.models.Dia
+import com.example.tycep_fe.models.Horario
 import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.models.Profesor
 import com.example.tycep_fe.models.TutorLegal
@@ -22,6 +24,10 @@ import com.example.tycep_fe.repositories.UserRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.TextStyle
+import java.util.Locale
 import java.util.logging.Handler
 
 class UserViewModel(): ViewModel() {
@@ -31,6 +37,7 @@ class UserViewModel(): ViewModel() {
     private val profesorRepo= ProfesorRepository()
     private val tutorRepo= TutorRepository()
 
+
     //Token
     val token= MutableLiveData<String>()
 
@@ -38,6 +45,7 @@ class UserViewModel(): ViewModel() {
     val admin= MutableLiveData<Usuario>()
     var _tutorLegal= MutableLiveData<TutorLegal>()
     var _profesor= MutableLiveData<Profesor>()
+    var _horarios= MutableLiveData<Set<Horario>>()
     val profesor: LiveData<Profesor>
         get() = _profesor
 
@@ -117,7 +125,26 @@ class UserViewModel(): ViewModel() {
         }
     }
 
+    fun getHorariosForFaltas(idProfesor:Int){
+        viewModelScope.launch {
+            val response= profesorRepo.getHorariosForFaltas(idProfesor, obtenerNombreDiaSemana()!!)
+            if(response.isSuccessful){
+                _horarios.postValue(response.body()!!)
+            }
+        }
+    }
 
+    private fun obtenerNombreDiaSemana(): Dia? {
+        val dayOfWeek = LocalDate.now().dayOfWeek
+        return when(dayOfWeek) {
+            java.time.DayOfWeek.MONDAY -> Dia.L
+            java.time.DayOfWeek.TUESDAY -> Dia.M
+            java.time.DayOfWeek.WEDNESDAY -> Dia.X
+            java.time.DayOfWeek.THURSDAY -> Dia.J
+            java.time.DayOfWeek.FRIDAY -> Dia.V
+            else -> null
+        }
+    }
 }
 
 //    fun userLogin(loginRequestDto: LoginRequestDto):String{

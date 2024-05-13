@@ -146,7 +146,7 @@ public class FileManager {
             else if(userType.equalsIgnoreCase("Admin")){
                 tipoUser += "admins";
             }
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(directorio + tipoUser +LocalTime.now().getHour()+LocalTime.now().getMinute() +".csv", true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(directorio + tipoUser +LocalTime.now().getHour()+LocalTime.now().getMinute()+LocalTime.now().getSecond() +".csv", true))) {
                 // Escribimos cada objeto AdminsUserData en una línea del archivo CSV
                 for (AdminsUserData userData : adminsUserData) {
                     writer.write(userData.getUsername() + ";" + userData.getPassword());

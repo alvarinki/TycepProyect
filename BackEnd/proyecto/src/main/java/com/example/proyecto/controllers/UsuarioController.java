@@ -123,7 +123,6 @@ public class UsuarioController {
                 }
                 else if(user.get().getDtype().toString().equals("P")){
                     Profesor profesor= profesorService.findProfesorByUsuario_Id(loggedUser.getId());
-                    System.out.println(profesor + "\n" + token);
                     return new ResponseEntity<>(new LoginResponseDto("Profesor", profesor, token) , HttpStatus.OK);
                 }
                 else return new ResponseEntity<>(new LoginResponseDto("Admin", loggedUser, token), HttpStatus.OK);
