@@ -70,7 +70,6 @@ class showStudent : Fragment() {
                 }
                 (userViewModel as UserViewModel)._tutorLegal.observe(viewLifecycleOwner){tutor ->
                     if(tutor.alumnos?.size!! ==1){
-
                         findNavController().navigate(R.id.action_showStudent_to_homeFragment)
                     }
 
