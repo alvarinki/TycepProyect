@@ -48,12 +48,13 @@ class PselectHorario : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         (userViewModel as UserViewModel)._horarios.observe(requireActivity()){horarios ->
+
             val recyclerView= view.findViewById<RecyclerView>(R.id.recyclerHorarios)
             recyclerView?.layoutManager= LinearLayoutManager(this.context)
             val adapter= ScheduleAdapter(horarios, requireContext())
-            recyclerView?.adapter= adapter
+            recyclerView?.adapter= adapter}
+
         }
 //        val horarios = setOf(
 //            Horario(
@@ -107,4 +108,4 @@ class PselectHorario : Fragment() {
 //        val adapter= ScheduleAdapter(horarios, requireContext())
 //        recyclerView?.adapter= adapter
     }
-}
+

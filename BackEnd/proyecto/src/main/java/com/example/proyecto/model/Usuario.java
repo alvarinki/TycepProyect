@@ -25,7 +25,6 @@ public class Usuario {
     private String usuario;
 
     @Column(name = "contrasena")
-    @JsonIgnore
     private String contrasena;
 
     @Column(name = "nombre")

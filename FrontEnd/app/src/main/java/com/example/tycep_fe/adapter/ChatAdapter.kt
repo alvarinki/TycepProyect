@@ -41,7 +41,7 @@ class ChatAdapter(private val chats:Set<Chat>, private val context: Context) :  
     inner class ViewHolder(private val binding: ChatItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun render(chat: Chat){
             binding.tvChatName.text=chat.nombreChat.toString()
-            binding.tvLastMessage.text= chat.mensajes.toList()[chat.mensajes.size-1].contenido
+            //binding.tvLastMessage.text= chat.mensajes.toList()[chat.mensajes.size-1].contenido
         }
     }
 }

@@ -53,6 +53,7 @@ public class UsuarioController {
         if(tutor!=null){
             if(tutor.getDtype().toString().equals("T")) {
                 PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+                System.out.println(tutor.getContrasena());
                 tutor.setContrasena(passwordEncoder.encode(tutor.getContrasena()));
                 TutorLegal tutorLegal = tutorService.saveTutor(tutor);
                 return new ResponseEntity<>(tutorLegal, HttpStatus.OK);

@@ -127,6 +127,8 @@ class UserViewModel(): ViewModel() {
 
     fun getHorariosForFaltas(idProfesor:Int){
         viewModelScope.launch {
+            println(idProfesor)
+            println(obtenerNombreDiaSemana())
             val response= profesorRepo.getHorariosForFaltas(idProfesor, obtenerNombreDiaSemana()!!)
             if(response.isSuccessful){
                 _horarios.postValue(response.body()!!)
@@ -142,7 +144,9 @@ class UserViewModel(): ViewModel() {
             java.time.DayOfWeek.WEDNESDAY -> Dia.X
             java.time.DayOfWeek.THURSDAY -> Dia.J
             java.time.DayOfWeek.FRIDAY -> Dia.V
-            else -> null
+            //else -> null
+            //Para pruebas
+            else -> Dia.L
         }
     }
 }

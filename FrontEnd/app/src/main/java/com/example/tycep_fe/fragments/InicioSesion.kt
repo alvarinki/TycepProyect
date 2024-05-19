@@ -47,7 +47,6 @@ class InicioSesion : Fragment() {
         println(prefs.getToken())
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         if(prefs.getToken()?.length!! >4){
-
             val loginRequestDto= LoginRequestDto("", "", prefs.getToken().toString())
 //
             (userViewModel as UserViewModel).userLogin(loginRequestDto)
@@ -78,17 +77,18 @@ class InicioSesion : Fragment() {
             prefs= Prefs(requireContext())
             //prefs.clearToken()
             //prefs.saveToken(token)
-            (userViewModel as UserViewModel)._profesor.observe(requireActivity()){
-
-                findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
-                Toast.makeText(requireContext(), "AVISO: Se mantendrá su sesión iniciada hasta que la cierre", Toast.LENGTH_SHORT).show()
-            }
-
-            (userViewModel as UserViewModel)._tutorLegal.observe(requireActivity()){
-
-                findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
-                Toast.makeText(requireContext(), "AVISO: Se mantendrá su sesión iniciada hasta que la cierre", Toast.LENGTH_SHORT).show()
-            }
+            findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+//
+//            (userViewModel as UserViewModel)._profesor.observe(requireActivity()){
+//                findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+//                Toast.makeText(requireContext(), "AVISO: Se mantendrá su sesión iniciada hasta que la cierre", Toast.LENGTH_SHORT).show()
+//            }
+//
+//            (userViewModel as UserViewModel)._tutorLegal.observe(requireActivity()){
+//
+//                findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+//                Toast.makeText(requireContext(), "AVISO: Se mantendrá su sesión iniciada hasta que la cierre", Toast.LENGTH_SHORT).show()
+//            }
 
             //if(userType== "Profesor" || userType==" Tutor legal"){
 

@@ -21,7 +21,7 @@ import com.example.tycep_fe.viewModels.AlumnoViewModel
 
 class FaltasAlumno : Fragment() {private lateinit var binding:FragmentFaltasAlumnoBinding
     //private lateinit var alumno: Alumno
-    lateinit var alumnoViewModel: ViewModel
+    private lateinit var alumnoViewModel: ViewModel
     private lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
