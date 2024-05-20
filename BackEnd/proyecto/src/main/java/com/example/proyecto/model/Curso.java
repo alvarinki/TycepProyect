@@ -23,6 +23,9 @@ public class Curso {
     @Column(name = "nombre")
     private String nombre;
 
+    @Column(name = "foto")
+    private String foto;
+
     @OneToMany(mappedBy = "idCurso")
     private Set<Alumno> alumnos = new LinkedHashSet<>();
 

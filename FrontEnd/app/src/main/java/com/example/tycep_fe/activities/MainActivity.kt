@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel= ViewModelProvider(this)[UserViewModel::class.java]
-        viewModel._profesor.observe(this){profe -> }
+        viewModel._profesor.observe(this){}
 
     }
 }

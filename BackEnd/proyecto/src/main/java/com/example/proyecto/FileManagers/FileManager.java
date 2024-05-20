@@ -5,7 +5,6 @@ import com.example.proyecto.model.*;
 import com.example.proyecto.services.AlumnoService;
 import com.example.proyecto.services.AsignaturaService;
 import com.example.proyecto.services.UsuarioService;
-import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class FileManager {
@@ -130,6 +128,22 @@ public class FileManager {
         return admins;
     }
 
+
+    public List<Alumno> mapAlumnos(String ruta) {
+        List<Alumno> alumnos = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(";");
+
+            }
+        }
+
+        catch (IOException e) {
+           throw new RuntimeException(e);
+        }
+        return alumnos;
+    }
     public  void notifyUsersData(String ruta, List<AdminsUserData> adminsUserData, String userType){
         try {
             // Obtenemos la ruta del directorio eliminando el nombre del archivo
@@ -215,6 +229,5 @@ public class FileManager {
         Random random = new Random();
         return prefijo+"_"+(random.nextInt(100)+1);
     }
-
 
 }

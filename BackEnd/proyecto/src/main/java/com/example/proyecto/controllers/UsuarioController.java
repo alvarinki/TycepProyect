@@ -25,10 +25,10 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UsuarioController {
 
-    @GetMapping
-    public String prueba(){
-        return "Hola";
-    }
+//    @GetMapping
+//    public String prueba(){
+//        return "Hola";
+//    }
 
     @Autowired
     UsuarioService usuarioService;
@@ -47,49 +47,6 @@ public class UsuarioController {
 
     @Autowired
     private FileManager fileManager;
-
-    @PostMapping("/register/tutor")
-    public ResponseEntity<TutorLegal> tutorRegistration(@RequestBody TutorLegal tutor){
-        if(tutor!=null){
-            if(tutor.getDtype().toString().equals("T")) {
-                PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-                System.out.println(tutor.getContrasena());
-                tutor.setContrasena(passwordEncoder.encode(tutor.getContrasena()));
-                TutorLegal tutorLegal = tutorService.saveTutor(tutor);
-                return new ResponseEntity<>(tutorLegal, HttpStatus.OK);
-            }
-            else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PostMapping("/register/profesor")
-    public ResponseEntity<Profesor> teacherRegistration(@RequestBody Profesor profe){
-        if(profe!=null){
-            if(profe.getDtype().toString().equals("P")) {
-                PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-                profe.setContrasena(passwordEncoder.encode(profe.getContrasena()));
-                Profesor profesor = profesorService.saveProfesor(profe);
-                return new ResponseEntity<>(profesor, HttpStatus.OK);
-            }
-            else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PostMapping("/register/admin")
-    public ResponseEntity<Usuario> userRegistration(@RequestBody Usuario user){
-
-        if(user!=null){
-        if(user.getDtype().toString().equals("A")){
-            return new ResponseEntity<>(usuarioService.saveUsuario(user), HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
 
 
     @PostMapping("/login")
@@ -134,38 +91,7 @@ public class UsuarioController {
     }
 
 
-    @PostMapping("/admin/registerProfesores")
-    public ResponseEntity<?> registerProfesores(@RequestBody String ruta){
-        try {
-            List<Profesor> profesores= fileManager.mapProfesores(ruta);
-            return ResponseEntity.ok(profesores);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
 
-        }
-    }
-
-    @PostMapping("/admin/registerTutores")
-    public ResponseEntity<?> registerTutores(@RequestBody String ruta){
-        try {
-            List<TutorLegal> tutores= fileManager.mapTutores(ruta);
-            return ResponseEntity.ok(tutores);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
-
-        }
-    }
-
-    @PostMapping("/admin/registerAdmins")
-    public ResponseEntity<?> registerAdmins(@RequestBody String ruta){
-        try {
-            List<Usuario> admins= fileManager.mapAdmins(ruta);
-            return ResponseEntity.ok(admins);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
-
-        }
-    }
 }
 
 

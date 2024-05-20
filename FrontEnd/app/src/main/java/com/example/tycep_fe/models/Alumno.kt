@@ -13,6 +13,8 @@ data class Alumno(
     val foto:String,
     @SerializedName("idCurso")
     val idCurso:Int,
+    @SerializedName("dni")
+    val dni:String,
     @SerializedName("faltas")
     var faltas:Set<Falta>?
 )
