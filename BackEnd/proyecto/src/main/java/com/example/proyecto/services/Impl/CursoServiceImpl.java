@@ -14,9 +14,15 @@ public class CursoServiceImpl implements CursoService {
     @Autowired
     private CursoRepository cursoRepo;
 
+    @Override
+    public int findCursoByNombre(String nombre) {
+        Optional<Curso> curso= cursoRepo.findCursoByNombre(nombre);
+        if(curso.isPresent()) return curso.get().getId();
+        return 0;
+    }
 
     @Override
     public Curso saveCurso(String nombreCurso) {
-        return cursoRepo.save(new Curso(null, nombreCurso, null, null));
+        return cursoRepo.save(new Curso(null, nombreCurso, null, null, null));
     }
 }

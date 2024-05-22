@@ -38,4 +38,9 @@ public class AlumnoServiceImpl implements AlumnoService {
     public Optional<Alumno> findAlumnoByDni(String dni) {
         return alumnoRepo.findAlumnoByDni(dni);
     }
+
+    @Override
+    public void saveAlumnos(List<Alumno> alumnos) {
+        alumnoRepo.saveAll(alumnos);
+    }
 }

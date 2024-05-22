@@ -1,10 +1,7 @@
 package com.example.proyecto.controllers;
 
 import com.example.proyecto.FileManagers.FileManager;
-import com.example.proyecto.model.Curso;
-import com.example.proyecto.model.Profesor;
-import com.example.proyecto.model.TutorLegal;
-import com.example.proyecto.model.Usuario;
+import com.example.proyecto.model.*;
 import com.example.proyecto.services.*;
 import com.example.proyecto.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,9 @@ public class AdminController {
 
     @Autowired
     ProfesorService profesorService;
+
+    @Autowired
+    AlumnoService alumnoService;
 
     @Autowired
     AsignaturaService asignaturaService;
@@ -132,5 +132,16 @@ public class AdminController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/registerAlumnos")
+    public ResponseEntity<String> registerAlumnos(@RequestBody String ruta){
+        //Comentado de forma momentánea para pruebas
+        //jwtUtil.validate(token);
+        String mensaje= fileManager.mapAlumnos(ruta);
+        if(mensaje.startsWith("Alumnos registrados correctamente")){
+            return ResponseEntity.ok(mensaje);
+        }
+        else return ResponseEntity.badRequest().body(mensaje);
     }
 }

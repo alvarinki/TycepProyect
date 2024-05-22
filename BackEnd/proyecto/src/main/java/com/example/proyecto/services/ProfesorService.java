@@ -4,6 +4,7 @@ import com.example.proyecto.model.Alumno;
 import com.example.proyecto.model.Curso;
 import com.example.proyecto.model.Profesor;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface ProfesorService {
@@ -13,5 +14,7 @@ public interface ProfesorService {
     Profesor saveProfesor(Profesor profesor);
 
     Set<Curso> getCursosFromProfesor(int id);
+
+    int findProfesorByDni(String dni);
 
 }

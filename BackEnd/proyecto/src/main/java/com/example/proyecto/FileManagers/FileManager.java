@@ -2,9 +2,7 @@ package com.example.proyecto.FileManagers;
 
 import com.example.proyecto.dtos.AdminsUserData;
 import com.example.proyecto.model.*;
-import com.example.proyecto.services.AlumnoService;
-import com.example.proyecto.services.AsignaturaService;
-import com.example.proyecto.services.UsuarioService;
+import com.example.proyecto.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +22,15 @@ public class FileManager {
 
     @Autowired
     AlumnoService alumnoService;
+
+    @Autowired
+    CursoService cursoService;
+
+    @Autowired
+    ProfesorService profesorService;
+
+    @Autowired
+    HorarioService horarioService;
 
     public  List<Profesor> mapProfesores(String ruta) throws IOException {
         List<Profesor> profesores = new ArrayList<>();
@@ -81,7 +88,7 @@ public class FileManager {
 
                     //List<Alumno> alumnos= Arrays.stream(datos[4].split(",")).toList().stream().map(f -> alumnoService.findAlumnoByDni(f)).toList();
                     tutor.setAlumnos(alumnos);
-                    String prefijo= tutor.getNombre().substring(0,1)+tutor.getApellidos().charAt(0)+tutor.getApellidos().split(" ")[1].charAt(0);;
+                    String prefijo= tutor.getNombre().substring(0,1)+tutor.getApellidos().charAt(0)+tutor.getApellidos().split(" ")[1].charAt(0);
 
                     String nombreUsuario="";
                     do{
@@ -129,21 +136,109 @@ public class FileManager {
     }
 
 
-    public List<Alumno> mapAlumnos(String ruta) {
+    public String mapAlumnos(String ruta) {
         List<Alumno> alumnos = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
+            int numeroLinea=1;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";");
+                Alumno alumno= new Alumno();
+                alumno.setNombre(datos[0].trim());
+                alumno.setApellidos(datos[1].trim());
+                int idCurso= cursoService.findCursoByNombre(datos[2].trim());
+                if(idCurso!=0) alumno.setIdCurso(idCurso);
+                else{
+                    return "Hay un error en la introducción del curso en la línea "+numeroLinea;
+                }
+                if(comprobarDNI(datos[3].trim())) alumno.setDni(datos[3].trim());
 
+
+                else {
+                    return "El dni introducido en la línea "+numeroLinea+" no existe";
+                }
+
+                if(alumnoService.findAlumnoByDni(alumno.getDni()).isEmpty()) alumnos.add(alumno);;
+                numeroLinea++;
             }
+            alumnoService.saveAlumnos(alumnos);
+            return "Alumnos registrados correctamente";
         }
 
         catch (IOException e) {
            throw new RuntimeException(e);
         }
-        return alumnos;
+
     }
+
+    public String mapHorarios(String ruta) {
+        List<Horario> horarios = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            int numeroLinea=1;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(";");
+                Horario horario= new Horario();
+
+                Asignatura asignatura= asignaturaService.findByNombre(datos[0].trim());
+                if(asignatura!=null) horario.setAsignatura(asignatura);
+                else return "Error en la introducción de la asignatura en la línea "+numeroLinea;
+
+                Dia dia = esDiaValido(datos[1].trim().toUpperCase());
+                if(dia!=null) horario.setDia(dia);
+                else return "Error en la introducción del día en la línea "+numeroLinea;
+
+                int hora= comprobarFormatoNumero(datos[1].trim());
+                if(hora!=0) horario.setHora(hora);
+                else return "Error en el formato de la hora en la línea "+numeroLinea;
+
+                int idCurso= cursoService.findCursoByNombre(datos[3].trim());
+                if(idCurso!=0) horario.setIdCurso(idCurso);
+                else return "Hay un error en la introducción del curso en la línea "+numeroLinea;
+
+                int aula=comprobarFormatoNumero(datos[4].trim());
+                if(aula!=0) horario.setAula(aula);
+                else return "Error en el formato del aula en la línea "+numeroLinea;
+
+
+                int idProfesor= profesorService.findProfesorByDni(datos[5].trim());
+
+                if(idProfesor!=0) horario.setIdProfesor(idProfesor);
+                else return "El dni introducido en la línea "+numeroLinea+" no corresponde a ningún profesor";
+
+               horarios.add(horario);
+//                Tendría que hacer esto también!!
+//                if(alumnoService.findAlumnoByDni(alumno.getDni()).isEmpty()) alumnos.add(alumno);;
+                numeroLinea++;
+            }
+
+            horarioService.saveHorarios(horarios);
+            return "Alumnos registrados correctamente";
+        }
+
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static int comprobarFormatoNumero(String numero) {
+        try {
+            return Integer.parseInt(numero);
+        }
+        catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    public static Dia esDiaValido(String dia) {
+        try {
+            return Dia.valueOf(dia);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     public  void notifyUsersData(String ruta, List<AdminsUserData> adminsUserData, String userType){
         try {
             // Obtenemos la ruta del directorio eliminando el nombre del archivo
@@ -230,4 +325,31 @@ public class FileManager {
         return prefijo+"_"+(random.nextInt(100)+1);
     }
 
+    public boolean comprobarDNI(String dni) {
+        // Validar que el DNI tiene 9 caracteres
+        if (dni == null || dni.length() != 9) {
+            return false;
+        }
+
+        // Extraer los 8 primeros caracteres (el número)
+        String numeroStr = dni.substring(0, 8);
+        char letra = dni.charAt(8);
+
+        // Validar que los 8 primeros caracteres son números
+        if (!numeroStr.matches("\\d{8}")) {
+            return false;
+        }
+
+        // Convertir el número a un entero
+        int numero = Integer.parseInt(numeroStr);
+
+        // Array de letras para el cálculo de la letra del DNI
+        char[] letrasDNI = {'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E'};
+
+        // Calcular la letra correspondiente
+        char letraEsperada = letrasDNI[numero % 23];
+
+        // Comparar la letra esperada con la letra proporcionada
+        return letra == letraEsperada;
+    }
 }

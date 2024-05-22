@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
             btnFilePicker.setOnClickListener{
                 showFileChooser();
             }
-
-
             insets
         }
     }
@@ -59,13 +57,14 @@ class MainActivity : AppCompatActivity() {
         intent.addCategory(Intent.CATEGORY_OPENABLE)
 
         try {
-            filePickerLauncher.launch(Intent.createChooser(intent, "Select a file"))
+            filePickerLauncher.launch(Intent.createChooser(intent, "Selecciona un archivo"))
         } catch (exception: Exception) {
-            Toast.makeText(this, "Please install a file manager.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Por favor instala un gestor de archivos", Toast.LENGTH_SHORT).show()
         }
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun displayFilePath(file: File) {
         val path = file.path
         val fileName = file.name

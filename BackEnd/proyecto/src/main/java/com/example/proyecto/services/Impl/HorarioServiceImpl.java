@@ -32,5 +32,9 @@ public class HorarioServiceImpl implements HorarioService {
         return horarioRepo.findHorariosByIdProfesor(idProfesor).orElse(null);
     }
 
+    @Override
+    public void saveHorarios(List<Horario> horarios) {
+        horarioRepo.saveAll(horarios);
+    }
 
 }

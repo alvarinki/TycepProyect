@@ -14,6 +14,6 @@ public class AsignaturaServiceImpl implements AsignaturaService {
 
     @Override
     public Asignatura findByNombre(String nombre) {
-        return asignaturaRepo.findByNombre(nombre);
+        return asignaturaRepo.findByNombre(nombre).orElse(null);
     }
 }

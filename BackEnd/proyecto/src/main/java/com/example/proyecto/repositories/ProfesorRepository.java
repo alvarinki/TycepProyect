@@ -10,6 +10,6 @@ public interface ProfesorRepository extends JpaRepository<Profesor, Integer> {
 
     Optional<Profesor> findProfesorById(Integer userId);
 
-
+    Optional<Profesor> findProfesorByDni(String dni);
 
 }

@@ -36,4 +36,11 @@ public class ProfesorServiceImpl implements ProfesorService {
         Optional<Profesor> profe= profesorRepo.findProfesorById(id);
         return profe.map(Profesor::getCursos).orElse(null);
     }
+
+    @Override
+    public int findProfesorByDni(String dni) {
+        Optional<Profesor> profesor= profesorRepo.findProfesorByDni(dni);
+        if(profesor.isPresent()) return profesor.get().getId();
+        else return 0;
+    }
 }

@@ -1,0 +1,6 @@
+Maria;Fernández;3 ESO A;71789217F
+Lidia;Gómez Rouco;3 ESO A;71789219D
+Eduardito;González;DAM 2B;71789217F
+Pepe;Contrueces;DAM 2B; 12345678Z
+Joselu;Martín;DAM 2B;09441567K
+Gonzalo;Pérez;DAW 1A;87654321X

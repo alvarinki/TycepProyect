@@ -13,4 +13,6 @@ public interface HorarioService {
     Set<Horario> findHorariosByIdCurso(int idCurso);
 
     Set<Horario> findHorariosByIdProfesor(int idProfesor);
+
+    void saveHorarios(List<Horario> horarios);
 }
