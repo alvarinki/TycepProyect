@@ -144,9 +144,9 @@ class UserViewModel(): ViewModel() {
             java.time.DayOfWeek.WEDNESDAY -> Dia.X
             java.time.DayOfWeek.THURSDAY -> Dia.J
             java.time.DayOfWeek.FRIDAY -> Dia.V
-            //else -> null
+            else -> null
             //Para pruebas
-            else -> Dia.L
+            //= else -> Dia.L
         }
     }
 }
