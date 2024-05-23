@@ -8,6 +8,7 @@ import com.example.proyecto.services.ProfesorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -42,5 +43,15 @@ public class ProfesorServiceImpl implements ProfesorService {
         Optional<Profesor> profesor= profesorRepo.findProfesorByDni(dni);
         if(profesor.isPresent()) return profesor.get().getId();
         else return 0;
+    }
+
+    @Override
+    public void saveProfesores(List<Profesor> profesores) {
+        profesorRepo.saveAll(profesores);
+    }
+
+    @Override
+    public void deleteProfesores(List<Profesor> profesores) {
+        profesorRepo.deleteAll(profesores);
     }
 }

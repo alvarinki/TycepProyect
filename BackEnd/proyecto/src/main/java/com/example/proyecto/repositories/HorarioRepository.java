@@ -15,4 +15,6 @@ public interface HorarioRepository extends JpaRepository<Horario, Long> {
     Optional<Set<Horario>> findHorariosByIdCurso(int idCurso);
 
     Optional<Set<Horario>> findHorariosByIdProfesor(int idProfesor);
+
+    Optional<Horario> findHorarioByDiaAndHoraAndIdCurso(Dia dia, int hora, int idCurso);
 }

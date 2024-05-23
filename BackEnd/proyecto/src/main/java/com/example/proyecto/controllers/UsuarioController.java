@@ -90,8 +90,6 @@ public class UsuarioController {
         else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
-
 }
 
 

@@ -43,4 +43,10 @@ public class AlumnoServiceImpl implements AlumnoService {
     public void saveAlumnos(List<Alumno> alumnos) {
         alumnoRepo.saveAll(alumnos);
     }
+
+    @Override
+    public void deleteAlumnos(List<Alumno> alumnos) {
+        alumnoRepo.deleteAll(alumnos);
+    }
+
 }

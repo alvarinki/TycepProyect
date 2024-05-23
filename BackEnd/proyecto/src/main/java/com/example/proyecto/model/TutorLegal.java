@@ -35,6 +35,9 @@ public class TutorLegal extends Usuario{
     @Column(name = "domicilio")
     private String domicilio;
 
+    @Column(name = "dni")
+    private String dni;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="Tutor_legal_Alumno", joinColumns =
             {@JoinColumn(name = "id_tutor_legal")},

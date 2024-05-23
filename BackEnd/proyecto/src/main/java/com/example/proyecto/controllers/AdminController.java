@@ -42,6 +42,73 @@ public class AdminController {
     @Autowired
     private FileManager fileManager;
 
+
+
+    @PostMapping("/registerProfesores")
+    public ResponseEntity<String> registerProfesores(@RequestBody String ruta, @RequestHeader String token){
+        jwtUtil.validate(token);
+        String mensaje= fileManager.mapProfesores(ruta);
+        if(mensaje.startsWith("Profesores registrados correctamente")) return ResponseEntity.ok(mensaje);
+        else return ResponseEntity.badRequest().body(mensaje);
+
+    }
+
+    @PostMapping("/registerTutores")
+    public ResponseEntity<?> registerTutores(@RequestBody String ruta, @RequestHeader String token){
+        jwtUtil.validate(token);
+        String mensaje = fileManager.mapTutores(ruta);
+        if(mensaje.startsWith("Tutores registrados correctamente")) return ResponseEntity.ok(mensaje);
+        else return ResponseEntity.badRequest().body(mensaje);
+    }
+
+    @PostMapping("/registerAdmins")
+    public ResponseEntity<String> registerAdmins(@RequestBody String ruta, @RequestHeader String token){
+        jwtUtil.validate(token);
+        String mensaje = fileManager.mapAdmins(ruta);
+
+        if(mensaje.startsWith("Admins registrados correctamente")) return ResponseEntity.ok(mensaje);
+        else return ResponseEntity.badRequest().body(mensaje);
+
+    }
+
+    @PostMapping("/registerAlumnos")
+    public ResponseEntity<String> registerAlumnos(@RequestBody String ruta, @RequestHeader String token){
+        //Comentado de forma momentánea para pruebas
+        jwtUtil.validate(token);
+        String mensaje= fileManager.mapAlumnos(ruta);
+
+        if(mensaje.startsWith("Alumnos registrados correctamente")) return ResponseEntity.ok(mensaje);
+        else return ResponseEntity.badRequest().body(mensaje);
+    }
+
+    @PostMapping("/saveCurso")
+    public ResponseEntity<Curso> saveCurso(@RequestBody String nombreCurso, @RequestHeader String token){
+        jwtUtil.validate(token);
+        Curso curso= cursoService.saveCurso(nombreCurso);
+
+        if(curso!=null) return ResponseEntity.ok(curso);
+        else return new ResponseEntity<>(HttpStatus.FOUND);
+
+    }
+
+    @PostMapping("/registerHorarios")
+    public ResponseEntity<String> registerHorarios(@RequestBody String ruta, @RequestHeader String token){
+        //Comentado para pruebas
+        jwtUtil.validate(token);
+        String mensaje= fileManager.mapHorarios(ruta);
+
+        if(mensaje.startsWith("Horarios registrados correctamente")) return ResponseEntity.ok(mensaje);
+        else return ResponseEntity.badRequest().body(mensaje);
+    }
+
+    @PostMapping("/deleteUsers")
+    public ResponseEntity<String> deleteUsers(@RequestBody String ruta, @RequestHeader String token){
+        jwtUtil.validate(token);
+
+    }
+
+
+    //Métodos momentáneos para inserción de datos de prueba
     @PostMapping("/registerTutor")
     public ResponseEntity<TutorLegal> tutorRegistration(@RequestBody TutorLegal tutor, @RequestHeader String token){
         jwtUtil.validate(token);
@@ -77,71 +144,11 @@ public class AdminController {
     public ResponseEntity<Usuario> userRegistration(@RequestBody Usuario user, @RequestHeader String token){
         jwtUtil.validate(token);
         if(user!=null){
-            if(user.getDtype().toString().equals("A")){
-                return new ResponseEntity<>(usuarioService.saveUsuario(user), HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            if(user.getDtype().toString().equals("A")) return new ResponseEntity<>(usuarioService.saveUsuario(user), HttpStatus.OK);
+            else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
         else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/registerProfesores")
-    public ResponseEntity<?> registerProfesores(@RequestBody String ruta, @RequestHeader String token){
-        jwtUtil.validate(token);
-        try {
-            List<Profesor> profesores= fileManager.mapProfesores(ruta);
-            return ResponseEntity.ok(profesores);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
 
-        }
-    }
-
-    @PostMapping("/registerTutores")
-    public ResponseEntity<?> registerTutores(@RequestBody String ruta, @RequestHeader String token){
-        jwtUtil.validate(token);
-        try {
-            List<TutorLegal> tutores= fileManager.mapTutores(ruta);
-            return ResponseEntity.ok(tutores);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
-
-        }
-    }
-
-    @PostMapping("/registerAdmins")
-    public ResponseEntity<?> registerAdmins(@RequestBody String ruta, @RequestHeader String token){
-        jwtUtil.validate(token);
-        try {
-            List<Usuario> admins= fileManager.mapAdmins(ruta);
-            return ResponseEntity.ok(admins);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
-
-        }
-    }
-
-    @PostMapping("/saveCurso")
-    public ResponseEntity<Curso> saveCurso(@RequestBody String nombreCurso, @RequestHeader String token){
-        jwtUtil.validate(token);
-        try{
-            Curso curso= cursoService.saveCurso(nombreCurso);
-            if(curso!=null) return new ResponseEntity<>(curso, HttpStatus.OK);
-            else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @PostMapping("/registerAlumnos")
-    public ResponseEntity<String> registerAlumnos(@RequestBody String ruta){
-        //Comentado de forma momentánea para pruebas
-        //jwtUtil.validate(token);
-        String mensaje= fileManager.mapAlumnos(ruta);
-        if(mensaje.startsWith("Alumnos registrados correctamente")){
-            return ResponseEntity.ok(mensaje);
-        }
-        else return ResponseEntity.badRequest().body(mensaje);
-    }
 }

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 
 import java.io.*;
+import java.text.Normalizer;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Component
 public class FileManager {
@@ -32,58 +34,106 @@ public class FileManager {
     @Autowired
     HorarioService horarioService;
 
-    public  List<Profesor> mapProfesores(String ruta) throws IOException {
+    @Autowired
+    TutorService tutorService;
+
+    public String mapProfesores(String ruta){
         List<Profesor> profesores = new ArrayList<>();
         List<AdminsUserData> adminsUserData = new ArrayList<>();
+        StringBuilder insercionCorrecta= new StringBuilder("Profesores registrados correctamente");
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
+            int numeroLinea=1;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";");
                 if (datos.length >= 5) {
                     Profesor profesor = new Profesor();
-                    profesor.setNombre(datos[0].trim());
-                    profesor.setApellidos(datos[1].trim());
-                    profesor.setDni(datos[2].trim());
-                    profesor.setCorreo(datos[3].trim());
+
+                    if(comprobarNombre_Apellidos(datos[0].trim()) || comprobarNombre_Apellidos(datos[1].trim())){
+                        profesor.setNombre(datos[0].trim());
+                        profesor.setApellidos(datos[1].trim());
+                    }
+                    else return "Error en el formato del nombre o apellidos en la línea "+numeroLinea;
+
+                    if(comprobarDNI(datos[2].trim())) profesor.setDni(datos[2].trim());
+                    else return "Error en el formato del Dni en la línea"+numeroLinea;
+
+                    if(esCorreoValido(datos[3].trim())) profesor.setCorreo(datos[3].trim());
+                    else return "Formateo del correo en la línea "+numeroLinea+" incorrecto";
+
                     profesor.setContrasena(generarContrasena());
                     profesor.setDtype('P');
-                    Arrays.stream(datos[4].split(",")).toList().forEach(asig -> profesor.getAsignaturas().add(asignaturaService.findByNombre(asig)));
+                    try{
+                        Arrays.stream(datos[4].split(",")).toList().forEach(asig -> profesor.getAsignaturas().add(asignaturaService.findByNombre(asig)));
+                    }
+                    catch (Exception e){
+                        return "Alguna asignatura no existe o hay un formateo incorrecto de estas en la línea "+numeroLinea;
+                    }
+
                     String prefijo= profesor.getNombre().substring(0,1)+profesor.getApellidos().charAt(0)+profesor.getApellidos().split(" ")[1].charAt(0);
-                    System.out.println(prefijo);
-                    String nombreUsuario="";
+                    String nombreUsuario;
                     do{
                         nombreUsuario= generarUsername(prefijo);
                     }while(usuarioService.findUsuarioByUsuario(nombreUsuario).isPresent());
                     profesor.setUsuario(nombreUsuario);
-                    profesores.add(profesor);
-                    adminsUserData.add(new AdminsUserData(nombreUsuario,profesor.getContrasena()));
+
+                    if(profesorService.findProfesorByDni(profesor.getDni())==0){
+                        profesores.add(profesor);
+                        adminsUserData.add(new AdminsUserData(nombreUsuario,profesor.getContrasena()));
+                    }
+                    else insercionCorrecta.append(", se han intentado introducir profesores duplicados por dni");
+
                 }
+                numeroLinea++;
             }
+        } catch (FileNotFoundException e) {
+            return "No se ha encontrado el archivo";
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        profesorService.saveProfesores(profesores);
         notifyUsersData(ruta, adminsUserData, "Profesor");
-        return profesores;
+        return insercionCorrecta.toString();
     }
 
-    public  List<TutorLegal> mapTutores(String ruta) throws IOException {
+    public String mapTutores(String ruta) {
         List<TutorLegal> tutores = new ArrayList<>();
         List<AdminsUserData> adminsUserData = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
+            int numeroLinea=1;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";");
                 if (datos.length >= 5) {
                     TutorLegal tutor= new TutorLegal();
-                    tutor.setNombre(datos[0].trim());
-                    tutor.setApellidos(datos[1].trim());
-                    tutor.setTelefContacto(datos[2].trim());
-                    tutor.setDomicilio(datos[3].trim());
+
+                    if(comprobarNombre_Apellidos(datos[0].trim())|| comprobarNombre_Apellidos(datos[1].trim())){
+                        tutor.setNombre(datos[0].trim());
+                        tutor.setApellidos(datos[1].trim());
+                    }
+                    else return "Error en el formato del nombre o apellidos en la línea "+numeroLinea;
+
+                    if(comprobarDNI(datos[2].trim())) tutor.setDni(datos[2].trim());
+                    else return "Error en el formato del Dni en la línea"+numeroLinea;
+
+                    try{
+                        comprobarFormatoNumero(datos[3].trim());
+                        tutor.setTelefContacto(datos[3].trim());
+                    } catch (NumberFormatException e) {
+                        return "Error en el formato del número de teléfono";
+                    }
+                    tutor.setDomicilio(datos[4].trim());
                     tutor.setDtype('T');
                     tutor.setContrasena(generarContrasena());
                     Set<Alumno> alumnos= new HashSet<>();
-                    String[] dnis = datos[4].split(",");
+                    String[] dnis = datos[5].split(",");
                     for (String dni : dnis) {
-                        Optional<Alumno> a = alumnoService.findAlumnoByDni(dni);
-                        a.ifPresent(alumnos::add);
+                        if(comprobarDNI(dni)){
+                            Optional<Alumno> a = alumnoService.findAlumnoByDni(dni);
+                            if(a.isPresent()) alumnos.add(a.get());
+                            else return "No se encuentra tutelado correspondiente a tutor en la línea "+numeroLinea;
+                        }
+                        else return "Error en el formato o existencia del dni de uno de los tutelados en la línea ç"+numeroLinea;
                     }
 
                     //List<Alumno> alumnos= Arrays.stream(datos[4].split(",")).toList().stream().map(f -> alumnoService.findAlumnoByDni(f)).toList();
@@ -98,23 +148,34 @@ public class FileManager {
                     tutores.add(tutor);
                     adminsUserData.add(new AdminsUserData(nombreUsuario,tutor.getContrasena()));
                 }
+                numeroLinea++;
             }
+        } catch (FileNotFoundException e) {
+            return "El archivo no ha sido encontrado.";
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        tutorService.saveTutoresLegales(tutores);
         notifyUsersData(ruta, adminsUserData, "Tutor");
-        return tutores;
+        return "Tutores registrados correctamente";
     }
 
-    public  List<Usuario> mapAdmins(String ruta) throws IOException {
+    public  String mapAdmins(String ruta){
         List<Usuario> admins = new ArrayList<>();
         List<AdminsUserData> adminsUserData = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
+            int numeroLinea=1;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";");
                 if (datos.length >= 5) {
                     Usuario user= new Usuario();
-                    user.setNombre(datos[0].trim());
-                    user.setApellidos(datos[1].trim());
+                    if(comprobarNombre_Apellidos(datos[0].trim()) || comprobarNombre_Apellidos(datos[1].trim())){
+                        user.setNombre(datos[0].trim());
+                        user.setApellidos(datos[1].trim());
+                    }
+                    else return "Error en el formato de nombre o apellidos en línea "+numeroLinea;
+
                     user.setContrasena(generarContrasena());
 
                     //List<Alumno> alumnos= Arrays.stream(datos[4].split(",")).toList().stream().map(f -> alumnoService.findAlumnoByDni(f)).toList();
@@ -126,13 +187,20 @@ public class FileManager {
                         nombreUsuario= generarUsername(prefijo);
                     }while(usuarioService.findUsuarioByUsuario(nombreUsuario).isPresent());
                     user.setUsuario(nombreUsuario);
+
                     admins.add(user);
                     adminsUserData.add(new AdminsUserData(nombreUsuario,user.getContrasena()));
                 }
+                numeroLinea++;
             }
+        } catch (FileNotFoundException e) {
+            return "No se ha encontrado el archivo.";
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        usuarioService.saveUsers(admins);
         notifyUsersData(ruta, adminsUserData, "Admin");
-        return admins;
+        return "Administradores registrados correctamente";
     }
 
 
@@ -144,21 +212,21 @@ public class FileManager {
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";");
                 Alumno alumno= new Alumno();
-                alumno.setNombre(datos[0].trim());
-                alumno.setApellidos(datos[1].trim());
+
+                if(comprobarNombre_Apellidos(datos[0].trim())&&comprobarNombre_Apellidos(datos[1].trim())){
+                    alumno.setNombre(datos[0].trim());
+                    alumno.setApellidos(datos[1].trim());
+                }
+                else return "Error en el formato de nombre o apellidos en la línea "+numeroLinea;
+
                 int idCurso= cursoService.findCursoByNombre(datos[2].trim());
                 if(idCurso!=0) alumno.setIdCurso(idCurso);
-                else{
-                    return "Hay un error en la introducción del curso en la línea "+numeroLinea;
-                }
+                else return "Hay un error en la introducción del curso en la línea "+numeroLinea;
+
                 if(comprobarDNI(datos[3].trim())) alumno.setDni(datos[3].trim());
+                else return "El dni introducido en la línea "+numeroLinea+" no existe";
 
-
-                else {
-                    return "El dni introducido en la línea "+numeroLinea+" no existe";
-                }
-
-                if(alumnoService.findAlumnoByDni(alumno.getDni()).isEmpty()) alumnos.add(alumno);;
+                if(alumnoService.findAlumnoByDni(alumno.getDni()).isEmpty()) alumnos.add(alumno);
                 numeroLinea++;
             }
             alumnoService.saveAlumnos(alumnos);
@@ -173,6 +241,7 @@ public class FileManager {
 
     public String mapHorarios(String ruta) {
         List<Horario> horarios = new ArrayList<>();
+        StringBuilder insercionCorrecta= new StringBuilder("Horarios registrados correctamente");
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
             int numeroLinea=1;
@@ -188,7 +257,7 @@ public class FileManager {
                 if(dia!=null) horario.setDia(dia);
                 else return "Error en la introducción del día en la línea "+numeroLinea;
 
-                int hora= comprobarFormatoNumero(datos[1].trim());
+                int hora= comprobarFormatoNumero(datos[2].trim());
                 if(hora!=0) horario.setHora(hora);
                 else return "Error en el formato de la hora en la línea "+numeroLinea;
 
@@ -202,18 +271,24 @@ public class FileManager {
 
 
                 int idProfesor= profesorService.findProfesorByDni(datos[5].trim());
-
                 if(idProfesor!=0) horario.setIdProfesor(idProfesor);
                 else return "El dni introducido en la línea "+numeroLinea+" no corresponde a ningún profesor";
 
-               horarios.add(horario);
-//                Tendría que hacer esto también!!
-//                if(alumnoService.findAlumnoByDni(alumno.getDni()).isEmpty()) alumnos.add(alumno);;
+                Horario buscarHorario= horarioService.findHorarioByDiaAndHoraAndIdCurso(dia, hora, idCurso);
+                if(buscarHorario!=null){
+                    if(buscarHorario.getAsignatura()!=asignatura || buscarHorario.getAula()!=aula || buscarHorario.getIdProfesor()!=idProfesor){
+                        horarioService.deleteHorario(buscarHorario);
+                        insercionCorrecta.append(", se han repetido o modificado horarios");
+                        horarios.add(horario);
+                    }
+                }
+                else horarios.add(horario);
+
                 numeroLinea++;
             }
 
             horarioService.saveHorarios(horarios);
-            return "Alumnos registrados correctamente";
+            return insercionCorrecta.toString();
         }
 
         catch (IOException e) {
@@ -222,24 +297,41 @@ public class FileManager {
 
     }
 
-    public static int comprobarFormatoNumero(String numero) {
-        try {
-            return Integer.parseInt(numero);
-        }
-        catch (NumberFormatException e) {
-            return 0;
-        }
-    }
+    public String deleteByDniList(String ruta) {
+        List<Integer> ids = new ArrayList<>();
+        String resultado;
 
-    public static Dia esDiaValido(String dia) {
-        try {
-            return Dia.valueOf(dia);
-        } catch (IllegalArgumentException e) {
+
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String tipo = br.readLine();
+            String linea;
+            int numeroLinea = 1;
+            while ((linea = br.readLine()) != null) {
+                switch (tipo) {
+                    case "Profesores" -> {
+                        int idProfe=profesorService.findProfesorByDni(linea);
+                        if(idProfe!=0) ids.add(idProfe);
+                        else return "No hay ningún profesor con el dni "+linea+" en la línea "+numeroLinea;
+                        numeroLinea++;
+                    }
+
+                    case "Tutores" -> {
+                        int idTutor= tutorService.findTutorLegalByDni(linea);
+                    }
+                }
+            }
+
+            numeroLinea++;
+
+
             return null;
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
-    public  void notifyUsersData(String ruta, List<AdminsUserData> adminsUserData, String userType){
+
+        public  void notifyUsersData(String ruta, List<AdminsUserData> adminsUserData, String userType){
         try {
             // Obtenemos la ruta del directorio eliminando el nombre del archivo
             String directorio = obtenerDirectorio(ruta);
@@ -269,13 +361,38 @@ public class FileManager {
         }
     }
 
+    public static int comprobarFormatoNumero(String numero) {
+        try {
+            return Integer.parseInt(numero);
+        }
+        catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    public static Dia esDiaValido(String dia) {
+        try {
+            return Dia.valueOf(dia);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public static boolean esCorreoValido(String correo) {
+        // Define el patrón regex para una dirección de correo electrónico válida
+        String regex = "^[\\w-\\.]+@[\\w-\\.]+\\.[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(regex);
+
+        // Comprueba si el correo coincide con el patrón
+        return pattern.matcher(correo).matches();
+    }
 
     private String obtenerDirectorio(String ruta) {
         int lastIndex = ruta.lastIndexOf("\\");
         if (lastIndex != -1) {
             return ruta.substring(0, lastIndex);
         } else {
-            return ruta; // Si no se encuentra ningún separador de directorios, se asume que la ruta ya es un directorio
+            return ruta;
         }
     }
 
@@ -351,5 +468,19 @@ public class FileManager {
 
         // Comparar la letra esperada con la letra proporcionada
         return letra == letraEsperada;
+    }
+
+    public static boolean comprobarNombre_Apellidos(String nombre) {
+        // Normaliza el nombre para manejar caracteres con tildes y diacríticos
+        String normalized = Normalizer.normalize(nombre, Normalizer.Form.NFD);
+        // Elimina los caracteres de diacríticos dejando solo las letras base
+        normalized = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+
+        // Define el patrón regex para letras, espacios en blanco y guiones
+        String regex = "^[a-zA-Z\\s-]+$";
+        Pattern pattern = Pattern.compile(regex);
+
+        // Comprueba si el nombre normalizado coincide con el patrón
+        return pattern.matcher(normalized).matches();
     }
 }

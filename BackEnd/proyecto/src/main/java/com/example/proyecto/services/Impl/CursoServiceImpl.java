@@ -23,6 +23,7 @@ public class CursoServiceImpl implements CursoService {
 
     @Override
     public Curso saveCurso(String nombreCurso) {
-        return cursoRepo.save(new Curso(null, nombreCurso, null, null, null));
+        if(cursoRepo.findCursoByNombre(nombreCurso).isEmpty()) return cursoRepo.save(new Curso(null, nombreCurso, null, null, null));
+        else return null;
     }
 }

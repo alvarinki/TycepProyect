@@ -17,4 +17,6 @@ public interface AlumnoService {
     Optional<Alumno> findAlumnoByDni(String dni);
 
     void saveAlumnos(List<Alumno> alumnos);
+
+    void deleteAlumnos(List<Alumno> alumnos);
 }

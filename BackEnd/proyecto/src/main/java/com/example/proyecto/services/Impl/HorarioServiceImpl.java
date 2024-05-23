@@ -37,4 +37,14 @@ public class HorarioServiceImpl implements HorarioService {
         horarioRepo.saveAll(horarios);
     }
 
+    @Override
+    public Horario findHorarioByDiaAndHoraAndIdCurso(Dia dia, int hora, int idCurso) {
+        return horarioRepo.findHorarioByDiaAndHoraAndIdCurso(dia, hora, idCurso).orElse(null);
+    }
+
+    @Override
+    public void deleteHorario(Horario horario) {
+        horarioRepo.delete(horario);
+    }
+
 }

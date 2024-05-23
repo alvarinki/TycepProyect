@@ -7,6 +7,7 @@ import com.example.proyecto.services.TutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,4 +27,20 @@ public class TutorServiceImpl implements TutorService {
         return tutorLegal.orElse(null);
     }
 
+    @Override
+    public void saveTutoresLegales(List<TutorLegal> tutoresLegales) {
+        tutorRepo.saveAll(tutoresLegales);
+    }
+
+    @Override
+    public void deleteTutores(List<TutorLegal> tutoresLegales) {
+        tutorRepo.deleteAll(tutoresLegales);
+    }
+
+    @Override
+    public int findTutorLegalByDni(String dni) {
+        Optional<TutorLegal> tutorLegal= tutorRepo.findTutorLegalByDni(dni);
+        if(tutorLegal.isPresent()) return tutorLegal.get().getId();
+        else return 0;
+    }
 }

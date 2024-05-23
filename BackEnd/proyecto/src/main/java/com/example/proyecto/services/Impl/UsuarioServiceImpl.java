@@ -7,6 +7,7 @@ import com.example.proyecto.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,5 +33,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario findUsuarioById(int id) {
         Optional<Usuario> user= usuarioRepo.findUsuarioById(id);
         return user.orElse(null);
+    }
+
+    @Override
+    public void saveUsers(List<Usuario> users) {
+        usuarioRepo.saveAll(users);
+    }
+
+    @Override
+    public void deleteUsuarios(List<Usuario> users) {
+        usuarioRepo.deleteAll(users);
     }
 }
