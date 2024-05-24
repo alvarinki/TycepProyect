@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.enableSavedStateHandles
 import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.FragmentHorarioBinding
@@ -13,8 +15,10 @@ import com.example.tycep_fe.models.Asignatura
 import com.example.tycep_fe.models.Curso
 import com.example.tycep_fe.models.Dia
 import com.example.tycep_fe.models.Horario
+import com.example.tycep_fe.viewModels.UserViewModel
 
 class horario : Fragment() {
+    private lateinit var userViewModel: ViewModel
     private lateinit var _binding: FragmentHorarioBinding
 
 
@@ -57,19 +61,22 @@ class horario : Fragment() {
             alumnos = emptySet(),
             horario = horarios
         )
-        cargarHorarios(curso5.horario.filter { h -> h.idProfesor== 1 }.toSet())
+        //cargarHorarios(curso5.horario.filter { h -> h.idProfesor== 1 }.toSet())
 
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+        (userViewModel as UserViewModel).getHorarioFromProfesor()
+        (userViewModel as UserViewModel)._horarios.observe(requireActivity()){horario ->
+            if(horario!=null) cargarHorarios(horarios)
 
+        }
     }
     private fun cargarHorarios(horarios: Set<Horario>) {
-        val tableLayout = _binding.tableLayout
-        // Iterar sobre los horarios
+
         for (horario in horarios) {
-            // Obtener el TextView correspondiente en la tabla
 
             val textViewId = resources.getIdentifier("row${horario.hora}_col${horario.dia.ordinal + 1}", "id", activity?.packageName)
             val textView = view?.findViewById<TextView>(textViewId)
-            val asignatura= when(horario.asignatura.nombre){
+            val asignatura= when(horario.asignatura.nombre.split(" ")[0]){
                 "Matemáticas" -> "Mat"
                 "Geografía" -> "Geo"
                 "Física" -> "FyQ"
@@ -78,7 +85,7 @@ class horario : Fragment() {
                 "Educación Física" -> "EdF"
                 "Literatura" -> "LyL"
                 "Biología" -> "Bio"
-                else -> "Nope"
+                else -> "Error"
             }
             // Establecer el nombre de la asignatura en el TextView
             textView?.text = asignatura + "\n" + horario.aula
@@ -86,12 +93,12 @@ class horario : Fragment() {
         }
     }
 
-    private fun cargarHorarioProfesor(idProfesor: Int, cursosProfesor:Set<Curso>):Set<Horario>{
-        var horarios: MutableList<Horario> = emptyList<Horario>().toMutableList()
-        for(cursos in cursosProfesor){
-            horarios.addAll(cursos.horario.filter { h -> h.idProfesor==idProfesor })
-        }
-        return horarios.toSet()
-    }
+//    private fun cargarHorarioProfesor(idProfesor: Int, cursosProfesor:Set<Curso>):Set<Horario>{
+//        var horarios: MutableList<Horario> = emptyList<Horario>().toMutableList()
+//        for(cursos in cursosProfesor){
+//            horarios.addAll(cursos.horario.filter { h -> h.idProfesor==idProfesor })
+//        }
+//        return horarios.toSet()
+//    }
 
 }

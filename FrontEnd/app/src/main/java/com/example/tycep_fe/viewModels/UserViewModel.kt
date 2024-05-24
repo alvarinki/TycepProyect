@@ -136,6 +136,15 @@ class UserViewModel(): ViewModel() {
         }
     }
 
+    fun getHorarioFromProfesor(){
+        viewModelScope.launch {
+            val response=profesorRepo.getHorarioFromProfesor(_profesor.value?.id!!)
+            if(response.isSuccessful){
+                _horarios.postValue(response.body())
+            }
+        }
+    }
+
     private fun obtenerNombreDiaSemana(): Dia? {
         val dayOfWeek = LocalDate.now().dayOfWeek
         return when(dayOfWeek) {
@@ -149,6 +158,8 @@ class UserViewModel(): ViewModel() {
             //= else -> Dia.L
         }
     }
+
+
 }
 
 //    fun userLogin(loginRequestDto: LoginRequestDto):String{

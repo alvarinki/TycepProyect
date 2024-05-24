@@ -11,9 +11,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.util.List;
-
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -44,8 +41,8 @@ public class AdminController {
 
 
     @PostMapping("/registerProfesores")
-    public ResponseEntity<String> registerProfesores(@RequestBody String ruta) {
-        //jwtUtil.validate(token);
+    public ResponseEntity<String> registerProfesores(@RequestBody String ruta, @RequestHeader String token) {
+        jwtUtil.validate(token);
         String mensaje = fileManager.mapProfesores(ruta);
         if (mensaje.startsWith("Profesores registrados correctamente")) return ResponseEntity.ok(mensaje);
         else return ResponseEntity.badRequest().body(mensaje);
@@ -53,8 +50,8 @@ public class AdminController {
     }
 
     @PostMapping("/registerTutores")
-    public ResponseEntity<?> registerTutores(@RequestBody String ruta) {
-        //jwtUtil.validate(token);
+    public ResponseEntity<?> registerTutores(@RequestBody String ruta, @RequestHeader String token) {
+        jwtUtil.validate(token);
         String mensaje = fileManager.mapTutores(ruta);
         if (mensaje.startsWith("Tutores registrados correctamente")) return ResponseEntity.ok(mensaje);
         else return ResponseEntity.badRequest().body(mensaje);
@@ -107,6 +104,7 @@ public class AdminController {
         if (!mensaje.startsWith("Error")) return ResponseEntity.ok(mensaje);
         else return ResponseEntity.badRequest().body(mensaje);
     }
+
 
     //Métodos momentáneos para inserción de datos de prueba
 
