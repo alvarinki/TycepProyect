@@ -20,10 +20,10 @@ public class AlumnoController {
     AlumnoService alumnoService;
 
     @PostMapping("/getAlumno")
-    public ResponseEntity<Alumno> getAlumnoById(@RequestBody int id, @RequestHeader String token){
+    public ResponseEntity<Alumno> getAlumnoById(@RequestBody int id, @RequestHeader String token) {
         jwtUtil.validate(token);
-        Alumno alumno= alumnoService.findAlumnoById(id);
-        if(alumno!=null) return ResponseEntity.ok(alumno);
+        Alumno alumno = alumnoService.findAlumnoById(id);
+        if (alumno != null) return ResponseEntity.ok(alumno);
         else return ResponseEntity.notFound().build();
     }
 }

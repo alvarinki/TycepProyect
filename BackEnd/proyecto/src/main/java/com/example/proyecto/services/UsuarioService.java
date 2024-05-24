@@ -17,4 +17,6 @@ public interface UsuarioService {
     void saveUsers(List<Usuario> users);
 
     void deleteUsuarios(List<Usuario> users);
+
+    Usuario findUsuarioByNombreAndApellidos(String nombre, String apellidos);
 }

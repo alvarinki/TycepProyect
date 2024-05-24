@@ -24,12 +24,11 @@ public class FaltaServiceImpl implements FaltaService {
     @Override
     public void saveFaltas(List<Falta> faltas) {
         for (Falta falta : faltas) {
-            Falta f=faltaRepo.findFaltaByHoraAndIdAlumnoAndFecha(falta.getHora(), falta.getIdAlumno(), falta.getFecha());
-            if(f!=null){
+            Falta f = faltaRepo.findFaltaByHoraAndIdAlumnoAndFecha(falta.getHora(), falta.getIdAlumno(), falta.getFecha());
+            if (f != null) {
                 falta.setId(f.getId());
                 faltaRepo.save(falta);
-            }
-            else {
+            } else {
                 faltaRepo.save(falta);
             }
         }
@@ -47,12 +46,12 @@ public class FaltaServiceImpl implements FaltaService {
 
     @Override
     public void deleteFalta(Falta falta) {
-         faltaRepo.delete(falta);
+        faltaRepo.delete(falta);
     }
 
     @Override
     public Falta findFaltaById(int id) {
-         return faltaRepo.findFaltaById(id);
+        return faltaRepo.findFaltaById(id);
     }
 
 }

@@ -10,4 +10,6 @@ public interface TutorRepository extends JpaRepository<TutorLegal, Integer> {
     Optional<TutorLegal> findTutorLegalById(Integer userId);
 
     Optional<TutorLegal> findTutorLegalByDni(String dni);
+
+    Optional<Integer> getIdByDni(String dni);
 }

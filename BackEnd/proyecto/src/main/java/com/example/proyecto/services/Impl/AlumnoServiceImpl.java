@@ -18,14 +18,14 @@ public class AlumnoServiceImpl implements AlumnoService {
 
     @Override
     public Set<Alumno> findAlumnosByIdCurso(int idCurso) {
-        Set<Alumno> alumnos= alumnoRepo.getAlumnosByIdCurso(idCurso);
-        if(alumnos!=null) return alumnoRepo.getAlumnosByIdCurso(idCurso);
+        Set<Alumno> alumnos = alumnoRepo.getAlumnosByIdCurso(idCurso);
+        if (alumnos != null) return alumnoRepo.getAlumnosByIdCurso(idCurso);
         else return null;
     }
 
     @Override
     public Alumno findAlumnoById(int id) {
-        Optional<Alumno> alumno= alumnoRepo.findAlumnoById(id);
+        Optional<Alumno> alumno = alumnoRepo.findAlumnoById(id);
         return alumno.orElse(null);
     }
 
@@ -35,8 +35,13 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
 
     @Override
-    public Optional<Alumno> findAlumnoByDni(String dni) {
-        return alumnoRepo.findAlumnoByDni(dni);
+    public Alumno findAlumnoByDni(String dni) {
+        return alumnoRepo.findAlumnoByDni(dni).orElse(null);
+    }
+
+    @Override
+    public int getIdAlumnoByDni(String dni) {
+        return alumnoRepo.getIdAlumnoByDni(dni).orElse(0);
     }
 
     @Override

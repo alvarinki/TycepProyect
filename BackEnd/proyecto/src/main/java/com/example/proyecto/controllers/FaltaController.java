@@ -23,31 +23,29 @@ public class FaltaController {
     @PostMapping("/fromAlumno")
     public ResponseEntity<Set<Falta>> getFaltasFromAlumno(@RequestBody int idAlumno, @RequestHeader String token) {
         jwtUtil.validate(token);
-        Set<Falta> faltas= faltaService.findFaltasByIdAlumno(idAlumno);
-        if(faltas!=null) return ResponseEntity.ok(faltas);
+        Set<Falta> faltas = faltaService.findFaltasByIdAlumno(idAlumno);
+        if (faltas != null) return ResponseEntity.ok(faltas);
         else return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/forAlumnos")
-    public ResponseEntity<?> putFaltasToAlumnos(@RequestBody List<Falta> faltas,  @RequestHeader String token) {
+    public ResponseEntity<?> putFaltasToAlumnos(@RequestBody List<Falta> faltas, @RequestHeader String token) {
         jwtUtil.validate(token);
-        System.out.println(faltas.toString());
         faltaService.saveFaltas(faltas);
         return ResponseEntity.ok(true);
     }
 
     @PostMapping("/deleteFromAlumno")
-    public void deleteFaltaFromAlumno(@RequestBody Falta falta,  @RequestHeader String token) {
+    public void deleteFaltaFromAlumno(@RequestBody Falta falta, @RequestHeader String token) {
         jwtUtil.validate(token);
-        System.out.println(falta);
         faltaService.deleteFalta(falta);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Falta> updateFalta(@RequestBody Falta falta,  @RequestHeader String token) {
+    public ResponseEntity<Falta> updateFalta(@RequestBody Falta falta, @RequestHeader String token) {
         jwtUtil.validate(token);
-        Falta f=faltaService.findFaltaById(falta.getId());
-        if(f==null) return ResponseEntity.notFound().build();
+        Falta f = faltaService.findFaltaById(falta.getId());
+        if (f == null) return ResponseEntity.notFound().build();
         else {
             faltaService.updateFalta(f);
             return ResponseEntity.ok(f);

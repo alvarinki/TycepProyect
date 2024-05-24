@@ -25,11 +25,6 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UsuarioController {
 
-//    @GetMapping
-//    public String prueba(){
-//        return "Hola";
-//    }
-
     @Autowired
     UsuarioService usuarioService;
 
@@ -50,48 +45,39 @@ public class UsuarioController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> userLogin(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<LoginResponseDto> userLogin(@RequestBody LoginRequest loginRequest) {
 
-        PasswordEncoder passwordEncoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         Optional<Usuario> user;
 
-        if(loginRequest.getToken().isEmpty()){
-            user= usuarioService.findUsuarioByUsuario(loginRequest.getUsername());
-            System.out.println("Pasa por aquí");
-            System.out.println(user);
-        }
-        else{
-            user= usuarioService.findUsuarioByUsuario(jwtUtil.getValue(loginRequest.getToken()));
-            System.out.println(jwtUtil.getValue(loginRequest.getToken()));
+        if (loginRequest.getToken().isEmpty()) {
+            user = usuarioService.findUsuarioByUsuario(loginRequest.getUsername());
+        } else {
+            user = usuarioService.findUsuarioByUsuario(jwtUtil.getValue(loginRequest.getToken()));
         }
 
 
-        if(user.isPresent()){
-            String encriptedPassword= user.get().getContrasena();
-            if((encriptedPassword!=null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword))||!loginRequest.getToken().isBlank()){
-                String token=loginRequest.getToken();
-                Usuario loggedUser= user.get();
-                if(loginRequest.getToken().isBlank()){
-                    token= jwtUtil.create(loggedUser.getId().toString(), loggedUser.getUsuario());
+        if (user.isPresent()) {
+            String encriptedPassword = user.get().getContrasena();
+            if ((encriptedPassword != null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword)) || !loginRequest.getToken().isBlank()) {
+                String token = loginRequest.getToken();
+                Usuario loggedUser = user.get();
+                if (loginRequest.getToken().isBlank()) {
+                    token = jwtUtil.create(loggedUser.getId().toString(), loggedUser.getUsuario());
                 }
 
-                if(user.get().getDtype().toString().equals("T")){
-                    TutorLegal tutorLegal= tutorService.findTutorLegalByUsuario_Id(loggedUser.getId());
+                if (user.get().getDtype().toString().equals("T")) {
+                    TutorLegal tutorLegal = tutorService.findTutorLegalByUsuario_Id(loggedUser.getId());
                     return new ResponseEntity<>(new LoginResponseDto("Tutor Legal", tutorLegal, token), HttpStatus.OK);
-                }
-                else if(user.get().getDtype().toString().equals("P")){
-                    Profesor profesor= profesorService.findProfesorByUsuario_Id(loggedUser.getId());
-                    return new ResponseEntity<>(new LoginResponseDto("Profesor", profesor, token) , HttpStatus.OK);
-                }
-                else return new ResponseEntity<>(new LoginResponseDto("Admin", loggedUser, token), HttpStatus.OK);
-            }
-            else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                } else if (user.get().getDtype().toString().equals("P")) {
+                    Profesor profesor = profesorService.findProfesorByUsuario_Id(loggedUser.getId());
+                    return new ResponseEntity<>(new LoginResponseDto("Profesor", profesor, token), HttpStatus.OK);
+                } else return new ResponseEntity<>(new LoginResponseDto("Admin", loggedUser, token), HttpStatus.OK);
+            } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
-
 
 
 //    @PostMapping("/login")

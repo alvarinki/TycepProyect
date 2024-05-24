@@ -26,12 +26,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Optional<Usuario> findUsuarioByUsuario(String nombreUsuario) {
-        return  usuarioRepo.findUsuarioByUsuario(nombreUsuario);
+        return usuarioRepo.findUsuarioByUsuario(nombreUsuario);
     }
 
     @Override
     public Usuario findUsuarioById(int id) {
-        Optional<Usuario> user= usuarioRepo.findUsuarioById(id);
+        Optional<Usuario> user = usuarioRepo.findUsuarioById(id);
         return user.orElse(null);
     }
 
@@ -43,5 +43,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public void deleteUsuarios(List<Usuario> users) {
         usuarioRepo.deleteAll(users);
+    }
+
+    @Override
+    public Usuario findUsuarioByNombreAndApellidos(String nombre, String apellidos) {
+        return usuarioRepo.findUsuarioByNombreAndApellidos(nombre, apellidos).orElse(null);
     }
 }

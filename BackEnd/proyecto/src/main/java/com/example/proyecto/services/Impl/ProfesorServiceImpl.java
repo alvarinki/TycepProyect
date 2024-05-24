@@ -39,10 +39,8 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
 
     @Override
-    public int findProfesorByDni(String dni) {
-        Optional<Profesor> profesor= profesorRepo.findProfesorByDni(dni);
-        if(profesor.isPresent()) return profesor.get().getId();
-        else return 0;
+    public Profesor findProfesorByDni(String dni) {
+        return profesorRepo.findProfesorByDni(dni).orElse(null);
     }
 
     @Override

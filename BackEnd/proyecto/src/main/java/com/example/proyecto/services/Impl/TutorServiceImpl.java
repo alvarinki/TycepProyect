@@ -38,9 +38,12 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    public int findTutorLegalByDni(String dni) {
-        Optional<TutorLegal> tutorLegal= tutorRepo.findTutorLegalByDni(dni);
-        if(tutorLegal.isPresent()) return tutorLegal.get().getId();
-        else return 0;
+    public int getIDTutorLegalByDni(String dni) {
+        return tutorRepo.getIdByDni(dni).orElse(0);
+    }
+
+    @Override
+    public TutorLegal findTutorLegalByDni(String dni) {
+        return tutorRepo.findTutorLegalByDni(dni).orElse(null);
     }
 }

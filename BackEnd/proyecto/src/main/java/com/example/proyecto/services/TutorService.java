@@ -1,10 +1,8 @@
 package com.example.proyecto.services;
 
-import com.example.proyecto.dtos.TutorDto;
 import com.example.proyecto.model.TutorLegal;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TutorService {
 
@@ -16,5 +14,7 @@ public interface TutorService {
 
     void deleteTutores(List<TutorLegal> tutoresLegales);
 
-    int findTutorLegalByDni(String dni);
+    int getIDTutorLegalByDni(String dni);
+
+    TutorLegal findTutorLegalByDni(String dni);
 }

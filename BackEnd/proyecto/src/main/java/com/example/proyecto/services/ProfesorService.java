@@ -16,7 +16,7 @@ public interface ProfesorService {
 
     Set<Curso> getCursosFromProfesor(int id);
 
-    int findProfesorByDni(String dni);
+    Profesor findProfesorByDni(String dni);
 
     void saveProfesores(List<Profesor> profesores);
 

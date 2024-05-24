@@ -32,8 +32,4 @@ public class Curso {
     @OneToMany(mappedBy = "idCurso")
     private Set<Horario> horarios = new LinkedHashSet<>();
 
-//    @ManyToMany(mappedBy = "cursos")
-//    @JsonIgnore
-//    private Set<Profesor> profesores= new LinkedHashSet<>();
-
 }

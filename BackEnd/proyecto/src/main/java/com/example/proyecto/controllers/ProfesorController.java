@@ -46,16 +46,16 @@ public class ProfesorController {
     }
 
     @GetMapping("/horarioFaltas/{idProfesor}/{dia}")
-    public ResponseEntity<Set<Horario>> getHorariosForFaltas(@PathVariable int idProfesor, @PathVariable Dia dia){
-        Set<Horario> horarios=horarioService.findHorariosByIdProfesorAndDia(idProfesor, dia );
-        if(horarios!=null&&!horarios.isEmpty()) return new ResponseEntity<>(horarios, HttpStatus.OK);
+    public ResponseEntity<Set<Horario>> getHorariosForFaltas(@PathVariable int idProfesor, @PathVariable Dia dia) {
+        Set<Horario> horarios = horarioService.findHorariosByIdProfesorAndDia(idProfesor, dia);
+        if (horarios != null && !horarios.isEmpty()) return new ResponseEntity<>(horarios, HttpStatus.OK);
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/horario/{idProfesor}")
-    public ResponseEntity<Set<Horario>> getHorariosFromProfesor(@PathVariable int idProfesor){
-        Set<Horario> horarios= horarioService.findHorariosByIdProfesor(idProfesor);
-        if(horarios!=null&&!horarios.isEmpty()) return new ResponseEntity<>(horarios, HttpStatus.OK);
+    public ResponseEntity<Set<Horario>> getHorariosFromProfesor(@PathVariable int idProfesor) {
+        Set<Horario> horarios = horarioService.findHorariosByIdProfesor(idProfesor);
+        if (horarios != null && !horarios.isEmpty()) return new ResponseEntity<>(horarios, HttpStatus.OK);
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

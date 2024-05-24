@@ -20,9 +20,8 @@ public class MensajeController {
 
 
     @PostMapping("/subir")
-    public void subirMensaje(@RequestBody Mensaje mensaje, @RequestHeader String token){
+    public void subirMensaje(@RequestBody Mensaje mensaje, @RequestHeader String token) {
         jwtUtil.validate(token);
         mensajeService.saveMessage(mensaje);
-        //return new ResponseEntity<>(HttpStatus.OK);
     }
 }
