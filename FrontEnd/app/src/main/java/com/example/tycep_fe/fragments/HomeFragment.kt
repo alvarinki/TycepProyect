@@ -13,12 +13,15 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
@@ -196,11 +199,21 @@ class HomeFragment : Fragment() {
                 when(menuItem.itemId){
                     R.id.nav_studentdata_or_course->{
                         //(userViewModel as UserViewModel)
-                        findNavController().navigate(R.id.action_homeFragment_to_recyclerAlumnos)
+                        //findNavController().navigate(R.id.action_homeFragment_to_recyclerAlumnos)
+                        val action = HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen="Cursos")
+                        findNavController().navigate(action)
                         true
                     }
                     R.id.nav_schedule->{
 
+//                        val origen="Home"
+//                        val fragment = Alumnos.newInstance(origen)
+//                        parentFragmentManager.commit {
+//                            replace(androidx.navigation.fragment.R.id.nav_host_fragment_container, fragment)
+//                            addToBackStack(null)
+//                        }
+                        val action = HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen="Home")
+                        findNavController().navigate(action)
                         true
                     }
                     R.id.nav_absences->{

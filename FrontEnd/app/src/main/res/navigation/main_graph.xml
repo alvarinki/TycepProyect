@@ -24,16 +24,19 @@
             app:destination="@id/chat" />
         <action
             android:id="@+id/action_homeFragment_to_recyclerAlumnos"
-            app:destination="@id/recyclerAlumnos" />
+            app:destination="@id/recyclerAlumnos">
+        </action>
         <action
             android:id="@+id/action_homeFragment_to_cursos"
             app:destination="@id/cursos" />
         <action
             android:id="@+id/action_homeFragment_to_horario"
-            app:destination="@id/horario" />
+            app:destination="@id/horario"/>
         <action
             android:id="@+id/action_homeFragment_to_pselectHorario"
             app:destination="@id/pselectHorario" />
+
+
     </fragment>
     <fragment
         android:id="@+id/chat"
@@ -48,6 +51,13 @@
         <action
             android:id="@+id/action_recyclerAlumnos_to_showStudent"
             app:destination="@id/showStudent" />
+        <action
+            android:id="@+id/action_recyclerAlumnos_to_horario"
+            app:destination="@id/horario" />
+        <argument
+            android:name="origen"
+            app:argType="string"
+            android:defaultValue="a" />
     </fragment>
     <fragment
         android:id="@+id/cursos"
@@ -56,6 +66,7 @@
         <action
             android:id="@+id/action_cursos_to_recyclerAlumnos"
             app:destination="@id/recyclerAlumnos" />
+
     </fragment>
     <fragment
         android:id="@+id/showStudent"
@@ -72,7 +83,9 @@
         android:id="@+id/horario"
         android:name="com.example.tycep_fe.fragments.horario"
         android:label="fragment_horario"
-        tools:layout="@layout/fragment_horario" />
+        tools:layout="@layout/fragment_horario">
+
+    </fragment>
 
     <fragment
         android:id="@+id/pselectHorario"

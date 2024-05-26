@@ -4,11 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication
 import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.OnespanItemBinding
+import com.example.tycep_fe.fragments.CursosDirections
+import com.example.tycep_fe.fragments.HomeFragmentDirections
 
 import com.example.tycep_fe.models.Curso
 
@@ -29,7 +32,9 @@ class CoursesAdapter (private val courses: Set<Curso>, private val context: Cont
 
             TokenUsuarioApplication.prefs = Prefs(context)
             TokenUsuarioApplication.prefs.saveData(course.id.toString())
-            holder.itemView.findNavController().navigate(R.id.action_cursos_to_recyclerAlumnos)
+            val action = CursosDirections.actionCursosToRecyclerAlumnos("Cursos")
+            holder.itemView.findNavController().navigate(action)
+            //holder.itemView.findNavController().navigate(R.id.action_cursos_to_recyclerAlumnos)
         }
     }
 

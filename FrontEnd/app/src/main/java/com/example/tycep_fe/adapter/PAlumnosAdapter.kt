@@ -14,7 +14,7 @@ import com.example.tycep_fe.databinding.TwospanItemBinding
 import com.example.tycep_fe.models.Alumno
 import com.squareup.picasso.Picasso
 
-class PAlumnosAdapter (private val alumnos:Set<Alumno>, private val context: Context) :  RecyclerView.Adapter<PAlumnosAdapter.AlumnosViewHolder>(){
+class PAlumnosAdapter (private val alumnos:Set<Alumno>, private val context: Context, private val origen:String) :  RecyclerView.Adapter<PAlumnosAdapter.AlumnosViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlumnosViewHolder {
         val binding = TwospanItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AlumnosViewHolder(binding)
@@ -30,7 +30,14 @@ class PAlumnosAdapter (private val alumnos:Set<Alumno>, private val context: Con
 
             TokenUsuarioApplication.prefs = Prefs(context)
             TokenUsuarioApplication.prefs.saveData(alumno.id.toString())
-            holder.itemView.findNavController().navigate(R.id.action_recyclerAlumnos_to_showStudent)
+
+            if(origen=="Home"){
+                holder.itemView.findNavController().navigate(R.id.action_recyclerAlumnos_to_horario)
+            }
+            else if(origen=="Cursos"){
+
+                holder.itemView.findNavController().navigate(R.id.action_recyclerAlumnos_to_showStudent)
+            }
         }
     }
 

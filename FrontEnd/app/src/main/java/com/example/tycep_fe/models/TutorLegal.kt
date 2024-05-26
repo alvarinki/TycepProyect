@@ -21,6 +21,8 @@ data class TutorLegal(
     val telefContacto:String,
     @SerializedName("domicilio")
     val domicilio:String,
+    @SerializedName("dni")
+    val dni:String,
     @SerializedName("alumnos")
     var alumnos:Set<Alumno>?
 )

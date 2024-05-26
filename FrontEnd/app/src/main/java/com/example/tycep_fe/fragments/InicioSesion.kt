@@ -43,8 +43,8 @@ class InicioSesion : Fragment() {
     ): View? {
         val prefs= Prefs(requireContext())
         //Linea para pruebas
-        //prefs.clearToken()
-        println(prefs.getToken())
+        prefs.clearToken()
+        //println(prefs.getToken())
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         if(prefs.getToken()?.length!! >4){
             val loginRequestDto= LoginRequestDto("", "", prefs.getToken().toString())

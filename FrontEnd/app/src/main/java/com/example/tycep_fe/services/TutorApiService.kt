@@ -3,6 +3,7 @@ package com.example.tycep_fe.services
 import com.example.tycep_fe.Dtos.LoginRequestDto
 import com.example.tycep_fe.Dtos.LoginResponseDto
 import com.example.tycep_fe.models.Alumno
+import com.example.tycep_fe.models.Horario
 import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.models.Usuario
 import retrofit2.Response
@@ -19,8 +20,11 @@ private const val urlBase = "http://192.168.56.1:8080/"
 private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(GsonConverterFactory.create()).build()
 
 interface TutorApiService{
-    @POST("tutor/getHisAlumnos")
+    @POST("tutor/getAlumnos")
     suspend fun getTutorsAlumnos(@Body idTutor:Int, @Header(value = "token") token: String): Response<Set<Alumno>>
+
+    @POST("tutor/getHorarioFromAlumno")
+    suspend fun getHorarioFromAlumno(@Body idCurso:Int, @Header(value = "token") token: String):Response<Set<Horario>>
 
 }
 

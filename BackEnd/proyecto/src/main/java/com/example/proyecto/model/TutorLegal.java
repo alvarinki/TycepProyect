@@ -42,6 +42,7 @@ public class TutorLegal extends Usuario{
     @JoinTable(name="Tutor_legal_Alumno", joinColumns =
             {@JoinColumn(name = "id_tutor_legal")},
             inverseJoinColumns = {@JoinColumn(name = "id_alumno")})
+    @JsonIgnore
     private Set<Alumno> alumnos= new LinkedHashSet<>();
 
 //    @OneToMany(mappedBy = "tutorLegal", cascade = CascadeType.ALL, orphanRemoval = true)

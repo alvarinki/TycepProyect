@@ -75,6 +75,11 @@ class UserViewModel(): ViewModel() {
                     val user= response.body()?.userData
 
                     val tutor: TutorLegal=  Gson().fromJson(Gson().toJson(user), TutorLegal::class.java)
+
+                    val responseChild = tutorRepo.getTutorsAlumnos(tutor.id, response.body()!!.token)
+                    if(responseChild.isSuccessful){
+                        tutor.alumnos=responseChild.body()
+                    }
                     _tutorLegal.postValue(tutor)
                 }
                 else typeUser="Admin"
@@ -118,6 +123,7 @@ class UserViewModel(): ViewModel() {
     fun getTutorsAlumnos(idTutor: Int, token: String){
         viewModelScope.launch {
             val response= tutorRepo.getTutorsAlumnos(idTutor, token)
+            println("Alumnos del repo "+response.body())
             if(response.isSuccessful){
                 val tutorsalumnos= response.body()
                 _tutorLegal.postValue(_tutorLegal.value.apply { this?.alumnos = tutorsalumnos })
@@ -145,6 +151,15 @@ class UserViewModel(): ViewModel() {
         }
     }
 
+    fun getHorarioFromAlumno(idAlumno: Int, token: String){
+        viewModelScope.launch {
+            val response = tutorRepo.getHorarioFromAlumno(idAlumno, token)
+            if(response.isSuccessful){
+                _horarios.postValue(response.body())
+            }
+        }
+    }
+
     private fun obtenerNombreDiaSemana(): Dia? {
         val dayOfWeek = LocalDate.now().dayOfWeek
         return when(dayOfWeek) {
@@ -158,6 +173,7 @@ class UserViewModel(): ViewModel() {
             //= else -> Dia.L
         }
     }
+
 
 
 }
