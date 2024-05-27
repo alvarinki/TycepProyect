@@ -106,7 +106,6 @@ public class FileManager {
                 String[] datos = linea.split(";");
                 if (datos.length >= 5) {
                     TutorLegal tutor = new TutorLegal();
-
                     if (comprobarNombre_Apellidos(datos[0].trim()) || comprobarNombre_Apellidos(datos[1].trim())) {
                         tutor.setNombre(datos[0].trim());
                         tutor.setApellidos(datos[1].trim());
@@ -143,10 +142,12 @@ public class FileManager {
                         nombreUsuario = generarUsername(prefijo);
                     } while (usuarioService.findUsuarioByUsuario(nombreUsuario).isPresent());
                     tutor.setUsuario(nombreUsuario);
-                    adminsUserData.add(new AdminsUserData(nombreUsuario, tutor.getContrasena()));
-                    PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-                    tutor.setContrasena(passwordEncoder.encode(tutor.getContrasena()));
-                    tutores.add(tutor);
+                    if (tutorService.findTutorLegalByDni(tutor.getDni()) == null) {
+                        adminsUserData.add(new AdminsUserData(nombreUsuario, tutor.getContrasena()));
+                        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+                        tutor.setContrasena(passwordEncoder.encode(tutor.getContrasena()));
+                        tutores.add(tutor);
+                    }
                 }
                 numeroLinea++;
             }
@@ -214,7 +215,6 @@ public class FileManager {
         notifyUsersData(ruta, adminsUserData, "Admin");
         return "Administradores registrados correctamente";
     }
-
 
     public String mapAlumnos(String ruta) {
         List<Alumno> alumnos = new ArrayList<>();

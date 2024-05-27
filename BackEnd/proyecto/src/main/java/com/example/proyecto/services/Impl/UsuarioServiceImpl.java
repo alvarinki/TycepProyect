@@ -49,4 +49,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario findUsuarioByNombreAndApellidos(String nombre, String apellidos) {
         return usuarioRepo.findUsuarioByNombreAndApellidos(nombre, apellidos).orElse(null);
     }
+
+    @Override
+    public Character findDTypeFromUsuarioByUsuario(String nombreUsuario) {
+        return usuarioRepo.findDTypeFromUsuarioByUsuario(nombreUsuario).orElse(null);
+    }
 }

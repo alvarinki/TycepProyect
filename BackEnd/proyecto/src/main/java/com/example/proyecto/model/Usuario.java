@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -45,4 +47,15 @@ public class Usuario {
             inverseJoinColumns = {@JoinColumn(name = "id_chat")})
     private Set<Chat> chats= new LinkedHashSet<>();
 
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> usuarioMap = new HashMap<>();
+        usuarioMap.put("usuario", this.usuario);
+        usuarioMap.put("contrasena", this.contrasena);
+        usuarioMap.put("nombre", this.nombre);
+        usuarioMap.put("apellidos", this.apellidos);
+        usuarioMap.put("dtype", this.dtype);
+        usuarioMap.put("chats", this.chats);
+        return usuarioMap;
+    }
 }

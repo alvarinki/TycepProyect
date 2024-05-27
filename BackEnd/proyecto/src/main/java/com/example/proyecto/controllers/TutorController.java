@@ -26,8 +26,8 @@ public class TutorController {
     HorarioService horarioService;
 
     @PostMapping("/getAlumnos")
-    public ResponseEntity<Set<Alumno>> getAlumnosFromTutorLegal(@RequestBody int idTutor) {
-        //jwtUtil.validate(token);
+    public ResponseEntity<Set<Alumno>> getAlumnosFromTutorLegal(@RequestBody int idTutor, @RequestHeader String token) {
+        jwtUtil.validate(token);
         TutorLegal tutorLegal = tutorService.findTutorLegalByUsuario_Id(idTutor);
         if (tutorLegal != null) {
             Set<Alumno> alumnos = tutorLegal.getAlumnos();
