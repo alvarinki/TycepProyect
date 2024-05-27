@@ -190,4 +190,9 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/prueba")
+    public void verUsuariosdeChat(@RequestBody String idChat) {
+        firebaseService.obtenerUsuariosDeChat(idChat);
+    }
+
 }

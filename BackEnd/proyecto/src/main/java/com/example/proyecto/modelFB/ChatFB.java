@@ -16,6 +16,7 @@ public class ChatFB {
     private boolean boletin;
     private List<MensajeFB> mensajes;
     private String nombreChat;
+    private Map<String, Boolean> usuarios;
 
     public Map<String, Object> toMap() {
         Map<String, Object> chatMap = new HashMap<>();
@@ -27,6 +28,8 @@ public class ChatFB {
             mensajesMap.add(mensaje.toMap());
         }
         chatMap.put("mensajes", mensajesMap);
+
+        chatMap.put("usuarios", usuarios);
 
         return chatMap;
     }
