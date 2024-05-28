@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.seleccionFaltas"
-    android:background="@color/secondary">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,17 +18,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:textSize="30sp"
+            android:backgroundTint="@color/primary"
             android:text="Ver faltas por curso"
-            android:backgroundTint="@color/primary"/>
+            android:textSize="28sp" />
 
         <Button
             android:id="@+id/btnPonerFaltas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
+            android:backgroundTint="@color/primary"
             android:text="Poner faltas de hoy"
-            android:backgroundTint="@color/primary"/>
+            android:textSize="28sp" />
 
     </LinearLayout>
 

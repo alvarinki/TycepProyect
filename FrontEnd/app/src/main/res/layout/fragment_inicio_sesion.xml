@@ -5,9 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".fragments.InicioSesion"
-    android:background="@color/secondary"
-    >
+    tools:context=".fragments.InicioSesion">
 
     <ImageView
         android:id="@+id/imageViewLogo"
@@ -28,7 +26,7 @@
         android:hint="Nombre de usuario"
 
         android:inputType="text"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <!-- EditText para la contraseña -->
     <EditText
@@ -40,7 +38,7 @@
         android:gravity="center"
         android:hint="Contraseña"
         android:inputType="textPassword"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <!-- Botón para iniciar sesión -->
     <Button

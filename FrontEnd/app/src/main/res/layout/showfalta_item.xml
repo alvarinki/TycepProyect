@@ -69,6 +69,7 @@
         android:layout_width="50dp"
         android:layout_height="48dp"
         android:layout_marginStart="10dp"
+        android:src="@drawable/delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivEditar"
         app:layout_constraintTop_toTopOf="parent"

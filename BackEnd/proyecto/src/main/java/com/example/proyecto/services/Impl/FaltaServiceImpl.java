@@ -1,7 +1,10 @@
 package com.example.proyecto.services.Impl;
 
+import com.example.proyecto.model.Alumno;
 import com.example.proyecto.model.Falta;
+import com.example.proyecto.repositories.AlumnoRepository;
 import com.example.proyecto.repositories.FaltaRepository;
+import com.example.proyecto.repositories.UsuarioRepository;
 import com.example.proyecto.services.FaltaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,9 @@ public class FaltaServiceImpl implements FaltaService {
 
     @Autowired
     private FaltaRepository faltaRepo;
+
+    @Autowired
+    private AlumnoRepository alumnoRepository;
 
     @Override
     public Set<Falta> findFaltasByIdAlumno(int alumnoId) {
@@ -56,7 +62,17 @@ public class FaltaServiceImpl implements FaltaService {
 
     @Override
     public Set<Falta> findFaltasByIdCurso(int idCurso) {
-        return faltaRepo.findFaltasByIdCurso(idCurso).orElse(null);
+        Set<Falta> faltas= faltaRepo.findFaltasByIdCurso(idCurso).orElse(null);
+        if(faltas!=null){
+           for(Falta f:faltas){
+               Alumno alumno= alumnoRepository.findAlumnoById(f.getIdAlumno()).orElse(null);
+               if(alumno!=null){
+                   f.setAsignatura(alumno.getNombre()+" "+alumno.getApellidos());
+               }
+           }
+           return faltas;
+        }
+        else return null;
     }
 
 }

@@ -156,7 +156,7 @@ class HomeFragment : Fragment() {
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.nav_studentdata_or_course -> {
-                        if (profesor.cursos!!.isEmpty()) {
+                        if (profesor.cursos==null) {
                             (userViewModel as UserViewModel).getCursosFromProfesor()
                         }
                         val action =
@@ -173,6 +173,10 @@ class HomeFragment : Fragment() {
                     }
 
                     R.id.nav_absences -> {
+                        if (profesor.cursos==null) {
+                            (userViewModel as UserViewModel).getCursosFromProfesor()
+                        }
+
                         findNavController().navigate(R.id.action_homeFragment_to_seleccionFaltas)
                         true
                     }

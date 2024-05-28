@@ -47,23 +47,28 @@ class FaltasAlumno : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
         val prefs = Prefs(requireContext())
+        println("Faltas alumno y llega de "+origen)
         alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
         if (origen == "ShowStudent") {
             (alumnoViewModel as AlumnoViewModel).getFaltasFromAlumno(prefs.getToken().toString())
         } else if (origen == "Cursos") {
+            println("Entra en primer if de cursos")
             (alumnoViewModel as AlumnoViewModel).getFaltasFromCurso(
                 prefs.getData()!!.toInt(),
                 prefs.getToken().toString()
             )
         }
         (alumnoViewModel as AlumnoViewModel)._alumno.observe(viewLifecycleOwner) { alumno ->
-            if (alumno.faltas?.isNotEmpty() == true && origen == "ShowStudent")
-                initReciclerView(alumno.faltas!!, alumnoViewModel as AlumnoViewModel)
-            else if (origen == "Cursos") {
-                (alumnoViewModel as AlumnoViewModel)._faltas.observe(viewLifecycleOwner) { faltas ->
-                    if (faltas != null) {
-                        initReciclerView(faltas, alumnoViewModel as AlumnoViewModel)
-                    }
+            if (alumno.faltas?.isNotEmpty() == true && origen == "ShowStudent"){
+                println("llega aqui")
+                initReciclerView(alumno.faltas!!, alumnoViewModel as AlumnoViewModel)}
+            }
+
+        if (origen == "Cursos") {
+            (alumnoViewModel as AlumnoViewModel)._faltas.observe(viewLifecycleOwner) { faltas ->
+                println("Llega " +faltas)
+                if (faltas != null) {
+                    initReciclerView(faltas, alumnoViewModel as AlumnoViewModel)
                 }
             }
         }

@@ -22,7 +22,7 @@ public class FirebaseService {
     @PostConstruct
     public void initialize() throws IOException {
         if (firebaseApp == null) {
-            FileInputStream serviceAccount = new FileInputStream("C:/Users/acf/Desktop/Formacion/Proyecto/pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json");
+            FileInputStream serviceAccount = new FileInputStream("C:/Users/alvar/OneDrive/Escritorio/pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://pruebatycep-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -32,7 +32,7 @@ public class FirebaseService {
         }
 
     }
-
+    //"C:/Users/alvar/OneDrive/Escritorio/pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json"
     public void guardarChat(ChatFB chatFB) {
         // Obtener una referencia a la ubicación en la base de datos Firebase
         DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference("Chats");
