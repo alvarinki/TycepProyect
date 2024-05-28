@@ -18,18 +18,12 @@ private const val urlBase = "http://192.168.56.1:8080/"
 private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(GsonConverterFactory.create()).build()
 
 interface UserApiService{
-
     @POST("user/login")
     suspend fun loginUser(@Body loginRequestDto: LoginRequestDto): Response<LoginResponseDto>
-
     @POST("user/recovery")
     suspend fun userRecovery(@Header("Authorization") token:String, userType:String): Response<Any>
-
     @POST("message/subir")
     suspend fun uploadMessage(@Body message: Mensaje, @Header(value = "token") token:String)
-
-
-
 }
 
 object UserApi{

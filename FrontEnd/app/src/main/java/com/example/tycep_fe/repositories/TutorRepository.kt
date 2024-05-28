@@ -10,6 +10,5 @@ import retrofit2.http.Header
 
 class TutorRepository {
     suspend fun getTutorsAlumnos(@Body idTutor:Int, @Header(value = "token") token: String): Response<Set<Alumno>> = TutorApi.retrofitService.getTutorsAlumnos(idTutor, token)
-
     suspend fun getHorarioFromAlumno(@Body idCurso:Int, @Header(value = "token") token: String):Response<Set<Horario>> = TutorApi.retrofitService.getHorarioFromAlumno(idCurso, token)
 }

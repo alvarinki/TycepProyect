@@ -51,4 +51,12 @@ public class FaltaController {
             return ResponseEntity.ok(f);
         }
     }
+
+    @PostMapping("/fromCurso")
+    public ResponseEntity<Set<Falta>> getFaltasFromCurso(@RequestBody int idCurso, @RequestHeader String token) {
+        jwtUtil.validate(token);
+        Set<Falta> faltas= faltaService.findFaltasByIdCurso(idCurso);
+        if(faltas != null) return ResponseEntity.ok(faltas);
+        else return ResponseEntity.notFound().build();
+    }
 }

@@ -26,7 +26,7 @@ import java.time.LocalDate
 
 class PFaltas : Fragment() {
 
-    lateinit var binding:FragmentPFaltasBinding
+    lateinit var binding: FragmentPFaltasBinding
     private lateinit var userViewModel: ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,34 +39,35 @@ class PFaltas : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding= FragmentPFaltasBinding.inflate(inflater, container, false)
-        val root:View= binding.root
+        binding = FragmentPFaltasBinding.inflate(inflater, container, false)
+        val root: View = binding.root
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        prefs= Prefs(requireContext())
-        val idCurso=prefs.getData()?.split(",")?.get(3)?.toInt()
+        prefs = Prefs(requireContext())
+        val idCurso = prefs.getData()?.split(",")?.get(3)?.toInt()
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        (userViewModel as UserViewModel)._profesor.observe(requireActivity()){profesor ->
-            if(profesor.cursos?.filter { curso -> curso.id==idCurso }?.get(0)?.alumnos==null){
+        (userViewModel as UserViewModel)._profesor.observe(requireActivity()) { profesor ->
+            if (profesor.cursos?.filter { curso -> curso.id == idCurso }?.get(0)?.alumnos == null) {
                 (userViewModel as UserViewModel).getAlumnosFromCurso(idCurso!!)
             }
         }
 
-        (userViewModel as UserViewModel)._profesor.observe(requireActivity()){profesor ->
-            profesor.cursos!!.filter { curso -> curso.id==idCurso }[0].alumnos.let {alumnos ->
-                val recyclerView= view.findViewById<RecyclerView>(R.id.recyclerPutFaltas)
-                recyclerView?.layoutManager= GridLayoutManager(view.context, 2)
-                val adapter= PutFaltasAdapter(alumnos, requireContext())
-                recyclerView?.adapter= adapter
+        (userViewModel as UserViewModel)._profesor.observe(requireActivity()) { profesor ->
+            profesor.cursos!!.filter { curso -> curso.id == idCurso }[0].alumnos.let { alumnos ->
+                val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerPutFaltas)
+                recyclerView?.layoutManager = GridLayoutManager(view.context, 2)
+                val adapter = PutFaltasAdapter(alumnos)
+                recyclerView?.adapter = adapter
 
-                binding.floatingButton.setOnClickListener{
+                binding.floatingButton.setOnClickListener {
 
-                    val faltas:List<Falta> = generateAbscenses(adapter.getFaltas())
-                    val alumnoViewModel= ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
-                    val token:String= prefs.getToken().toString()
+                    val faltas: List<Falta> = generateAbscenses(adapter.getFaltas())
+                    val alumnoViewModel =
+                        ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
+                    val token: String = prefs.getToken().toString()
                     println(faltas)
                     alumnoViewModel.putFaltas(faltas, token)
                     //Comentado para evitar bucle durante pruebas
@@ -137,19 +138,19 @@ class PFaltas : Fragment() {
     }
 
 
-    private fun generateAbscenses(chuletaFaltas:List<String>):List<Falta>{
+    private fun generateAbscenses(chuletaFaltas: List<String>): List<Falta> {
         var faltasDefinitivas: MutableList<Falta> = emptyList<Falta>().toMutableList()
-        val fecha:String= LocalDate.now().toString()
-        val hora:Int= prefs.getData()!!.split(",")[1].toInt()
-        val asignatura:String= prefs.getData()!!.split(",")[2]
-        for(chuleta in chuletaFaltas){
+        val fecha: String = LocalDate.now().toString()
+        val hora: Int = prefs.getData()!!.split(",")[1].toInt()
+        val asignatura: String = prefs.getData()!!.split(",")[2]
+        for (chuleta in chuletaFaltas) {
             val justificacion = chuleta.substring(0, 1)
 
-            val booleano = justificacion=="J"
+            val booleano = justificacion == "J"
 
-            val idAlumno= chuleta.substring(1).toInt()
+            val idAlumno = chuleta.substring(1).toInt()
             println("IdAlumno: $idAlumno")
-            val falta=Falta(null, hora, asignatura, fecha, idAlumno, booleano)
+            val falta = Falta(null, hora, asignatura, fecha, idAlumno, booleano)
             println(falta)
             faltasDefinitivas.add(falta)
         }

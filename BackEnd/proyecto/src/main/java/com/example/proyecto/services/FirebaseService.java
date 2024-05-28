@@ -10,6 +10,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -21,8 +22,7 @@ public class FirebaseService {
     @PostConstruct
     public void initialize() throws IOException {
         if (firebaseApp == null) {
-            FileInputStream serviceAccount = new FileInputStream("C:/Users/alvar/OneDrive/Escritorio/pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
-
+            FileInputStream serviceAccount = new FileInputStream("C:/Users/acf/Desktop/Formacion/Proyecto/pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://pruebatycep-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -32,6 +32,7 @@ public class FirebaseService {
         }
 
     }
+
     public void guardarChat(ChatFB chatFB) {
         // Obtener una referencia a la ubicación en la base de datos Firebase
         DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference("Chats");
@@ -50,6 +51,7 @@ public class FirebaseService {
             }
         });
     }
+
     public void obtenerUsuariosDeChat(String chatId) {
         String safeIdChat = chatId.replaceAll("[.$#\\[\\]/]", "_");
         DatabaseReference chatUsuariosRef = FirebaseDatabase.getInstance().getReference("Chats").child(safeIdChat).child("usuarios");
@@ -59,8 +61,8 @@ public class FirebaseService {
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                     String userId = userSnapshot.getKey();
                     System.out.println("Usuario en el chat: " + userId);
-                    // Aquí podrías cargar más datos del usuario si es necesario
-                    obtenerDatosUsuario(userId);
+                    //Aquí podrías cargar más datos del usuario si es necesario
+                    //obtenerDatosUsuario(userId);
                 }
             }
 
@@ -71,25 +73,26 @@ public class FirebaseService {
         });
     }
 
-    private void obtenerDatosUsuario(String userId) {
-        DatabaseReference usuarioRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(userId);
-        usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    UsuarioFB usuario = snapshot.getValue(UsuarioFB.class);
-                    System.out.println("Datos del usuario: " + usuario.getUsername());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                System.err.println("Error al obtener datos del usuario: " + error.getMessage());
-            }
-
-        });
-
-    }
+}
+//    private void obtenerDatosUsuario(String userId) {
+//        DatabaseReference usuarioRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(userId);
+//        usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//                if (snapshot.exists()) {
+//                    UsuarioFB usuario = snapshot.getValue(UsuarioFB.class);
+//                    System.out.println("Datos del usuario: " + usuario.getUsername());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                System.err.println("Error al obtener datos del usuario: " + error.getMessage());
+//            }
+//
+//        });
+//
+//    }
 
 //    @PostConstruct
 //    public void initialize() throws IOException {
@@ -126,14 +129,5 @@ public class FirebaseService {
 //    }
 
 
-}
-
-
-
-
-
-
-
-
-    //"C:\Users\acf\Desktop\Formacion\Proyecto\pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json"
+//"C:\Users\acf\Desktop\Formacion\Proyecto\pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json"
 

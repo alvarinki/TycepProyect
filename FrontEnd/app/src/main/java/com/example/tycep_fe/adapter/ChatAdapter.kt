@@ -15,7 +15,8 @@ import com.example.tycep_fe.databinding.ChatItemBinding
 import com.example.tycep_fe.models.Chat
 import kotlinx.coroutines.NonDisposableHandle.parent
 
-class ChatAdapter(private val chats:Set<Chat>, private val context: Context) :  RecyclerView.Adapter<ChatAdapter.ViewHolder>(){
+class ChatAdapter(private val chats: Set<Chat>, private val context: Context) :
+    RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ChatItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,24 +24,22 @@ class ChatAdapter(private val chats:Set<Chat>, private val context: Context) :  
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val chat= chats.toList()[position]
+        val chat = chats.toList()[position]
         holder.render(chat)
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
 
-            prefs= Prefs(context)
+            prefs = Prefs(context)
             prefs.saveData(chat.id.toString())
             holder.itemView.findNavController().navigate(R.id.action_homeFragment_to_chat)
         }
     }
 
-    override fun getItemCount(): Int =chats.size
+    override fun getItemCount(): Int = chats.size
 
-
-
-
-    inner class ViewHolder(private val binding: ChatItemBinding): RecyclerView.ViewHolder(binding.root) {
-        fun render(chat: Chat){
-            binding.tvChatName.text=chat.nombreChat.toString()
+    inner class ViewHolder(private val binding: ChatItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun render(chat: Chat) {
+            binding.tvChatName.text = chat.nombreChat.toString()
             //binding.tvLastMessage.text= chat.mensajes.toList()[chat.mensajes.size-1].contenido
         }
     }

@@ -65,38 +65,43 @@ class horario : Fragment() {
         //cargarHorarios(curso5.horario.filter { h -> h.idProfesor== 1 }.toSet())
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        (userViewModel as UserViewModel)._profesor.observe(requireActivity()){
+        (userViewModel as UserViewModel)._profesor.observe(requireActivity()) {
             (userViewModel as UserViewModel).getHorarioFromProfesor()
-            (userViewModel as UserViewModel)._horarios.observe(requireActivity()){horario ->
+            (userViewModel as UserViewModel)._horarios.observe(requireActivity()) { horario ->
                 println(horario)
-                if(horario!=null) cargarHorarios(horario)
+                if (horario != null) cargarHorarios(horario)
 
             }
         }
 
-        (userViewModel as UserViewModel)._tutorLegal.observe(requireActivity()){
-            val prefs= Prefs(requireContext())
-            val idAlumno= prefs.getData()?.toInt()
+        (userViewModel as UserViewModel)._tutorLegal.observe(requireActivity()) {
+            val prefs = Prefs(requireContext())
+            val idAlumno = prefs.getData()?.toInt()
             (userViewModel as UserViewModel).getHorarioFromAlumno(idAlumno!!, prefs.getToken()!!)
-            (userViewModel as UserViewModel)._horarios.observe(requireActivity()){horario ->
-                if(horario!=null){
+            (userViewModel as UserViewModel)._horarios.observe(requireActivity()) { horario ->
+                if (horario != null) {
                     cargarHorarios(horario)
                 }
             }
         }
 
     }
+
     private fun cargarHorarios(horarios: Set<Horario>) {
 
         for (horario in horarios) {
 
-            val textViewId = resources.getIdentifier("row${horario.hora}_col${horario.dia.ordinal + 1}", "id", activity?.packageName)
+            val textViewId = resources.getIdentifier(
+                "row${horario.hora}_col${horario.dia.ordinal + 1}",
+                "id",
+                activity?.packageName
+            )
             val textView = view?.findViewById<TextView>(textViewId)
-            val asignatura= when(horario.asignatura.nombre.split(" ")[0]){
+            val asignatura = when (horario.asignatura.nombre.split(" ")[0]) {
                 "Mates" -> "Mat"
                 "Geografía" -> "Geo"
                 "Física" -> "FyQ"
-                "Historia"-> "His"
+                "Historia" -> "His"
                 "Inglés" -> "Ing"
                 "Química" -> "Qui"
                 "Educación Física" -> "EdF"

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tycep_fe.R
@@ -15,14 +16,15 @@ import com.example.tycep_fe.viewModels.UserViewModel
 
 class Cursos : Fragment() {
     private lateinit var userViewModel: UserViewModel
-
+    val args: CursosArgs by navArgs()
+    private lateinit var origen: String
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        origen = args.origen
         return inflater.inflate(R.layout.fragment_cursos, container, false)
     }
 
@@ -33,8 +35,7 @@ class Cursos : Fragment() {
 //      CÓDIGO COMENTADO PARA FUNCIONAR SIN CONE, DESCOMENTAR PARA QUE FUNCIONE CON ELLA
         userViewModel._profesor.observe(viewLifecycleOwner) { profesor ->
             profesor.cursos?.let {
-
-                initReciclerView(profesor.cursos!!)
+                initReciclerView(profesor.cursos!!, origen)
             }
         }
 
@@ -78,9 +79,9 @@ class Cursos : Fragment() {
         //initReciclerView(cursos)
     }
 
-    private fun initReciclerView(courses: Set<Curso>){
-        val recyclerView= view?.findViewById<RecyclerView>(R.id.recyclerCursos)
-        recyclerView?.layoutManager= LinearLayoutManager(this.context)
-        recyclerView?.adapter= CoursesAdapter(courses, requireContext())
+    private fun initReciclerView(courses: Set<Curso>, origen: String) {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCursos)
+        recyclerView?.layoutManager = LinearLayoutManager(this.context)
+        recyclerView?.adapter = CoursesAdapter(courses, requireContext(), origen)
     }
 }

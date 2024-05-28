@@ -14,10 +14,8 @@ private const val urlBase = "http://192.168.56.1:8080/"
 private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(GsonConverterFactory.create()).build()
 
 interface AlumnoApiService{
-
     @POST("alumno/getAlumno")
     suspend fun getAlumnoById(@Body idAlumno:Int, @Header(value="token") token:String): Response<Alumno>
-
  }
 
 object AlumnoApi{

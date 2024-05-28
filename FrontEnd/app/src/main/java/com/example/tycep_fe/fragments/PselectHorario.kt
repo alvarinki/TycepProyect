@@ -33,13 +33,13 @@ class PselectHorario : Fragment() {
     ): View? {
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        (userViewModel as UserViewModel)._profesor.observe(requireActivity()){profesor ->
-            if(profesor.cursos==null){
+        (userViewModel as UserViewModel)._profesor.observe(requireActivity()) { profesor ->
+            if (profesor.cursos == null) {
                 (userViewModel as UserViewModel).getCursosFromProfesor()
             }
         }
-        (userViewModel as UserViewModel)._profesor.observe(requireActivity()){
-            profesor -> (userViewModel as UserViewModel).getHorariosForFaltas(profesor.id)
+        (userViewModel as UserViewModel)._profesor.observe(requireActivity()) { profesor ->
+            (userViewModel as UserViewModel).getHorariosForFaltas(profesor.id)
         }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_pselect_horario, container, false)
@@ -48,14 +48,15 @@ class PselectHorario : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (userViewModel as UserViewModel)._horarios.observe(requireActivity()){horarios ->
+        (userViewModel as UserViewModel)._horarios.observe(requireActivity()) { horarios ->
 
-            val recyclerView= view.findViewById<RecyclerView>(R.id.recyclerHorarios)
-            recyclerView?.layoutManager= LinearLayoutManager(this.context)
-            val adapter= ScheduleAdapter(horarios, requireContext())
-            recyclerView?.adapter= adapter}
-
+            val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerHorarios)
+            recyclerView?.layoutManager = LinearLayoutManager(this.context)
+            val adapter = ScheduleAdapter(horarios, requireContext())
+            recyclerView?.adapter = adapter
         }
+
+    }
 //        val horarios = setOf(
 //            Horario(
 //                1,
@@ -107,5 +108,5 @@ class PselectHorario : Fragment() {
 //        recyclerView?.layoutManager= LinearLayoutManager(this.context)
 //        val adapter= ScheduleAdapter(horarios, requireContext())
 //        recyclerView?.adapter= adapter
-    }
+}
 

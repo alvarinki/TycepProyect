@@ -20,7 +20,7 @@ import com.example.tycep_fe.viewModels.UserViewModel
 
 class showStudent : Fragment() {
 
-    private var _binding: FragmentShowStudentBinding?=null
+    private var _binding: FragmentShowStudentBinding? = null
     private val binding get() = _binding!!
     lateinit var alumnoViewModel: ViewModel
     lateinit var userViewModel: ViewModel
@@ -33,11 +33,11 @@ class showStudent : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding= FragmentShowStudentBinding.inflate(inflater, container, false)
+        _binding = FragmentShowStudentBinding.inflate(inflater, container, false)
         prefs = Prefs(requireContext())
         alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
-        val idAlumno:Int= prefs.getData()?.toInt()!!
-        val token:String= prefs.getToken().toString()
+        val idAlumno: Int = prefs.getData()?.toInt()!!
+        val token: String = prefs.getToken().toString()
         (alumnoViewModel as AlumnoViewModel).getAlumnoById(idAlumno, token)
 
 
@@ -54,33 +54,38 @@ class showStudent : Fragment() {
 
         (alumnoViewModel as AlumnoViewModel)._alumno.observe(viewLifecycleOwner) { alumno ->
             alumno?.let {
-                _binding!!.tvShowStudentName.text= alumno.nombre
+                _binding!!.tvShowStudentName.text = alumno.nombre
             }
         }
 
-
         view.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner){
-                (alumnoViewModel as AlumnoViewModel)._alumno.observe(viewLifecycleOwner) { alumno ->
-                    alumno?.let {
-                        prefs.saveData(alumno.idCurso.toString())
+                (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) {
+                    (alumnoViewModel as AlumnoViewModel)._alumno.observe(viewLifecycleOwner) { alumno ->
+                        alumno?.let {
+                            prefs.saveData(alumno.idCurso.toString())
+                        }
                     }
                 }
-                }
-                (userViewModel as UserViewModel)._tutorLegal.observe(viewLifecycleOwner){tutor ->
-                    if(tutor.alumnos?.size!! ==1){
+                (userViewModel as UserViewModel)._tutorLegal.observe(viewLifecycleOwner) { tutor ->
+                    if (tutor.alumnos?.size!! == 1) {
                         findNavController().navigate(R.id.action_showStudent_to_homeFragment)
                     }
-
                 }
                 return@setOnKeyListener false // Devuelve true para indicar que el evento ha sido consumido
             }
             return@setOnKeyListener false // Devuelve false para indicar que no has manejado el evento
         }
-        _binding?.btnToAbscenses?.setOnClickListener{
+        _binding?.btnToAbscenses?.setOnClickListener {
+            val action =
+                showStudentDirections.actionShowStudentToFaltasAlumno(origen = "ShowStudent")
+            findNavController().navigate(action)
+        }
 
-            findNavController().navigate(R.id.faltasAlumno)
+    }
+}
+
+//            findNavController().navigate(R.id.faltasAlumno)
 //            val token:String= prefs.getToken().toString()
 //            (alumnoViewModel as AlumnoViewModel).getFaltasFromAlumno(token)
 //            (alumnoViewModel as AlumnoViewModel)._alumno.observe(requireActivity()){ alumno ->
@@ -88,6 +93,3 @@ class showStudent : Fragment() {
 //                    findNavController().navigate(R.id.faltasAlumno)
 //                }
 //            }
-        }
-    }
-}

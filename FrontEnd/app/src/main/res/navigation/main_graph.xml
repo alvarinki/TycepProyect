@@ -33,8 +33,8 @@
             android:id="@+id/action_homeFragment_to_horario"
             app:destination="@id/horario"/>
         <action
-            android:id="@+id/action_homeFragment_to_pselectHorario"
-            app:destination="@id/pselectHorario" />
+            android:id="@+id/action_homeFragment_to_seleccionFaltas"
+            app:destination="@id/seleccionFaltas" />
 
 
     </fragment>
@@ -66,6 +66,13 @@
         <action
             android:id="@+id/action_cursos_to_recyclerAlumnos"
             app:destination="@id/recyclerAlumnos" />
+        <argument
+            android:name="origen"
+            app:argType="string"
+            android:defaultValue="a" />
+        <action
+            android:id="@+id/action_cursos_to_faltasAlumno"
+            app:destination="@id/faltasAlumno" />
 
     </fragment>
     <fragment
@@ -108,5 +115,22 @@
         android:id="@+id/faltasAlumno"
         android:name="com.example.tycep_fe.fragments.FaltasAlumno"
         android:label="fragment_faltas_alumno"
-        tools:layout="@layout/fragment_faltas_alumno" />
+        tools:layout="@layout/fragment_faltas_alumno" >
+        <argument
+            android:name="origen"
+            app:argType="string"
+            android:defaultValue="a" />
+    </fragment>
+    <fragment
+        android:id="@+id/seleccionFaltas"
+        android:name="com.example.tycep_fe.fragments.seleccionFaltas"
+        android:label="fragment_seleccion_faltas"
+        tools:layout="@layout/fragment_seleccion_faltas" >
+        <action
+            android:id="@+id/action_seleccionFaltas_to_pselectHorario"
+            app:destination="@id/pselectHorario" />
+        <action
+            android:id="@+id/action_seleccionFaltas_to_cursos"
+            app:destination="@id/cursos" />
+    </fragment>
 </navigation>

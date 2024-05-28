@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pruebapantallas.ShowFaltasAdapter
@@ -19,10 +20,14 @@ import com.example.tycep_fe.models.Alumno
 import com.example.tycep_fe.models.Falta
 import com.example.tycep_fe.viewModels.AlumnoViewModel
 
-class FaltasAlumno : Fragment() {private lateinit var binding:FragmentFaltasAlumnoBinding
+class FaltasAlumno : Fragment() {
+    private lateinit var binding: FragmentFaltasAlumnoBinding
+
     //private lateinit var alumno: Alumno
     private lateinit var alumnoViewModel: ViewModel
     private lateinit var recyclerView: RecyclerView
+    val args: FaltasAlumnoArgs by navArgs()
+    private lateinit var origen: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,27 +37,35 @@ class FaltasAlumno : Fragment() {private lateinit var binding:FragmentFaltasAlum
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding= FragmentFaltasAlumnoBinding.inflate(inflater, container, false)
-
-
-
-
-        val root:View= binding.root
+        binding = FragmentFaltasAlumnoBinding.inflate(inflater, container, false)
+        origen = args.origen
+        val root: View = binding.root
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        val prefs= Prefs(requireContext())
+        val prefs = Prefs(requireContext())
         alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
-        (alumnoViewModel as AlumnoViewModel).getFaltasFromAlumno(prefs.getToken().toString())
-
-        (alumnoViewModel as AlumnoViewModel)._alumno.observe(viewLifecycleOwner){alumno ->
-            if(alumno.faltas?.isNotEmpty() == true)
+        if (origen == "ShowStudent") {
+            (alumnoViewModel as AlumnoViewModel).getFaltasFromAlumno(prefs.getToken().toString())
+        } else if (origen == "Cursos") {
+            (alumnoViewModel as AlumnoViewModel).getFaltasFromCurso(
+                prefs.getData()!!.toInt(),
+                prefs.getToken().toString()
+            )
+        }
+        (alumnoViewModel as AlumnoViewModel)._alumno.observe(viewLifecycleOwner) { alumno ->
+            if (alumno.faltas?.isNotEmpty() == true && origen == "ShowStudent")
                 initReciclerView(alumno.faltas!!, alumnoViewModel as AlumnoViewModel)
-            else initReciclerView(null, alumnoViewModel as AlumnoViewModel)
-
+            else if (origen == "Cursos") {
+                (alumnoViewModel as AlumnoViewModel)._faltas.observe(viewLifecycleOwner) { faltas ->
+                    if (faltas != null) {
+                        initReciclerView(faltas, alumnoViewModel as AlumnoViewModel)
+                    }
+                }
+            }
         }
 
 
@@ -94,21 +107,22 @@ class FaltasAlumno : Fragment() {private lateinit var binding:FragmentFaltasAlum
 //            })
 //        )
     }
+
     @SuppressLint("SetTextI18n")
-    private fun initReciclerView(faltas: Set<Falta>?, viewModel: AlumnoViewModel){
-        recyclerView= view?.findViewById(R.id.rvShowFaltas)!!
-        recyclerView.layoutManager= LinearLayoutManager(view?.context)
-        if(faltas.isNullOrEmpty()){
+    private fun initReciclerView(faltas: Set<Falta>?, viewModel: AlumnoViewModel) {
+        recyclerView = view?.findViewById(R.id.rvShowFaltas)!!
+        recyclerView.layoutManager = LinearLayoutManager(view?.context)
+        if (faltas.isNullOrEmpty()) {
             //binding.tvNoFaltas.text="No hay faltas disponibles"
             Toast.makeText(requireContext(), "No hay faltas disponibles", Toast.LENGTH_SHORT).show()
-        }
-        else {
-            val faltasOrdenadas:LinkedHashSet<Falta>  = faltas.sortedWith(compareByDescending<Falta> { it.fecha }.thenBy { it.hora }).toSet() as LinkedHashSet<Falta>
-            recyclerView.adapter= ShowFaltasAdapter(faltasOrdenadas, viewModel, requireContext())
+        } else {
+            val faltasOrdenadas: LinkedHashSet<Falta> =
+                faltas.sortedWith(compareByDescending<Falta> { it.fecha }.thenBy { it.hora })
+                    .toSet() as LinkedHashSet<Falta>
+            recyclerView.adapter = ShowFaltasAdapter(faltasOrdenadas, viewModel, requireContext())
 
         }
     }
-
 
 
 //    @SuppressLint("NotifyDataSetChanged")

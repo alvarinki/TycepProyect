@@ -26,7 +26,7 @@ import java.util.TimerTask
 
 class InicioSesion : Fragment() {
 
-    private var _binding: FragmentInicioSesionBinding?=null
+    private var _binding: FragmentInicioSesionBinding? = null
     private val binding get() = _binding!!
     lateinit var userViewModel: ViewModel
 
@@ -38,27 +38,27 @@ class InicioSesion : Fragment() {
 
     override fun onCreateView(
 
-    inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val prefs= Prefs(requireContext())
+        val prefs = Prefs(requireContext())
         //Linea para pruebas
         prefs.clearToken()
         //println(prefs.getToken())
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        if(prefs.getToken()?.length!! >4){
-            val loginRequestDto= LoginRequestDto("", "", prefs.getToken().toString())
+        if (prefs.getToken()?.length!! > 4) {
+            val loginRequestDto = LoginRequestDto("", "", prefs.getToken().toString())
 //
             (userViewModel as UserViewModel).userLogin(loginRequestDto)
-           (userViewModel as UserViewModel).token.observe(requireActivity()){
-               println("Token: "+prefs.getToken().toString())
+            (userViewModel as UserViewModel).token.observe(requireActivity()) {
+                println("Token: " + prefs.getToken().toString())
             }
             //(userViewModel as UserViewModel)._profesor.observe(requireActivity()){profesor ->
-                findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+            findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
             //}
         }
         // Inflate the layout for this fragment
-        _binding= FragmentInicioSesionBinding.inflate(inflater, container, false)
+        _binding = FragmentInicioSesionBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -70,11 +70,15 @@ class InicioSesion : Fragment() {
         //findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
 
         //userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        binding.btnSignIn.setOnClickListener{
-            val loginRequestDto= LoginRequestDto(binding.editTextUsername.text.toString(), binding.editTextPassword.text.toString(), "")
+        binding.btnSignIn.setOnClickListener {
+            val loginRequestDto = LoginRequestDto(
+                binding.editTextUsername.text.toString(),
+                binding.editTextPassword.text.toString(),
+                ""
+            )
             (userViewModel as UserViewModel).userLogin(loginRequestDto)
             //println("Token pre prefs "+token)
-            prefs= Prefs(requireContext())
+            prefs = Prefs(requireContext())
             //prefs.clearToken()
             //prefs.saveToken(token)
             findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)

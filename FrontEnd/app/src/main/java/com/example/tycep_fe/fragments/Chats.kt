@@ -24,7 +24,7 @@ import java.util.Locale
 
 class Chats : Fragment() {
     private lateinit var userViewModel: ViewModel
-    private lateinit var binding:FragmentChatBinding
+    private lateinit var binding: FragmentChatBinding
     private lateinit var adapter: MessageAdapter
     private lateinit var selectedChatMessages: MutableList<Mensaje>
 
@@ -38,8 +38,8 @@ class Chats : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding= FragmentChatBinding.inflate(inflater, container, false)
-        val root:View= binding.root
+        binding = FragmentChatBinding.inflate(inflater, container, false)
+        val root: View = binding.root
         // Inflate the layout for this fragment
         return root
     }
@@ -47,30 +47,31 @@ class Chats : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner){ profesor ->
-            val idChat= prefs.getData().toString().toInt()
-            selectedChatMessages=profesor.chats?.filter{ chat -> chat.id== idChat }!![0].mensajes.toMutableList()
+        (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
+            val idChat = prefs.getData().toString().toInt()
+            selectedChatMessages = profesor.chats?.filter { chat -> chat.id == idChat }!![0].mensajes.toMutableList()
             //initRecyclerView(selectedChatMessages)
-            val recyclerView= view.findViewById<RecyclerView>(R.id.recyclerMensajes)
-            recyclerView?.layoutManager= LinearLayoutManager(this.context)
-                //ReverseLinearLayoutManager(this.requireContext())
-            val sortedMessages:LinkedHashSet<Mensaje> = java.util.LinkedHashSet<Mensaje>()
-            sortedMessages.addAll(selectedChatMessages.sortedBy { c -> c.id  }.toSet())
-            adapter= MessageAdapter(sortedMessages.toMutableSet(), profesor.usuario)
-            recyclerView?.adapter= adapter
-            binding.btEnvio.setOnClickListener{
-                val messageContent:String= binding.edMensaje.text.toString()
-                val newMessage= Mensaje(null, 1, messageContent, LocalDate.now().toString(), profesor.usuario)
+            val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerMensajes)
+            recyclerView?.layoutManager = LinearLayoutManager(this.context)
+            //ReverseLinearLayoutManager(this.requireContext())
+            val sortedMessages: LinkedHashSet<Mensaje> = java.util.LinkedHashSet<Mensaje>()
+            sortedMessages.addAll(selectedChatMessages.sortedBy { c -> c.id }.toSet())
+            adapter = MessageAdapter(sortedMessages.toMutableSet(), profesor.usuario)
+            recyclerView?.adapter = adapter
+            binding.btEnvio.setOnClickListener {
+                val messageContent: String = binding.edMensaje.text.toString()
+                val newMessage =
+                    Mensaje(null, 1, messageContent, LocalDate.now().toString(), profesor.usuario)
                 selectedChatMessages.add(0, newMessage)
 
                 adapter.notifyItemInserted(0)
-                recyclerView?.smoothScrollToPosition(selectedChatMessages.size-1)
-                val token:String= prefs.getToken().toString()
+                recyclerView?.smoothScrollToPosition(selectedChatMessages.size - 1)
+                val token: String = prefs.getToken().toString()
                 (userViewModel as UserViewModel).uploadMessage(newMessage, token)
-                binding.edMensaje.text=null
+                binding.edMensaje.text = null
             }
         }
-        var dia= obtenerNombreDiaSemana(LocalDate.now())
+        var dia = obtenerNombreDiaSemana(LocalDate.now())
 
 //        val mensajesChat1 = mutableListOf(
 //            Mensaje(1, 1, "Hola", "2024-04-23", "Usuario1"),

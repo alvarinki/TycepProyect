@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface FaltaRepository extends JpaRepository<Falta, Integer> {
@@ -17,4 +18,7 @@ public interface FaltaRepository extends JpaRepository<Falta, Integer> {
     Falta findFaltaById(int id);
 
     Falta findFaltaByHoraAndIdAlumnoAndFecha(int hora, int idAlumno, LocalDate fecha);
+
+    @Query("SELECT f FROM Falta f WHERE f.idAlumno IN (SELECT a.id FROM Alumno a WHERE a.idCurso = :idCurso)")
+    Optional<Set<Falta>> findFaltasByIdCurso(int idCurso);
 }

@@ -30,59 +30,60 @@ import java.time.format.TextStyle
 import java.util.Locale
 import java.util.logging.Handler
 
-class UserViewModel(): ViewModel() {
+class UserViewModel() : ViewModel() {
 
     //Repositorios
-    private val userRepo= UserRepository()
-    private val profesorRepo= ProfesorRepository()
-    private val tutorRepo= TutorRepository()
+    private val userRepo = UserRepository()
+    private val profesorRepo = ProfesorRepository()
+    private val tutorRepo = TutorRepository()
 
 
     //Token
-    val token= MutableLiveData<String>()
+    val token = MutableLiveData<String>()
 
     //Usuarios
-    val admin= MutableLiveData<Usuario>()
-    var _tutorLegal= MutableLiveData<TutorLegal>()
-    var _profesor= MutableLiveData<Profesor>()
-    var _horarios= MutableLiveData<Set<Horario>>()
+    val admin = MutableLiveData<Usuario>()
+    var _tutorLegal = MutableLiveData<TutorLegal>()
+    var _profesor = MutableLiveData<Profesor>()
+    var _horarios = MutableLiveData<Set<Horario>>()
     val profesor: LiveData<Profesor>
         get() = _profesor
 
-    fun setProfesorValue(profesor: Profesor){
+    fun setProfesorValue(profesor: Profesor) {
         _profesor.postValue(profesor)
     }
+
     val tutorLegal: LiveData<TutorLegal>
         get() = _tutorLegal
 
 
-    fun userLogin(loginRequestDto: LoginRequestDto): String{
+    fun userLogin(loginRequestDto: LoginRequestDto): String {
 
         var typeUser = "Client"
         viewModelScope.launch {
-            val response:Response<LoginResponseDto> =userRepo.userLogin(loginRequestDto)
-            if(response.isSuccessful){
+            val response: Response<LoginResponseDto> = userRepo.userLogin(loginRequestDto)
+            if (response.isSuccessful) {
 
-                if(response.body()?.userType== "Profesor"){
-                val user= response.body()?.userData
+                if (response.body()?.userType == "Profesor") {
+                    val user = response.body()?.userData
 
-                val profe:Profesor= Gson().fromJson(Gson().toJson(user), Profesor::class.java)
+                    val profe: Profesor = Gson().fromJson(Gson().toJson(user), Profesor::class.java)
 
-                _profesor.postValue(profe)
+                    _profesor.postValue(profe)
 
-                }
-                else if(response.body()?.userType== "Tutor Legal"){
-                    val user= response.body()?.userData
+                } else if (response.body()?.userType == "Tutor Legal") {
+                    val user = response.body()?.userData
 
-                    val tutor: TutorLegal=  Gson().fromJson(Gson().toJson(user), TutorLegal::class.java)
+                    val tutor: TutorLegal =
+                        Gson().fromJson(Gson().toJson(user), TutorLegal::class.java)
 
-                    val responseChild = tutorRepo.getTutorsAlumnos(tutor.id, response.body()!!.token)
-                    if(responseChild.isSuccessful){
-                        tutor.alumnos=responseChild.body()
+                    val responseChild =
+                        tutorRepo.getTutorsAlumnos(tutor.id, response.body()!!.token)
+                    if (responseChild.isSuccessful) {
+                        tutor.alumnos = responseChild.body()
                     }
                     _tutorLegal.postValue(tutor)
-                }
-                else typeUser="Admin"
+                } else typeUser = "Admin"
                 token.postValue(response.body()?.token.toString())
 
             }
@@ -91,70 +92,73 @@ class UserViewModel(): ViewModel() {
         return typeUser
     }
 
-     fun uploadMessage(message: Mensaje, token: String){
+    fun uploadMessage(message: Mensaje, token: String) {
         viewModelScope.launch {
             userRepo.uploadMessage(message, token)
         }
     }
 
-    fun getCursosFromProfesor(){
-        val idProfesor=_profesor.value?.id
-        viewModelScope.launch{
-            val response=profesorRepo.getCursosFromProfesor(idProfesor!!)
-            if(response.isSuccessful){
-                val cursos= response.body()
-
-                _profesor.postValue(_profesor.value.apply { this?.cursos=cursos })
-            }
-        }
-    }
-
-    fun getAlumnosFromCurso(idCurso:Int){
-        viewModelScope.launch{
-            val response= profesorRepo.getAlumnosFromCurso(idCurso)
-            if(response.isSuccessful){
-                val alumnos= response.body()
-                _profesor.postValue(_profesor.value.apply { this?.cursos?.filter{curso -> curso.id==idCurso}?.get(0)?.alumnos=alumnos!!})
-            }
-        }
-
-    }
-
-    fun getTutorsAlumnos(idTutor: Int, token: String){
+    fun getCursosFromProfesor() {
+        val idProfesor = _profesor.value?.id
         viewModelScope.launch {
-            val response= tutorRepo.getTutorsAlumnos(idTutor, token)
-            println("Alumnos del repo "+response.body())
-            if(response.isSuccessful){
-                val tutorsalumnos= response.body()
+            val response = profesorRepo.getCursosFromProfesor(idProfesor!!)
+            if (response.isSuccessful) {
+                val cursos = response.body()
+
+                _profesor.postValue(_profesor.value.apply { this?.cursos = cursos })
+            }
+        }
+    }
+
+    fun getAlumnosFromCurso(idCurso: Int) {
+        viewModelScope.launch {
+            val response = profesorRepo.getAlumnosFromCurso(idCurso)
+            if (response.isSuccessful) {
+                val alumnos = response.body()
+                _profesor.postValue(_profesor.value.apply {
+                    this?.cursos?.filter { curso -> curso.id == idCurso }?.get(0)?.alumnos =
+                        alumnos!!
+                })
+            }
+        }
+
+    }
+
+    fun getTutorsAlumnos(idTutor: Int, token: String) {
+        viewModelScope.launch {
+            val response = tutorRepo.getTutorsAlumnos(idTutor, token)
+            println("Alumnos del repo " + response.body())
+            if (response.isSuccessful) {
+                val tutorsalumnos = response.body()
                 _tutorLegal.postValue(_tutorLegal.value.apply { this?.alumnos = tutorsalumnos })
             }
         }
     }
 
-    fun getHorariosForFaltas(idProfesor:Int){
+    fun getHorariosForFaltas(idProfesor: Int) {
         viewModelScope.launch {
             println(idProfesor)
             println(obtenerNombreDiaSemana())
-            val response= profesorRepo.getHorariosForFaltas(idProfesor, obtenerNombreDiaSemana()!!)
-            if(response.isSuccessful){
+            val response = profesorRepo.getHorariosForFaltas(idProfesor, obtenerNombreDiaSemana()!!)
+            if (response.isSuccessful) {
                 _horarios.postValue(response.body()!!)
             }
         }
     }
 
-    fun getHorarioFromProfesor(){
+    fun getHorarioFromProfesor() {
         viewModelScope.launch {
-            val response=profesorRepo.getHorarioFromProfesor(_profesor.value?.id!!)
-            if(response.isSuccessful){
+            val response = profesorRepo.getHorarioFromProfesor(_profesor.value?.id!!)
+            if (response.isSuccessful) {
                 _horarios.postValue(response.body())
             }
         }
     }
 
-    fun getHorarioFromAlumno(idAlumno: Int, token: String){
+    fun getHorarioFromAlumno(idAlumno: Int, token: String) {
         viewModelScope.launch {
             val response = tutorRepo.getHorarioFromAlumno(idAlumno, token)
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 _horarios.postValue(response.body())
             }
         }
@@ -162,7 +166,7 @@ class UserViewModel(): ViewModel() {
 
     private fun obtenerNombreDiaSemana(): Dia? {
         val dayOfWeek = LocalDate.now().dayOfWeek
-        return when(dayOfWeek) {
+        return when (dayOfWeek) {
             java.time.DayOfWeek.MONDAY -> Dia.L
             java.time.DayOfWeek.TUESDAY -> Dia.M
             java.time.DayOfWeek.WEDNESDAY -> Dia.X
@@ -173,7 +177,6 @@ class UserViewModel(): ViewModel() {
             //= else -> Dia.L
         }
     }
-
 
 
 }

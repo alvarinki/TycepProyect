@@ -1,0 +1,47 @@
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+
+class ChatFragment : Fragment() {
+
+    private lateinit var database: FirebaseDatabase
+    private lateinit var auth: FirebaseAuth
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Inicializa Firebase
+        database = FirebaseDatabase.getInstance()
+        auth = FirebaseAuth.getInstance()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Obtiene el nombre de usuario del usuario actual
+        val currentUserId = auth.currentUser?.displayName
+
+        // Referencia a los chats en la base de datos
+        val chatsRef = database.getReference("Chats")
+
+        // Consulta los chats del usuario actual por su nombre de usuario
+        val query = chatsRef.orderByChild("usuarios/$currentUserId").equalTo(true)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val chats = mutableListOf<Chat>()
+
+                for (chatSnapshot in dataSnapshot.children) {
+                    val chat = chatSnapshot.getValue(Chat::class.java)
+                    chat?.let { chats.add(it) }
+                }
+
+                // Aquí puedes manejar la lista de chats obtenidos
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Maneja el error de consulta
+                Log.e(TAG, "Error al obtener los chats: ${databaseError.message}")
+            }
+        })
+    }
+}

@@ -54,4 +54,9 @@ public class FaltaServiceImpl implements FaltaService {
         return faltaRepo.findFaltaById(id);
     }
 
+    @Override
+    public Set<Falta> findFaltasByIdCurso(int idCurso) {
+        return faltaRepo.findFaltasByIdCurso(idCurso).orElse(null);
+    }
+
 }

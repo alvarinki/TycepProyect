@@ -9,43 +9,54 @@ import com.example.tycep_fe.repositories.AlumnoRepository
 import com.example.tycep_fe.repositories.FaltaRepository
 import kotlinx.coroutines.launch
 
-class AlumnoViewModel: ViewModel() {
+class AlumnoViewModel : ViewModel() {
 
-    private val alumnoRepo= AlumnoRepository()
-    private val faltasRepo= FaltaRepository()
+    private val alumnoRepo = AlumnoRepository()
+    private val faltasRepo = FaltaRepository()
 
-    var _alumno= MutableLiveData<Alumno>()
+    var _alumno = MutableLiveData<Alumno>()
+    var _faltas = MutableLiveData<Set<Falta>>()
 
-    fun getAlumnoById(idAlumno: Int, token:String){
+    fun getAlumnoById(idAlumno: Int, token: String) {
         viewModelScope.launch {
-           val response = alumnoRepo.getAlumnoById(idAlumno, token)
-            if(response.isSuccessful){
-                val alumno:Alumno= response.body()!!
+            val response = alumnoRepo.getAlumnoById(idAlumno, token)
+            if (response.isSuccessful) {
+                val alumno: Alumno = response.body()!!
                 _alumno.postValue(alumno)
             }
         }
     }
 
-    fun putFaltas(faltas: List<Falta>, token: String){
+    fun putFaltas(faltas: List<Falta>, token: String) {
         viewModelScope.launch {
             faltasRepo.putFaltasForAlumnos(faltas, token)
         }
     }
 
-    fun getFaltasFromAlumno(token: String){
+    fun getFaltasFromAlumno(token: String) {
         viewModelScope.launch {
-            val response= faltasRepo.getFaltasFromAlumno(_alumno.value?.id!!, token)
-            if(response.isSuccessful){
-                val faltasAnadidas= response.body()
-                _alumno.postValue(_alumno.value.apply { this?.faltas = faltasAnadidas})
+            val response = faltasRepo.getFaltasFromAlumno(_alumno.value?.id!!, token)
+            if (response.isSuccessful) {
+                val faltasAnadidas = response.body()
+                _alumno.postValue(_alumno.value.apply { this?.faltas = faltasAnadidas })
 
             }
         }
     }
 
-    fun deleteFaltaFromAlumno(falta:Falta, token: String){
+    fun deleteFaltaFromAlumno(falta: Falta, token: String) {
         viewModelScope.launch {
             faltasRepo.deleteFaltaFromAlumno(falta, token)
+        }
+    }
+
+    fun getFaltasFromCurso(idCurso: Int, token: String) {
+        viewModelScope.launch {
+            val response = faltasRepo.getFaltasFromCurso(idCurso, token)
+            if (response.isSuccessful) {
+                val faltas = response.body()
+                _faltas.postValue(faltas!!)
+            }
         }
     }
 

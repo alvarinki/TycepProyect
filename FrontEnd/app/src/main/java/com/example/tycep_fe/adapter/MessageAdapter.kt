@@ -13,7 +13,8 @@ import com.example.tycep_fe.databinding.MessageItemBinding
 import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.viewModels.UserViewModel
 
-class MessageAdapter(private val messages:MutableSet<Mensaje>, private val nombreUsuario:String): RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+class MessageAdapter(private val messages: MutableSet<Mensaje>, private val nombreUsuario: String) :
+    RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val binding = MessageItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MessageViewHolder(binding)
@@ -22,11 +23,10 @@ class MessageAdapter(private val messages:MutableSet<Mensaje>, private val nombr
     override fun getItemCount(): Int = messages.size
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-        val message= messages.toList()[position]
+        val message = messages.toList()[position]
         holder.render(message)
         val tvUser = holder.itemView.findViewById<TextView>(R.id.tvUser)
         val tvMessage = holder.itemView.findViewById<TextView>(R.id.tvmessage)
-
 
         val layoutParamsUser = tvUser.layoutParams as ConstraintLayout.LayoutParams
         val layoutParamsMessage = tvMessage.layoutParams as ConstraintLayout.LayoutParams
@@ -57,11 +57,12 @@ class MessageAdapter(private val messages:MutableSet<Mensaje>, private val nombr
         tvMessage.layoutParams = layoutParamsMessage
     }
 
-    inner class MessageViewHolder(private val binding: MessageItemBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class MessageViewHolder(private val binding: MessageItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun render(mensaje: Mensaje){
-            binding.tvmessage.text=mensaje.contenido
-            binding.tvUser.text= mensaje.nombreUsuario
+        fun render(mensaje: Mensaje) {
+            binding.tvmessage.text = mensaje.contenido
+            binding.tvUser.text = mensaje.nombreUsuario
         }
     }
 }

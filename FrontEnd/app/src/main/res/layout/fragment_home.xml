@@ -5,7 +5,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment">
+    tools:context=".fragments.HomeFragment"
+    android:background="@color/secondary">
 
     <!-- Contenido principal -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,11 +18,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/primary"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/side_nav_bar"
+            app:navigationIcon="@drawable/menu30"
             app:title="Inicio" />
 
         <!-- RecyclerView -->

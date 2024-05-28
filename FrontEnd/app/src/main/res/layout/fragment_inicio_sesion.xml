@@ -6,9 +6,16 @@
     android:orientation="vertical"
     android:gravity="center"
     tools:context=".fragments.InicioSesion"
-    android:background="@color/white"
+    android:background="@color/secondary"
     >
 
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/tornadopeque" />
     <!-- EditText para el nombre de usuario -->
     <EditText
         android:id="@+id/editTextUsername"
@@ -16,9 +23,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:hint="Nombre de usuario"
-        android:inputType="text" />
+
+        android:inputType="text"
+        android:textColor="@color/white" />
 
     <!-- EditText para la contraseña -->
     <EditText
@@ -29,7 +39,8 @@
         android:layout_marginEnd="20dp"
         android:gravity="center"
         android:hint="Contraseña"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textColor="@color/white" />
 
     <!-- Botón para iniciar sesión -->
     <Button
@@ -37,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:backgroundTint="@color/primary"
         android:text="Iniciar sesión"/>
 
 </LinearLayout>

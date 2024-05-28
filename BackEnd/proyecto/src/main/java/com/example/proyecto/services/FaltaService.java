@@ -18,4 +18,6 @@ public interface FaltaService {
     void deleteFalta(Falta falta);
 
     Falta findFaltaById(int id);
+
+    Set<Falta> findFaltasByIdCurso(int idCurso);
 }

@@ -77,7 +77,7 @@ public class FileManager {
                     profesor.setUsuario(nombreUsuario);
 
                     if (profesorService.findProfesorByDni(profesor.getDni()) == null) {
-                        adminsUserData.add(new AdminsUserData(nombreUsuario, profesor.getContrasena()));
+                        adminsUserData.add(new AdminsUserData(nombreUsuario, profesor.getContrasena(), profesor.getNombre()+" "+profesor.getApellidos(), profesor.getDni()));
                         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                         profesor.setContrasena(passwordEncoder.encode(profesor.getContrasena()));
                         profesores.add(profesor);
@@ -143,7 +143,7 @@ public class FileManager {
                     } while (usuarioService.findUsuarioByUsuario(nombreUsuario).isPresent());
                     tutor.setUsuario(nombreUsuario);
                     if (tutorService.findTutorLegalByDni(tutor.getDni()) == null) {
-                        adminsUserData.add(new AdminsUserData(nombreUsuario, tutor.getContrasena()));
+                        adminsUserData.add(new AdminsUserData(nombreUsuario, tutor.getContrasena(),tutor.getNombre()+" "+tutor.getApellidos(), tutor.getDni()));
                         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                         tutor.setContrasena(passwordEncoder.encode(tutor.getContrasena()));
                         tutores.add(tutor);
@@ -199,7 +199,7 @@ public class FileManager {
                 } while (usuarioService.findUsuarioByUsuario(nombreUsuario).isPresent());
                 user.setUsuario(nombreUsuario);
 
-                adminsUserData.add(new AdminsUserData(nombreUsuario, user.getContrasena()));
+                adminsUserData.add(new AdminsUserData(nombreUsuario, user.getContrasena(), user.getNombre()+" "+user.getApellidos(), ""));
                 PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                 user.setContrasena(passwordEncoder.encode(user.getContrasena()));
                 admins.add(user);
@@ -355,7 +355,6 @@ public class FileManager {
         }
     }
 
-
     public void notifyUsersData(String ruta, List<AdminsUserData> adminsUserData, String userType) {
         try {
             // Obtenemos la ruta del directorio eliminando el nombre del archivo
@@ -373,7 +372,7 @@ public class FileManager {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(directorio + tipoUser + LocalTime.now().getHour() + LocalTime.now().getMinute() + LocalTime.now().getSecond() + ".csv", true))) {
                 // Escribimos cada objeto AdminsUserData en una línea del archivo CSV
                 for (AdminsUserData userData : adminsUserData) {
-                    writer.write(userData.getUsername() + ";" + userData.getPassword());
+                    writer.write(userData.getUsername() + ";" + userData.getPassword() + ";" + userData.getNombre_Apellidos() + ";" + userData.getDni());
                     writer.newLine();
                 }
 

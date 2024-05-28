@@ -8,5 +8,4 @@ import retrofit2.http.Header
 
 class AlumnoRepository {
     suspend fun getAlumnoById(idAlumno:Int, token:String): Response<Alumno> = AlumnoApi.retrofitService.getAlumnoById(idAlumno, token)
-
 }

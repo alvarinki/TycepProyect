@@ -9,7 +9,7 @@ import com.example.tycep_fe.databinding.FragmentConfigurationBinding
 
 
 class Configuration : Fragment() {
-    private var _binding: FragmentConfigurationBinding? =null
+    private var _binding: FragmentConfigurationBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,10 +22,6 @@ class Configuration : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
-
-
-
-
 
 
         val root: View = _binding!!.root

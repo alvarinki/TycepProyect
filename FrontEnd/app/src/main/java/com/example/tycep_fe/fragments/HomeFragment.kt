@@ -41,9 +41,9 @@ class HomeFragment : Fragment() {
     private lateinit var alumnoViewModel: ViewModel
     private var _binding: FragmentHomeBinding? = null
     private lateinit var navHeaderBinding: NavHeaderPrincipalBinding
-    private lateinit var menuItemChange:MenuItem
+    private lateinit var menuItemChange: MenuItem
     private lateinit var bundle: Bundle
-    private var backPressed =0
+    private var backPressed = 0
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -61,12 +61,12 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.toolbar.setNavigationOnClickListener{
+        binding.toolbar.setNavigationOnClickListener {
             binding.drawerLayout.openDrawer(binding.navView)
         }
-        navHeaderBinding= NavHeaderPrincipalBinding.bind(binding.navView.getHeaderView(0))
-        navHeaderBinding.tvName.text="hola"
-        navHeaderBinding.tvUsername.text="adios"
+        navHeaderBinding = NavHeaderPrincipalBinding.bind(binding.navView.getHeaderView(0))
+        navHeaderBinding.tvName.text = "hola"
+        navHeaderBinding.tvUsername.text = "adios"
 
 
 
@@ -86,11 +86,10 @@ class HomeFragment : Fragment() {
         //findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
-        (userViewModel as UserViewModel).token.observe(viewLifecycleOwner){ token ->
-            prefs= Prefs(requireContext())
+        (userViewModel as UserViewModel).token.observe(viewLifecycleOwner) { token ->
+            prefs = Prefs(requireContext())
             prefs.saveToken(token)
         }
-
 
 
         val mensajesChat1 = setOf(
@@ -149,31 +148,40 @@ class HomeFragment : Fragment() {
 
         //Mensajes de pruebas
         //initReciclerView(chats)
-        menuItemChange= binding.navView.menu.findItem(R.id.nav_studentdata_or_course)
+        menuItemChange = binding.navView.menu.findItem(R.id.nav_studentdata_or_course)
 
         (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
 
             menuItemChange.setTitle("Cursos")
             binding.navView.setNavigationItemSelectedListener { menuItem ->
-                when(menuItem.itemId){
-                    R.id.nav_studentdata_or_course->{
-                        (userViewModel as UserViewModel).getCursosFromProfesor()
-                        findNavController().navigate(R.id.action_homeFragment_to_cursos)
+                when (menuItem.itemId) {
+                    R.id.nav_studentdata_or_course -> {
+                        if (profesor.cursos!!.isEmpty()) {
+                            (userViewModel as UserViewModel).getCursosFromProfesor()
+                        }
+                        val action =
+                            HomeFragmentDirections.actionHomeFragmentToCursos(origen = "Home")
+                        findNavController().navigate(action)
+                        //findNavController().navigate(R.id.action_homeFragment_to_cursos)
                         true
                     }
-                    R.id.nav_schedule->{
+
+                    R.id.nav_schedule -> {
                         (alumnoViewModel as AlumnoViewModel)._alumno.postValue(null)
                         findNavController().navigate(R.id.action_homeFragment_to_horario)
                         true
                     }
-                    R.id.nav_absences->{
-                        findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
+
+                    R.id.nav_absences -> {
+                        findNavController().navigate(R.id.action_homeFragment_to_seleccionFaltas)
                         true
                     }
-                    R.id.nav_configuration->{
+
+                    R.id.nav_configuration -> {
                         true
                     }
-                    R.id.nav_exit ->{
+
+                    R.id.nav_exit -> {
                         prefs = Prefs(requireContext())
                         prefs.clearToken()
                         finishAffinity(this.requireActivity())
@@ -196,15 +204,17 @@ class HomeFragment : Fragment() {
             menuItemChange.setTitle("Alumnos")
 
             binding.navView.setNavigationItemSelectedListener { menuItem ->
-                when(menuItem.itemId){
-                    R.id.nav_studentdata_or_course->{
+                when (menuItem.itemId) {
+                    R.id.nav_studentdata_or_course -> {
                         //(userViewModel as UserViewModel)
                         //findNavController().navigate(R.id.action_homeFragment_to_recyclerAlumnos)
-                        val action = HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen="Cursos")
+                        val action =
+                            HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen = "Cursos")
                         findNavController().navigate(action)
                         true
                     }
-                    R.id.nav_schedule->{
+
+                    R.id.nav_schedule -> {
 
 //                        val origen="Home"
 //                        val fragment = Alumnos.newInstance(origen)
@@ -212,18 +222,22 @@ class HomeFragment : Fragment() {
 //                            replace(androidx.navigation.fragment.R.id.nav_host_fragment_container, fragment)
 //                            addToBackStack(null)
 //                        }
-                        val action = HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen="Home")
+                        val action =
+                            HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen = "Home")
                         findNavController().navigate(action)
                         true
                     }
-                    R.id.nav_absences->{
+
+                    R.id.nav_absences -> {
 
                         true
                     }
-                    R.id.nav_configuration->{
+
+                    R.id.nav_configuration -> {
                         true
                     }
-                    R.id.nav_exit ->{
+
+                    R.id.nav_exit -> {
                         prefs = Prefs(requireContext())
                         prefs.clearToken()
                         finishAffinity(this.requireActivity())
@@ -245,15 +259,18 @@ class HomeFragment : Fragment() {
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if(backPressed==0){
-                    Toast.makeText(requireContext(), "Clique de nuevo para salir de la aplicación", Toast.LENGTH_SHORT).show()
+                if (backPressed == 0) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Clique de nuevo para salir de la aplicación",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     backPressed++
                     Handler(Looper.getMainLooper()).postDelayed({
                         backPressed = 0
                         println("Entra aqui")
                     }, 2000)
-                }
-                else{
+                } else {
                     finishAffinity(requireActivity())
 
 
@@ -272,13 +289,13 @@ class HomeFragment : Fragment() {
 
 
     }
-    private fun initReciclerView(chats: Set<Chat>){
-        val recyclerView= view?.findViewById<RecyclerView>(R.id.recyclerChats)
-        recyclerView?.layoutManager= LinearLayoutManager(view?.context)
-        recyclerView?.adapter= ChatAdapter(chats, requireContext())
+
+    private fun initReciclerView(chats: Set<Chat>) {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerChats)
+        recyclerView?.layoutManager = LinearLayoutManager(view?.context)
+        recyclerView?.adapter = ChatAdapter(chats, requireContext())
 
     }
-
 
 
 }

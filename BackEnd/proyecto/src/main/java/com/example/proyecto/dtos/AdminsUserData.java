@@ -10,4 +10,6 @@ import lombok.*;
 public class AdminsUserData {
     String username;
     String password;
+    String nombre_Apellidos;
+    String dni;
 }

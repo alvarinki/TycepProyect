@@ -22,10 +22,8 @@ private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(Gs
 interface TutorApiService{
     @POST("tutor/getAlumnos")
     suspend fun getTutorsAlumnos(@Body idTutor:Int, @Header(value = "token") token: String): Response<Set<Alumno>>
-
     @POST("tutor/getHorarioFromAlumno")
     suspend fun getHorarioFromAlumno(@Body idCurso:Int, @Header(value = "token") token: String):Response<Set<Horario>>
-
 }
 
 object TutorApi{

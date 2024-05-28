@@ -16,16 +16,12 @@ private const val urlBase = "http://192.168.56.1:8080/"
 private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(GsonConverterFactory.create()).build()
 
 interface ProfesorApiService{
-
     @GET("profesor/cursos/{id}")
     suspend fun getCursosFromProfesor(@Path("id") id:Int):Response<Set<Curso>>
-
     @GET("profesor/cursos/alumnos/{id}")
     suspend fun getAlumnosFromCurso(@Path("id") id:Int):Response<Set<Alumno>>
-
     @GET("profesor/horarioFaltas/{idProfesor}/{dia}")
     suspend fun getHorariosForFaltas(@Path("idProfesor") idProfesor: Int, @Path("dia") dia: Dia):Response<Set<Horario>>
-
     @GET("profesor/horario/{idProfesor}")
     suspend fun getHorarioFromProfesor(@Path("idProfesor") idProfesor: Int): Response<Set<Horario>>
 }

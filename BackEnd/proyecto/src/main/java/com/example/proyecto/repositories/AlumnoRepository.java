@@ -1,6 +1,7 @@
 package com.example.proyecto.repositories;
 
 import com.example.proyecto.model.Alumno;
+import com.example.proyecto.model.Falta;
 import com.example.proyecto.model.TutorLegal;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -19,4 +20,6 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Integer> {
    Optional<Alumno> findAlumnoByDni(String dni);
 
    Optional<Integer> getIdAlumnoByDni(String dni);
+
+
 }

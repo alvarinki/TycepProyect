@@ -48,8 +48,6 @@ public class AdminController {
 
     @Autowired
     private FileManager fileManager;
-    @Autowired
-    private View error;
 
     @PostMapping("/registerProfesores")
     public ResponseEntity<String> registerProfesores(@RequestBody String ruta, @RequestHeader String token) {
@@ -194,5 +192,4 @@ public class AdminController {
     public void verUsuariosdeChat(@RequestBody String idChat) {
         firebaseService.obtenerUsuariosDeChat(idChat);
     }
-
 }
