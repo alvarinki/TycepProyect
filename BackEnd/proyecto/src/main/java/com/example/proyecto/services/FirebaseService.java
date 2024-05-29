@@ -23,7 +23,7 @@ public class FirebaseService {
     @PostConstruct
     public void initialize() throws IOException {
         if (firebaseApp == null) {
-            FileInputStream serviceAccount = new FileInputStream("pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json");
+            FileInputStream serviceAccount = new FileInputStream("pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://pruebatycep-default-rtdb.europe-west1.firebasedatabase.app/")

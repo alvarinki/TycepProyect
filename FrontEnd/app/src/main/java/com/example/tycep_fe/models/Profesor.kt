@@ -16,8 +16,8 @@ data class Profesor(
     val apellidos: String,
     @SerializedName("dtype")
     val dtype: Char,
-    @SerializedName("chats")
-    val chats: Set<Chat>?,
+    //@SerializedName("chats")
+    //val chats: Set<Chat>?,
     @SerializedName("dni")
     val dni:String,
     @SerializedName("correo")

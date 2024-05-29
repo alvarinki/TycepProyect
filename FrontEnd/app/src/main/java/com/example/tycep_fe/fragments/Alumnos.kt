@@ -78,16 +78,14 @@ class Alumnos : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        //val origen= args.origen
+        val origen= args.origen
 
         (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
             val idCurso: Int? = prefs.getData()?.toInt()
             (userViewModel as UserViewModel).getAlumnosFromCurso(idCurso!!)
             profesor?.let {
                 initReciclerView(
-                    profesor.cursos?.filter { c -> c.id == idCurso }!![0].alumnos,
-                    origen
-                )
+                    profesor.cursos?.filter { c -> c.id == idCurso }!![0].alumnos, origen)
             }
         }
 

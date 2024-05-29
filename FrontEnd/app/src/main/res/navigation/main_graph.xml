@@ -20,9 +20,6 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_chat"
-            app:destination="@id/chat" />
-        <action
             android:id="@+id/action_homeFragment_to_recyclerAlumnos"
             app:destination="@id/recyclerAlumnos">
         </action>
@@ -35,6 +32,9 @@
         <action
             android:id="@+id/action_homeFragment_to_seleccionFaltas"
             app:destination="@id/seleccionFaltas" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatDetail"
+            app:destination="@id/chatDetail" />
 
 
     </fragment>
@@ -132,5 +132,16 @@
         <action
             android:id="@+id/action_seleccionFaltas_to_cursos"
             app:destination="@id/cursos" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatDetail"
+        android:name="com.example.tycep_fe.fragments.ChatDetail"
+        android:label="ChatDetail" >
+        <argument
+            android:name="chatId"
+            app:argType="string" />
+        <argument
+            android:name="nombreUsuario"
+            app:argType="string" />
     </fragment>
 </navigation>

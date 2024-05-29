@@ -15,8 +15,8 @@ data class TutorLegal(
     val apellidos: String,
     @SerializedName("dtype")
     val dtype: Char,
-    @SerializedName("chats")
-    val chats: Set<Chat>?,
+//    @SerializedName("chats")
+//    val chats: Set<Chat>?,
     @SerializedName("telefContacto")
     val telefContacto:String,
     @SerializedName("domicilio")

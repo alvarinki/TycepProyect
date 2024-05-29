@@ -15,7 +15,7 @@ import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Compan
 import com.example.tycep_fe.R
 import com.example.tycep_fe.adapter.PAlumnosAdapter
 import com.example.tycep_fe.adapter.PutFaltasAdapter
-import com.example.tycep_fe.databinding.FragmentChatBinding
+
 import com.example.tycep_fe.databinding.FragmentPFaltasBinding
 import com.example.tycep_fe.models.Alumno
 import com.example.tycep_fe.models.Falta

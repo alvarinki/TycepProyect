@@ -62,6 +62,8 @@ dependencies {
     implementation ("com.google.firebase:firebase-storage:21.0.0")
     implementation ("com.google.firebase:firebase-analytics:22.0.0")
     implementation ("com.google.firebase:firebase-messaging:24.0.0")
+    implementation ("com.google.firebase:firebase-core:20.0.0")
+    implementation ("com.google.firebase:firebase-database:20.0.0")
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")

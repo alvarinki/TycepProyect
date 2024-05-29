@@ -3,18 +3,16 @@ package com.example.tycep_fe.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tycep_fe.R
-import com.example.tycep_fe.activities.MainActivity
-import com.example.tycep_fe.databinding.MessageItemBinding
-import com.example.tycep_fe.models.Mensaje
-import com.example.tycep_fe.viewModels.UserViewModel
 
-class MessageAdapter(private val messages: MutableSet<Mensaje>, private val nombreUsuario: String) :
+import com.example.tycep_fe.databinding.MessageItemBinding
+import com.example.tycep_fe.modelFB.MensajeFB
+
+class MessageAdapter(private val messages: MutableSet<MensajeFB>, private val nombreUsuario: String) :
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val binding = MessageItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MessageViewHolder(binding)
@@ -24,7 +22,9 @@ class MessageAdapter(private val messages: MutableSet<Mensaje>, private val nomb
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages.toList()[position]
+        println("Mensajes "+message)
         holder.render(message)
+
         val tvUser = holder.itemView.findViewById<TextView>(R.id.tvUser)
         val tvMessage = holder.itemView.findViewById<TextView>(R.id.tvmessage)
 
@@ -32,27 +32,17 @@ class MessageAdapter(private val messages: MutableSet<Mensaje>, private val nomb
         val layoutParamsMessage = tvMessage.layoutParams as ConstraintLayout.LayoutParams
 
         if (message.nombreUsuario == nombreUsuario) {
-            // Alinea el TextView del usuario a la derecha
             layoutParamsUser.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-            layoutParamsUser.startToStart = ConstraintLayout.LayoutParams.UNSET // Elimina la restricción de alineación al inicio
-            layoutParamsUser.horizontalBias = 1f // Alinea el TextView completamente a la derecha
+            layoutParamsUser.startToStart = ConstraintLayout.LayoutParams.UNSET
+            layoutParamsUser.horizontalBias = 1f
             layoutParamsMessage.horizontalBias = 1f
-
-            // Alinea el TextView del mensaje a la izquierda
-//            layoutParamsMessage.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-//            layoutParamsMessage.endToEnd = tvUser.id // Alinea el final del TextView del mensaje al principio del TextView del usuario
         } else {
-            // Alinea el TextView del usuario a la izquierda
             layoutParamsUser.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-            layoutParamsUser.endToEnd = ConstraintLayout.LayoutParams.UNSET // Elimina la restricción de alineación al final
-            layoutParamsUser.horizontalBias = 0.0f // Alinea el TextView completamente a la izquierda
+            layoutParamsUser.endToEnd = ConstraintLayout.LayoutParams.UNSET
+            layoutParamsUser.horizontalBias = 0.0f
             layoutParamsMessage.horizontalBias = 0.0f
-//            // Alinea el TextView del mensaje a la derecha
-//            layoutParamsMessage.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-//            layoutParamsMessage.startToStart = tvUser.id // Alinea el inicio del TextView del mensaje al final del TextView del usuario
         }
 
-// Aplica los cambios en las restricciones de los TextViews
         tvUser.layoutParams = layoutParamsUser
         tvMessage.layoutParams = layoutParamsMessage
     }
@@ -60,7 +50,7 @@ class MessageAdapter(private val messages: MutableSet<Mensaje>, private val nomb
     inner class MessageViewHolder(private val binding: MessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun render(mensaje: Mensaje) {
+        fun render(mensaje: MensajeFB) {
             binding.tvmessage.text = mensaje.contenido
             binding.tvUser.text = mensaje.nombreUsuario
         }

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -13,15 +12,10 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
@@ -29,10 +23,15 @@ import com.example.tycep_fe.R
 import com.example.tycep_fe.adapter.ChatAdapter
 import com.example.tycep_fe.databinding.FragmentHomeBinding
 import com.example.tycep_fe.databinding.NavHeaderPrincipalBinding
+import com.example.tycep_fe.modelFB.ChatFB
 import com.example.tycep_fe.models.Chat
 import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.viewModels.AlumnoViewModel
 import com.example.tycep_fe.viewModels.UserViewModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.Timer
 import java.util.TimerTask
 
@@ -42,8 +41,10 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private lateinit var navHeaderBinding: NavHeaderPrincipalBinding
     private lateinit var menuItemChange: MenuItem
-    private lateinit var bundle: Bundle
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var chatAdapter: ChatAdapter
     private var backPressed = 0
+    private val database = FirebaseDatabase.getInstance()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -56,11 +57,18 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+//        recyclerView = requireView().findViewById(R.id.recyclerChats)
+//        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//        chatAdapter = ChatAdapter(requireContext(), emptyList<ChatFB>().toMutableList()) // Adapter inicialmente vacío
+//        recyclerView.adapter = chatAdapter
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        recyclerView = root.findViewById(R.id.recyclerChats)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        chatAdapter = ChatAdapter("", emptyList<ChatFB>().toMutableList()) // Adapter inicialmente vacío
+        recyclerView.adapter = chatAdapter
         binding.toolbar.setNavigationOnClickListener {
             binding.drawerLayout.openDrawer(binding.navView)
         }
@@ -81,6 +89,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         //Líneas para pruebas
         //findNavController().navigate(R.id.action_homeFragment_to_chat)
         //findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
@@ -151,7 +161,7 @@ class HomeFragment : Fragment() {
         menuItemChange = binding.navView.menu.findItem(R.id.nav_studentdata_or_course)
 
         (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
-
+            obtenerChatsDeUsuario(profesor.usuario)
             menuItemChange.setTitle("Cursos")
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
@@ -198,15 +208,15 @@ class HomeFragment : Fragment() {
             profesor?.let {
                 // El profesor está disponible, navega al nuevo Fragmento
 
-                initReciclerView(profesor.chats!!)
+                //initReciclerView(profesor.chats!!)
             } ?: run {
                 // Manejar el caso en el que profesor es nulo
             }
         }
 
         (userViewModel as UserViewModel)._tutorLegal.observe(viewLifecycleOwner) { tutorLegal ->
+            obtenerChatsDeUsuario(tutorLegal.usuario)
             menuItemChange.setTitle("Alumnos")
-
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.nav_studentdata_or_course -> {
@@ -253,7 +263,7 @@ class HomeFragment : Fragment() {
             tutorLegal?.let {
                 // El profesor está disponible, navega al nuevo Fragmento
 
-                initReciclerView(tutorLegal.chats!!)
+                //initReciclerView(tutorLegal.chats!!)
             } ?: run {
                 // Manejar el caso en el que profesor es nulo
             }
@@ -292,12 +302,62 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun initReciclerView(chats: Set<Chat>) {
+    private fun initReciclerView(nombreUsuario:String,chats: MutableList<ChatFB>) {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerChats)
         recyclerView?.layoutManager = LinearLayoutManager(view?.context)
-        recyclerView?.adapter = ChatAdapter(chats, requireContext())
+        recyclerView?.adapter = ChatAdapter(nombreUsuario, chats)
 
     }
 
 
+
+
+    fun obtenerChatsDeUsuario(nombreUsuario: String) {
+        val usuariosRef = database.getReference("Usuarios")
+
+        // Primero, busca el ID del usuario usando su nombre de usuario
+        usuariosRef.orderByChild("username").equalTo(nombreUsuario)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (usuarioSnapshot in dataSnapshot.children) {
+                        // Obtenemos el ID del usuario
+                        val usuarioId = usuarioSnapshot.key
+                        println("Id de usuario: "+usuarioSnapshot.key)
+                        // Ahora, con el ID del usuario, buscamos sus chats en la base de datos
+                        if (usuarioId != null) {
+                            val chatsRef = database.getReference("Chat")
+                            chatsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(chatsDataSnapshot: DataSnapshot) {
+                                    val chatsList = mutableListOf<ChatFB>()
+                                    for (chatSnapshot in chatsDataSnapshot.children) {
+                                        val usuarios = chatSnapshot.child("usuarios")
+                                        if (usuarios.hasChild(usuarioId)) {
+                                            val chatFB = chatSnapshot.getValue(ChatFB::class.java)
+
+                                            // Por ejemplo, imprimir el nombre del chatFB
+                                            chatFB?.let {
+                                                val chatId = chatSnapshot.key
+                                                // Asignar el ID del chatFB al atributo "id" del objeto chatFB
+                                                it.id = chatId!!
+                                                chatsList.add(it) }
+                                            val nombreChat = chatFB?.nombreChat
+                                            println("Nombre del chat: $nombreChat")
+                                        }
+                                    }
+                                    chatAdapter.updateData(nombreUsuario, chatsList)
+                                }
+
+                                override fun onCancelled(databaseError: DatabaseError) {
+                                    // Manejo de errores
+                                }
+                            })
+                        }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Manejo de errores
+                }
+            })
+    }
 }
