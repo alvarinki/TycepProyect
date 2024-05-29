@@ -92,9 +92,6 @@ class Alumnos : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
 //        val origen= args.origen
 //        println(args.origen)
 //        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
@@ -168,7 +165,7 @@ class Alumnos : Fragment() {
 //        )
 //
 //        initReciclerView(listaAlumnos)
-    }
+
 
 
     private fun initReciclerView(alumnos: Set<Alumno>, origen: String) {
