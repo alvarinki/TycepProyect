@@ -3,15 +3,20 @@ package com.example.proyecto.controllers;
 import com.example.proyecto.FileManagers.FileManager;
 import com.example.proyecto.model.*;
 import com.example.proyecto.modelFB.ChatFB;
+import com.example.proyecto.modelFB.UsuarioFB;
 import com.example.proyecto.services.*;
 import com.example.proyecto.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.View;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin")
@@ -52,8 +57,8 @@ public class AdminController {
     @PostMapping("/registerProfesores")
     public ResponseEntity<String> registerProfesores(@RequestBody String ruta, @RequestHeader String token) {
         if (jwtUtil.validate(token)) {
-            //Optional<Usuario> user= usuarioService.findUsuarioByUsuario(nombreUsuario);
             String nombreUsuario = jwtUtil.getValue(token);
+            Optional<Usuario> user= usuarioService.findUsuarioByUsuario(nombreUsuario);
             if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
                 String mensaje = fileManager.mapProfesores(ruta);
                 if (mensaje.startsWith("Profesores registrados correctamente")) return ResponseEntity.ok(mensaje);
@@ -189,7 +194,9 @@ public class AdminController {
     }
 
     @PostMapping("/prueba")
-    public void verUsuariosdeChat(@RequestBody String idChat) {
-        firebaseService.obtenerUsuariosDeChat(idChat);
+    public void verUsuariosdeChat(@RequestBody List<UsuarioFB> usuariosFB) {
+        firebaseService.guardarUsuarios(usuariosFB);
     }
+
+
 }

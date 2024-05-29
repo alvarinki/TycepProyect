@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "23530083289",
+    "firebase_url": "https://pruebatycep-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "pruebatycep",
+    "storage_bucket": "pruebatycep.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23530083289:android:aaf8f5d2ac057168217fc8",
+        "android_client_info": {
+          "package_name": "com.example.pruebafirebase2bien"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgptb5-vXC6eGXWLh1PHTRuLcZPeW1CBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23530083289:android:92c3d1cc73096f7f217fc8",
+        "android_client_info": {
+          "package_name": "com.example.tycep_fe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgptb5-vXC6eGXWLh1PHTRuLcZPeW1CBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

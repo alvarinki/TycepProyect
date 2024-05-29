@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class FirebaseService {
@@ -22,34 +23,61 @@ public class FirebaseService {
     @PostConstruct
     public void initialize() throws IOException {
         if (firebaseApp == null) {
-            FileInputStream serviceAccount = new FileInputStream("C:/Users/alvar/OneDrive/Escritorio/pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
+            FileInputStream serviceAccount = new FileInputStream("pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://pruebatycep-default-rtdb.europe-west1.firebasedatabase.app/")
                     .build();
 
-            firebaseApp = FirebaseApp.initializeApp(options);
+            //firebaseApp = FirebaseApp.initializeApp(options);
+            List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
+            if (firebaseApps.isEmpty()) {
+                firebaseApp = FirebaseApp.initializeApp(options);
+            } else {
+                firebaseApp = firebaseApps.get(0); // Obtener la instancia existente
+            }
         }
 
     }
-    //"C:/Users/alvar/OneDrive/Escritorio/pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json"
+
     public void guardarChat(ChatFB chatFB) {
         // Obtener una referencia a la ubicación en la base de datos Firebase
-        DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference("Chats");
-        System.out.println(chatsRef.getRef());
+        DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference("Chat");
+        //System.out.println(chatsRef.getRef());
         // Guardar el chat en la base de datos
         chatsRef.push().setValue(chatFB.toMap(), new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 if (error == null) {
                     // Éxito al guardar el usuario
-                    System.out.println("Chat guardado exitosamente en la ubicación: " + ref.getKey());
+                    //System.out.println("Chat guardado exitosamente en la ubicación: " + ref.getKey());
                 } else {
                     // Manejar el error al guardar el usuario
                     System.err.println("Error al guardar el chat: " + error.getMessage());
                 }
             }
         });
+    }
+
+    public void guardarUsuarios(List<UsuarioFB> usuarios) {
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+        for(UsuarioFB usuarioFB : usuarios) {
+        // Generar un ID único para el usuario
+        String userId = usuariosRef.push().getKey();
+
+        // Guardar el usuario en la base de datos
+        usuariosRef.child(userId).setValue(usuarioFB.toMap(), new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                if (error == null) {
+                    // Éxito al guardar el usuario
+                    System.out.println("Usuario guardado exitosamente en la ubicación: " + ref.getKey());
+                } else {
+                    // Manejar el error al guardar el usuario
+                    System.err.println("Error al guardar el usuario: " + error.getMessage());
+                }
+            }
+        });}
     }
 
     public void obtenerUsuariosDeChat(String chatId) {
@@ -72,6 +100,28 @@ public class FirebaseService {
             }
         });
     }
+
+    public void guardarUsuario(UsuarioFB usuarioFB) {
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+
+        // Generar un ID único para el usuario
+        String userId = usuariosRef.push().getKey();
+
+        // Guardar el usuario en la base de datos
+        usuariosRef.child(userId).setValue(usuarioFB.toMap(), new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                if (error == null) {
+                    // Éxito al guardar el usuario
+                    System.out.println("Usuario guardado exitosamente en la ubicación: " + ref.getKey());
+                } else {
+                    // Manejar el error al guardar el usuario
+                    System.err.println("Error al guardar el usuario: " + error.getMessage());
+                }
+            }
+        });
+    }
+
 
 }
 //    private void obtenerDatosUsuario(String userId) {

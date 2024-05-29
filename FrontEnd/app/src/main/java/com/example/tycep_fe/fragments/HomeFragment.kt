@@ -212,8 +212,7 @@ class HomeFragment : Fragment() {
                     R.id.nav_studentdata_or_course -> {
                         //(userViewModel as UserViewModel)
                         //findNavController().navigate(R.id.action_homeFragment_to_recyclerAlumnos)
-                        val action =
-                            HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen = "Cursos")
+                        val action = HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen = "Cursos")
                         findNavController().navigate(action)
                         true
                     }
@@ -226,8 +225,7 @@ class HomeFragment : Fragment() {
 //                            replace(androidx.navigation.fragment.R.id.nav_host_fragment_container, fragment)
 //                            addToBackStack(null)
 //                        }
-                        val action =
-                            HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen = "Home")
+                        val action = HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen = "Home")
                         findNavController().navigate(action)
                         true
                     }

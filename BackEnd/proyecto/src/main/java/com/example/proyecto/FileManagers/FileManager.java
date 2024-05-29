@@ -2,6 +2,7 @@ package com.example.proyecto.FileManagers;
 
 import com.example.proyecto.dtos.AdminsUserData;
 import com.example.proyecto.model.*;
+import com.example.proyecto.modelFB.UsuarioFB;
 import com.example.proyecto.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -39,9 +40,13 @@ public class FileManager {
     @Autowired
     TutorService tutorService;
 
+    @Autowired
+    FirebaseService firebaseService;
+
     public String mapProfesores(String ruta) {
         List<Profesor> profesores = new ArrayList<>();
         List<AdminsUserData> adminsUserData = new ArrayList<>();
+        List<UsuarioFB> fbUsuarios = new ArrayList<>();
         StringBuilder insercionCorrecta = new StringBuilder("Profesores registrados correctamente");
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
@@ -80,7 +85,9 @@ public class FileManager {
                         adminsUserData.add(new AdminsUserData(nombreUsuario, profesor.getContrasena(), profesor.getNombre()+" "+profesor.getApellidos(), profesor.getDni()));
                         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                         profesor.setContrasena(passwordEncoder.encode(profesor.getContrasena()));
+                        fbUsuarios.add(new UsuarioFB(profesor.getApellidos(), profesor.getNombre(), profesor.getUsuario(), null));
                         profesores.add(profesor);
+
                     } else insercionCorrecta.append(", se han intentado introducir profesores duplicados por dni");
 
                 }
@@ -92,6 +99,7 @@ public class FileManager {
             throw new RuntimeException(e);
         }
         profesorService.saveProfesores(profesores);
+        firebaseService.guardarUsuarios(fbUsuarios);
         notifyUsersData(ruta, adminsUserData, "Profesor");
         return insercionCorrecta.toString();
     }
@@ -99,6 +107,7 @@ public class FileManager {
     public String mapTutores(String ruta) {
         List<TutorLegal> tutores = new ArrayList<>();
         List<AdminsUserData> adminsUserData = new ArrayList<>();
+        List<UsuarioFB> fbUsuarios = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
             int numeroLinea = 1;
@@ -146,6 +155,7 @@ public class FileManager {
                         adminsUserData.add(new AdminsUserData(nombreUsuario, tutor.getContrasena(),tutor.getNombre()+" "+tutor.getApellidos(), tutor.getDni()));
                         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                         tutor.setContrasena(passwordEncoder.encode(tutor.getContrasena()));
+                        fbUsuarios.add(new UsuarioFB(tutor.getApellidos(), tutor.getNombre(), tutor.getUsuario(), null));
                         tutores.add(tutor);
                     }
                 }
@@ -157,6 +167,7 @@ public class FileManager {
             throw new RuntimeException(e);
         }
         tutorService.saveTutoresLegales(tutores);
+        firebaseService.guardarUsuarios(fbUsuarios);
         notifyUsersData(ruta, adminsUserData, "Tutor");
         return "Tutores registrados correctamente";
     }

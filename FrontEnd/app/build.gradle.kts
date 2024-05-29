@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -55,11 +56,12 @@ dependencies {
     implementation("org.mindrot:jbcrypt:0.4")
 
     //Firebase
-    implementation("com.google.firebase:firebase-auth-ktx:23.0.0")
-    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
-
-
-
+    implementation ("com.google.firebase:firebase-auth:23.0.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation ("com.google.firebase:firebase-firestore:25.0.0")
+    implementation ("com.google.firebase:firebase-storage:21.0.0")
+    implementation ("com.google.firebase:firebase-analytics:22.0.0")
+    implementation ("com.google.firebase:firebase-messaging:24.0.0")
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -77,3 +79,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
+
+// Agregar esta línea para declarar la dependencia explícita
+
+

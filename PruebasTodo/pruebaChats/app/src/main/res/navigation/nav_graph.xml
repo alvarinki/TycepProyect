@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/chats">
+
+    <fragment
+        android:id="@+id/chats"
+        android:name="com.example.pruebachats.Chats"
+        android:label="fragment_chats"
+        tools:layout="@layout/fragment_chats" >
+        <action
+            android:id="@+id/action_chats_to_chatDetail"
+            app:destination="@id/chatDetail" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatDetail"
+        android:name="com.example.pruebachats.ChatDetail"
+        android:label="fragment_chat_detail"
+        tools:layout="@layout/fragment_chat_detail" >
+        <argument
+            android:name="chatId"
+            app:argType="string" />
+        <argument android:name="nombreUsuario"
+            app:argType="string" />
+    </fragment>
+</navigation>

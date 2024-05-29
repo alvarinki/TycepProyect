@@ -14,7 +14,7 @@ import java.util.Map;
 @ToString
 public class ChatFB {
     private boolean boletin;
-    private List<MensajeFB> mensajes;
+    private Map<String, MensajeFB> mensajes;
     private String nombreChat;
     private Map<String, Boolean> usuarios;
 
@@ -22,15 +22,8 @@ public class ChatFB {
         Map<String, Object> chatMap = new HashMap<>();
         chatMap.put("boletin", boletin);
         chatMap.put("nombreChat", nombreChat);
-
-        List<Map<String, Object>> mensajesMap = new ArrayList<>();
-        for (MensajeFB mensaje : mensajes) {
-            mensajesMap.add(mensaje.toMap());
-        }
-        chatMap.put("mensajes", mensajesMap);
-
+        chatMap.put("mensajes", mensajes);
         chatMap.put("usuarios", usuarios);
-
         return chatMap;
     }
 }
