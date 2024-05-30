@@ -46,8 +46,6 @@ class HomeFragment : Fragment() {
     private var backPressed = 0
     private val database = FirebaseDatabase.getInstance()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     @SuppressLint("FragmentLiveDataObserve")
@@ -102,22 +100,22 @@ class HomeFragment : Fragment() {
         }
 
 
-        val mensajesChat1 = setOf(
-            Mensaje(1, 1, "Hola", "2024-04-23", "Usuario1"),
-            Mensaje(2, 1, "¿Cómo estás?", "2024-04-23", "Usuario1"),
-            Mensaje(3, 2, "¡Hola a todos!", "2024-04-22", "Usuario3"),
-            Mensaje(4, 2, "¿Qué tal?", "2024-04-22", "Usuario1")
-        )
-
-        val mensajesChat2 = setOf(
-            Mensaje(3, 2, "¡Hola a todos!", "2024-04-22", "Usuario3"),
-            Mensaje(4, 2, "¿Qué tal?", "2024-04-22", "Usuario4")
-        )
-
-        val mensajesChat3 = setOf(
-            Mensaje(5, 3, "Buenos días", "2024-04-21", "Usuario5"),
-            Mensaje(6, 3, "¿Cómo va todo?", "2024-04-21", "Usuario6")
-        )
+//        val mensajesChat1 = setOf(
+//            Mensaje(1, 1, "Hola", "2024-04-23", "Usuario1"),
+//            Mensaje(2, 1, "¿Cómo estás?", "2024-04-23", "Usuario1"),
+//            Mensaje(3, 2, "¡Hola a todos!", "2024-04-22", "Usuario3"),
+//            Mensaje(4, 2, "¿Qué tal?", "2024-04-22", "Usuario1")
+//        )
+//
+//        val mensajesChat2 = setOf(
+//            Mensaje(3, 2, "¡Hola a todos!", "2024-04-22", "Usuario3"),
+//            Mensaje(4, 2, "¿Qué tal?", "2024-04-22", "Usuario4")
+//        )
+//
+//        val mensajesChat3 = setOf(
+//            Mensaje(5, 3, "Buenos días", "2024-04-21", "Usuario5"),
+//            Mensaje(6, 3, "¿Cómo va todo?", "2024-04-21", "Usuario6")
+//        )
         //Código momentáneo para pasar entre fragments
 //        binding.navView.setNavigationItemSelectedListener { menuItem ->
 //            when(menuItem.itemId){
@@ -148,12 +146,12 @@ class HomeFragment : Fragment() {
 //            }
 //        }
         // Crear la lista de chats
-        val chats = setOf(
-            Chat(1, "Chat1", true, mensajesChat1),
-            Chat(2, "Chat2", false, mensajesChat2),
-            Chat(3, "Chat3", true, mensajesChat3)
-
-        )
+//        val chats = setOf(
+//            Chat(1, "Chat1", true, mensajesChat1),
+//            Chat(2, "Chat2", false, mensajesChat2),
+//            Chat(3, "Chat3", true, mensajesChat3)
+//
+//        )
 
 
         //Mensajes de pruebas
@@ -205,14 +203,15 @@ class HomeFragment : Fragment() {
                     else -> false
                 }
             }
-            profesor?.let {
-                // El profesor está disponible, navega al nuevo Fragmento
-
-                //initReciclerView(profesor.chats!!)
-            } ?: run {
-                // Manejar el caso en el que profesor es nulo
-            }
         }
+//            profesor?.let {
+//                // El profesor está disponible, navega al nuevo Fragmento
+//
+//                //initReciclerView(profesor.chats!!)
+//            } ?: run {
+//                // Manejar el caso en el que profesor es nulo
+//            }
+
 
         (userViewModel as UserViewModel)._tutorLegal.observe(viewLifecycleOwner) { tutorLegal ->
             obtenerChatsDeUsuario(tutorLegal.usuario)
@@ -259,15 +258,15 @@ class HomeFragment : Fragment() {
                     else -> false
                 }
             }
-
-            tutorLegal?.let {
-                // El profesor está disponible, navega al nuevo Fragmento
-
-                //initReciclerView(tutorLegal.chats!!)
-            } ?: run {
-                // Manejar el caso en el que profesor es nulo
-            }
         }
+//            tutorLegal?.let {
+//                // El profesor está disponible, navega al nuevo Fragmento
+//
+//                //initReciclerView(tutorLegal.chats!!)
+//            } ?: run {
+//                // Manejar el caso en el que profesor es nulo
+//            }
+
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -302,12 +301,12 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun initReciclerView(nombreUsuario:String,chats: MutableList<ChatFB>) {
-        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerChats)
-        recyclerView?.layoutManager = LinearLayoutManager(view?.context)
-        recyclerView?.adapter = ChatAdapter(nombreUsuario, chats)
-
-    }
+//    private fun initReciclerView(nombreUsuario:String,chats: MutableList<ChatFB>) {
+//        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerChats)
+//        recyclerView?.layoutManager = LinearLayoutManager(view?.context)
+//        recyclerView?.adapter = ChatAdapter(nombreUsuario, chats)
+//
+//    }
 
 
 

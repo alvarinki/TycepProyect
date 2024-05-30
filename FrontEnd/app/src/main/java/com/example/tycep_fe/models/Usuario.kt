@@ -14,7 +14,7 @@ data class Usuario(
     @SerializedName("apellidos")
     val apellidos:String,
     @SerializedName("dtype")
-    val dtype:Char,
-    @SerializedName("chats")
-    val chats: Set<Chat>
+    val dtype:Char
+//    @SerializedName("chats")
+//    val chats: Set<Chat>
 )

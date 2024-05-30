@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/chats">
+    app:startDestination="@id/showStudent">
 
     <fragment
         android:id="@+id/chats"
@@ -25,4 +25,8 @@
         <argument android:name="nombreUsuario"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/showStudent"
+        android:name="com.example.pruebachats.ShowStudent"
+        android:label="showStudent" />
 </navigation>

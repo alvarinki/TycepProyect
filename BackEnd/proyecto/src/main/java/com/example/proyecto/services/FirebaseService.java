@@ -1,7 +1,5 @@
 package com.example.proyecto.services;
 
-import com.example.proyecto.model.Chat;
-import com.example.proyecto.model.Usuario;
 import com.example.proyecto.modelFB.ChatFB;
 import com.example.proyecto.modelFB.UsuarioFB;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -23,7 +21,7 @@ public class FirebaseService {
     @PostConstruct
     public void initialize() throws IOException {
         if (firebaseApp == null) {
-            FileInputStream serviceAccount = new FileInputStream("pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
+            FileInputStream serviceAccount = new FileInputStream("C:/Users/acf/Desktop/pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://pruebatycep-default-rtdb.europe-west1.firebasedatabase.app/")

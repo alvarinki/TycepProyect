@@ -28,10 +28,6 @@ class FaltasAlumno : Fragment() {
     private lateinit var recyclerView: RecyclerView
     val args: FaltasAlumnoArgs by navArgs()
     private lateinit var origen: String
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,7 +121,6 @@ class FaltasAlumno : Fragment() {
                 faltas.sortedWith(compareByDescending<Falta> { it.fecha }.thenBy { it.hora })
                     .toSet() as LinkedHashSet<Falta>
             recyclerView.adapter = ShowFaltasAdapter(faltasOrdenadas, viewModel, requireContext())
-
         }
     }
 

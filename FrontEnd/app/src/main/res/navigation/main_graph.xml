@@ -39,11 +39,6 @@
 
     </fragment>
     <fragment
-        android:id="@+id/chat"
-        android:name="com.example.tycep_fe.fragments.Chats"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
-    <fragment
         android:id="@+id/recyclerAlumnos"
         android:name="com.example.tycep_fe.fragments.Alumnos"
         android:label="fragment_alumnos"

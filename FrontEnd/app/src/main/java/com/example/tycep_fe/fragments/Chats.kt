@@ -17,48 +17,6 @@ class Chats : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_chat_detail, container, false)
-        recyclerView = view.findViewById(R.id.recyclerMensajes)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        chatAdapter = ChatAdapter("", emptyList<ChatFB>().toMutableList()) // Adapter inicialmente vacío
-        recyclerView.adapter = chatAdapter
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // Inicializar la RecyclerView después de que la vista se haya creado
-        //initRecyclerView()
-        obtenerChatsDeUsuario("tito")
-
-    }
-
-    private fun initRecyclerView() {
-        val database = FirebaseDatabase.getInstance()
-        val chatsRef = database.getReference("Chat")
-
-        // Escuchar cambios en los chats
-        chatsRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val chatsList = mutableListOf<ChatFB>()
-                for (chatSnapshot in dataSnapshot.children) {
-                    val chat = chatSnapshot.getValue(ChatFB::class.java)
-                    chat?.let { chatsList.add(it) }
-                }
-                chatAdapter.updateData("", chatsList)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Manejo de errores
-            }
-        })
-    }
-
     val database = FirebaseDatabase.getInstance()
 
 
@@ -72,7 +30,7 @@ class Chats : Fragment() {
                     for (usuarioSnapshot in dataSnapshot.children) {
                         // Obtenemos el ID del usuario
                         val usuarioId = usuarioSnapshot.key
-                        println("Id de usuario: "+usuarioSnapshot.key)
+                        println("Id de usuario: " + usuarioSnapshot.key)
                         // Ahora, con el ID del usuario, buscamos sus chats en la base de datos
                         if (usuarioId != null) {
                             val chatsRef = database.getReference("Chat")
@@ -89,12 +47,13 @@ class Chats : Fragment() {
                                                 val chatId = chatSnapshot.key
                                                 // Asignar el ID del chat al atributo "id" del objeto chat
                                                 it.id = chatId!!
-                                                chatsList.add(it) }
+                                                chatsList.add(it)
+                                            }
                                             val nombreChat = chat?.nombreChat
                                             println("Nombre del chat: $nombreChat")
                                         }
                                     }
-                                    chatAdapter.updateData(nombreUsuario ,chatsList)
+                                    chatAdapter.updateData(nombreUsuario, chatsList)
                                 }
 
                                 override fun onCancelled(databaseError: DatabaseError) {
@@ -110,4 +69,47 @@ class Chats : Fragment() {
                 }
             })
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_chat_detail, container, false)
+        recyclerView = view.findViewById(R.id.recyclerMensajes)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        chatAdapter =
+            ChatAdapter("", emptyList<ChatFB>().toMutableList()) // Adapter inicialmente vacío
+        recyclerView.adapter = chatAdapter
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // Inicializar la RecyclerView después de que la vista se haya creado
+        //initRecyclerView()
+        obtenerChatsDeUsuario("tito")
+
+    }
 }
+
+    //    private fun initRecyclerView() {
+//        val database = FirebaseDatabase.getInstance()
+//        val chatsRef = database.getReference("Chat")
+//
+//        // Escuchar cambios en los chats
+//        chatsRef.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                val chatsList = mutableListOf<ChatFB>()
+//                for (chatSnapshot in dataSnapshot.children) {
+//                    val chat = chatSnapshot.getValue(ChatFB::class.java)
+//                    chat?.let { chatsList.add(it) }
+//                }
+//                chatAdapter.updateData("", chatsList)
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Manejo de errores
+//            }
+//        })
+

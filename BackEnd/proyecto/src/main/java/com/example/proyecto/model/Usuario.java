@@ -41,11 +41,6 @@ public class Usuario {
 //    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<UsuarioChat> chats = new LinkedHashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name="Usuario_Chat", joinColumns =
-            {@JoinColumn(name = "id_usuario")},
-            inverseJoinColumns = {@JoinColumn(name = "id_chat")})
-    private Set<Chat> chats= new LinkedHashSet<>();
 
 
     public Map<String, Object> toMap() {
@@ -55,7 +50,6 @@ public class Usuario {
         usuarioMap.put("nombre", this.nombre);
         usuarioMap.put("apellidos", this.apellidos);
         usuarioMap.put("dtype", this.dtype);
-        usuarioMap.put("chats", this.chats);
         return usuarioMap;
     }
 }
