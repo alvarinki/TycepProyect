@@ -54,4 +54,13 @@ public class AlumnoServiceImpl implements AlumnoService {
         alumnoRepo.deleteAll(alumnos);
     }
 
+    @Override
+    public void saveFotoFromAlumno(int idAlumno, String foto) {
+        Optional<Alumno> alumno = alumnoRepo.findAlumnoById(idAlumno);
+        if(alumno.isPresent()) {
+            alumno.get().setFoto(foto);
+            alumnoRepo.save(alumno.get());
+        }
+    }
+
 }

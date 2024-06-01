@@ -18,12 +18,73 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="40dp"/>
 
+    <!-- Nueva fila de encabezado -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle">
+
+        <TextView
+            android:id="@+id/headerHora"
+            android:layout_width="45dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="Hora"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/headerFecha"
+            android:layout_width="99dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="Fecha"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/headerHora"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/headerAsignatura_Nombre"
+            android:layout_width="99dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="1dp"
+            android:gravity="center"
+            android:text="Asignatura"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/headerFecha"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/headerJustificacion"
+            android:layout_width="44dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="1dp"
+            android:gravity="center"
+            android:text="Just."
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/headerAsignatura_Nombre"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvShowFaltas"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/textViewTitle"
+        android:layout_width="411dp"
+        android:layout_height="592dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="3:4" />
+        app:layout_constraintDimensionRatio="3:4"
+        app:layout_constraintTop_toBottomOf="@id/headerRow"
+        app:layout_constraintVertical_bias="0.065"
+        tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

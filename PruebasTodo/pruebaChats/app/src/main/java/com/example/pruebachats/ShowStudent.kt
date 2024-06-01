@@ -26,6 +26,7 @@ class ShowStudent : Fragment() {
     ): View {
         binding = FragmentShowStudentBinding.inflate(inflater, container, false)
         val view: View = binding.getRoot()
+
         binding.ibImageExchange.setOnClickListener{
             //Toast.makeText(requireContext(), "Dio mio", Toast.LENGTH_SHORT).show()
             openImagePicker()

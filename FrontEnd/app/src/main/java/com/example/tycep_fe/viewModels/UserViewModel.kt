@@ -164,6 +164,12 @@ class UserViewModel() : ViewModel() {
         }
     }
 
+    fun postPhoto(envio:String, token:String){
+        viewModelScope.launch {
+            userRepo.postPhoto(envio, token)
+        }
+    }
+
     private fun obtenerNombreDiaSemana(): Dia? {
         val dayOfWeek = LocalDate.now().dayOfWeek
         return when (dayOfWeek) {
@@ -177,8 +183,6 @@ class UserViewModel() : ViewModel() {
             //= else -> Dia.L
         }
     }
-
-
 }
 
 //    fun userLogin(loginRequestDto: LoginRequestDto):String{

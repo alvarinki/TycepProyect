@@ -1,21 +1,32 @@
 package com.example.tycep_fe.fragments
 
+import android.app.Activity
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
+import com.example.tycep_fe.Objects.ImagePicker_Uploader
 import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.FragmentShowStudentBinding
 import com.example.tycep_fe.viewModels.AlumnoViewModel
 import com.example.tycep_fe.viewModels.UserViewModel
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import java.util.UUID
 
 
 class showStudent : Fragment() {
@@ -23,7 +34,8 @@ class showStudent : Fragment() {
     private var _binding: FragmentShowStudentBinding? = null
     private val binding get() = _binding!!
     lateinit var alumnoViewModel: ViewModel
-    lateinit var userViewModel: ViewModel
+    lateinit var userViewModel: UserViewModel
+    private var alumnoId: Int=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,7 +51,11 @@ class showStudent : Fragment() {
         val idAlumno: Int = prefs.getData()?.toInt()!!
         val token: String = prefs.getToken().toString()
         (alumnoViewModel as AlumnoViewModel).getAlumnoById(idAlumno, token)
-
+        binding.ibImageExchange.setOnClickListener{
+            //Toast.makeText(requireContext(), "Dio mio", Toast.LENGTH_SHORT).show()
+            //openImagePicker()
+            ImagePicker_Uploader.pickAndUploadImage(this, 100)
+        }
 
         return binding.root
     }
@@ -55,6 +71,10 @@ class showStudent : Fragment() {
         (alumnoViewModel as AlumnoViewModel)._alumno.observe(viewLifecycleOwner) { alumno ->
             alumno?.let {
                 _binding!!.tvShowStudentName.text = alumno.nombre
+                alumnoId=alumno.id
+                if(alumno.foto.length>2){
+                    Picasso.get().load(alumno.foto).into(binding.ivStudent)
+                }
             }
         }
 
@@ -82,7 +102,84 @@ class showStudent : Fragment() {
             findNavController().navigate(action)
         }
 
+
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Llama a onActivityResult de ImageUploader desde tu fragmento
+        ImagePicker_Uploader.onActivityResult(requestCode, resultCode, data, userViewModel, "Student", alumnoId, prefs.getToken()!!) { downloadUrl ->
+            // Aquí puedes hacer cualquier cosa con la URL de descarga, como mostrarla en una ImageView
+            println(downloadUrl)
+            Picasso.get().load(downloadUrl.toUri()).into(binding.ivStudent)
+        }
+    }
+
+//    private fun openImagePicker() {
+//        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+//            Intent(MediaStore.ACTION_PICK_IMAGES).apply {
+//                type = "image/*"
+//            }
+//        } else {
+//            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+//        }
+//        startActivityForResult(intent, REQUEST_CODE_IMAGE_PICKER)
+//    }
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == REQUEST_CODE_IMAGE_PICKER && resultCode == Activity.RESULT_OK && data != null) {
+//            val selectedImageUri = data.data
+//            val storageReference = FirebaseStorage.getInstance().getReference("Images/${UUID.randomUUID()}")
+//            storageReference.putFile(selectedImageUri!!)
+//                .addOnSuccessListener { taskSnapshot ->
+//                    // Obtener la URL de descarga
+//                    storageReference.downloadUrl.addOnSuccessListener { uri ->
+//                        val downloadUrl = uri.toString()
+//                        // Guardar el enlace en la base de datos
+//                        saveImageLinkToDatabase(downloadUrl)
+//                        println("Url de descarga: "+downloadUrl)
+//                        // Mostrar la imagen en ImageView
+//                        binding.ivStudent.setImageURI(selectedImageUri)
+//                    }.addOnFailureListener { exception ->
+//                        // Manejar cualquier error
+//                        Log.e("FirebaseStorage", "Error getting download URL", exception)
+//                    }
+//                }.addOnFailureListener { exception ->
+//                    // Manejar cualquier error
+//                    Log.e("FirebaseStorage", "Error uploading file", exception)
+//                }
+//
+//            binding.ivStudent.setImageURI(selectedImageUri) // Corregir aquí
+//        }
+//    }
+//
+//    private fun saveImageLinkToDatabase(downloadUrl: String) {
+//        val db = FirebaseFirestore.getInstance()
+//        val imageInfo = hashMapOf(
+//            "imageUrl" to downloadUrl
+//            // Añade cualquier otra información que quieras guardar
+//        )
+//
+//        db.collection("Images").add(imageInfo)
+//            .addOnSuccessListener { documentReference ->
+//                println("DocumentSnapshot added with ID: ${documentReference.id}" + "Path: " +documentReference.path)
+//                val imageUrl = "${documentReference.parent.path}/${documentReference.id}" // Obtener la URL completa de la imagen
+//                println(imageUrl)
+//            }
+//            .addOnFailureListener { e ->
+//                Log.w("FirebaseFirestore", "Error adding document", e)
+//                println("Falla???")
+//            }
+//    }
+//
+//
+//
+//
+//    companion object {
+//        private const val REQUEST_CODE_PERMISSION = 1001
+//        private const val REQUEST_CODE_IMAGE_PICKER = 1002
+//    }
 }
 
 //            findNavController().navigate(R.id.faltasAlumno)

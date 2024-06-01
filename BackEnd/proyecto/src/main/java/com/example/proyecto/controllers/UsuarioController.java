@@ -5,17 +5,16 @@ import com.example.proyecto.dtos.*;
 import com.example.proyecto.model.Profesor;
 import com.example.proyecto.model.TutorLegal;
 import com.example.proyecto.model.Usuario;
-import com.example.proyecto.services.AsignaturaService;
-import com.example.proyecto.services.ProfesorService;
-import com.example.proyecto.services.TutorService;
-import com.example.proyecto.services.UsuarioService;
+import com.example.proyecto.services.*;
 import com.example.proyecto.util.JWTUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,6 +35,9 @@ public class UsuarioController {
 
     @Autowired
     AsignaturaService asignaturaService;
+
+    @Autowired
+    AlumnoService alumnoService;
 
     @Autowired
     JWTUtil jwtUtil;
@@ -75,6 +77,19 @@ public class UsuarioController {
                 } else return new ResponseEntity<>(new LoginResponseDto("Admin", loggedUser, token), HttpStatus.OK);
             } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/postPhoto")
+    public void postPhoto(@RequestBody String envio, @RequestHeader String token, @RequestParam("photo") MultipartFile photo)  {
+        jwtUtil.validate(token);
+        String[] datos= envio.split(" ");
+        System.out.println(datos[0].substring(1));
+        System.out.println("URL:" +photo.toString());
+        switch (datos[0].substring(1)) {
+            case "Student"-> alumnoService.saveFotoFromAlumno(Integer.parseInt(datos[1]), photo.toString());
+            case "Usuario"->{}
+
+        }
     }
 
 }

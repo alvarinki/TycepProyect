@@ -46,16 +46,18 @@ class FaltasAlumno : Fragment() {
         println("Faltas alumno y llega de "+origen)
         alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
         if (origen == "ShowStudent") {
+            binding.headerAsignaturaNombre.text="Asignatura"
             (alumnoViewModel as AlumnoViewModel).getFaltasFromAlumno(prefs.getToken().toString())
         } else if (origen == "Cursos") {
             println("Entra en primer if de cursos")
+            binding.headerAsignaturaNombre.text="Nombre"
             (alumnoViewModel as AlumnoViewModel).getFaltasFromCurso(
                 prefs.getData()!!.toInt(),
                 prefs.getToken().toString()
             )
         }
         (alumnoViewModel as AlumnoViewModel)._alumno.observe(viewLifecycleOwner) { alumno ->
-            if (alumno.faltas?.isNotEmpty() == true && origen == "ShowStudent"){
+            if (alumno.faltas != null && origen == "ShowStudent"){
                 println("llega aqui")
                 initReciclerView(alumno.faltas!!, alumnoViewModel as AlumnoViewModel)}
             }

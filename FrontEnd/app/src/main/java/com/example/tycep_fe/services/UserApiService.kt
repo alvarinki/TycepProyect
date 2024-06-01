@@ -12,6 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Url
 
 private const val urlBase = "http://192.168.56.1:8080/"
 
@@ -24,6 +25,8 @@ interface UserApiService{
     suspend fun userRecovery(@Header("Authorization") token:String, userType:String): Response<Any>
     @POST("message/subir")
     suspend fun uploadMessage(@Body message: Mensaje, @Header(value = "token") token:String)
+    @POST("user/postPhoto")
+    suspend fun postPhoto(@Body envio:String, @Header(value="token") token: String, @Url urlFoto:String)
 }
 
 object UserApi{

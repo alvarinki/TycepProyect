@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:gravity="center"
-    tools:context=".ShowStudent"
-    android:background="@color/white">
+    tools:context=".ShowStudent">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivStudent"
@@ -25,9 +25,12 @@
         android:layout_height="150dp"
         android:layout_gravity="center"
         android:layout_marginTop="36dp"
+        android:alpha="0"
         android:background="@android:color/transparent"
+        android:filterTouchesWhenObscured="false"
         android:padding="20dp"
         android:src="@drawable/ic_launcher_foreground"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +42,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:visibility="invisible" />
+        android:src="@drawable/clear"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="29dp"
+        tools:layout_editor_absoluteY="36dp" />
 
     <TextView
         android:id="@+id/tvShowStudentName"
@@ -64,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivStudent"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="32dp"
         android:gravity="center"
         android:text="Curso del estudiante"
         android:textColor="@android:color/black"
@@ -78,10 +84,10 @@
         android:id="@+id/btnToAbscenses"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="368dp"
         android:text="Ver faltas"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
