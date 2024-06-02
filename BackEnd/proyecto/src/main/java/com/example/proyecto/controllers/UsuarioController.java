@@ -80,13 +80,13 @@ public class UsuarioController {
     }
 
     @PostMapping("/postPhoto")
-    public void postPhoto(@RequestBody String envio, @RequestHeader String token, @RequestParam("photo") MultipartFile photo)  {
+    public void postPhoto(@RequestBody PhotoRequest photoRequest, @RequestHeader String token)  {
         jwtUtil.validate(token);
-        String[] datos= envio.split(" ");
-        System.out.println(datos[0].substring(1));
-        System.out.println("URL:" +photo.toString());
-        switch (datos[0].substring(1)) {
-            case "Student"-> alumnoService.saveFotoFromAlumno(Integer.parseInt(datos[1]), photo.toString());
+        System.out.println(photoRequest.getType());
+        System.out.println(photoRequest.getPhoto());
+        System.out.println(photoRequest.getRequiredId());
+        switch (photoRequest.getType()) {
+            case "Student"-> alumnoService.saveFotoFromAlumno(photoRequest.getRequiredId(), photoRequest.getPhoto());
             case "Usuario"->{}
 
         }

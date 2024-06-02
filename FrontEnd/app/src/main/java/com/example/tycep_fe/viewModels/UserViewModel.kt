@@ -9,6 +9,7 @@ import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
 import com.example.tycep_fe.Dtos.LoginRequestDto
 import com.example.tycep_fe.Dtos.LoginResponseDto
+import com.example.tycep_fe.Dtos.PhotoRequest
 import com.example.tycep_fe.activities.MainActivity
 import com.example.tycep_fe.models.Alumno
 import com.example.tycep_fe.models.Curso
@@ -164,7 +165,7 @@ class UserViewModel() : ViewModel() {
         }
     }
 
-    fun postPhoto(envio:String, token:String){
+    fun postPhoto(envio:PhotoRequest, token:String){
         viewModelScope.launch {
             userRepo.postPhoto(envio, token)
         }
@@ -178,9 +179,9 @@ class UserViewModel() : ViewModel() {
             java.time.DayOfWeek.WEDNESDAY -> Dia.X
             java.time.DayOfWeek.THURSDAY -> Dia.J
             java.time.DayOfWeek.FRIDAY -> Dia.V
-            else -> null
+            //else -> null
             //Para pruebas
-            //= else -> Dia.L
+            else -> Dia.L
         }
     }
 }

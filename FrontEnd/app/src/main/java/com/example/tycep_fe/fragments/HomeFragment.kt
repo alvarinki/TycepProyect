@@ -24,8 +24,6 @@ import com.example.tycep_fe.adapter.ChatAdapter
 import com.example.tycep_fe.databinding.FragmentHomeBinding
 import com.example.tycep_fe.databinding.NavHeaderPrincipalBinding
 import com.example.tycep_fe.modelFB.ChatFB
-import com.example.tycep_fe.models.Chat
-import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.viewModels.AlumnoViewModel
 import com.example.tycep_fe.viewModels.UserViewModel
 import com.google.firebase.database.DataSnapshot

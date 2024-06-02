@@ -1,11 +1,7 @@
 package com.example.tycep_fe.fragments
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,7 +10,6 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
@@ -23,10 +18,7 @@ import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.FragmentShowStudentBinding
 import com.example.tycep_fe.viewModels.AlumnoViewModel
 import com.example.tycep_fe.viewModels.UserViewModel
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
-import java.util.UUID
 
 
 class showStudent : Fragment() {
@@ -36,6 +28,7 @@ class showStudent : Fragment() {
     lateinit var alumnoViewModel: ViewModel
     lateinit var userViewModel: UserViewModel
     private var alumnoId: Int=0
+    private var fotoAlumno:String= "Nula"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -74,6 +67,8 @@ class showStudent : Fragment() {
                 alumnoId=alumno.id
                 if(alumno.foto.length>2){
                     Picasso.get().load(alumno.foto).into(binding.ivStudent)
+                    fotoAlumno= alumno.foto
+                    println("Foto del alumno: "+fotoAlumno)
                 }
             }
         }
@@ -108,9 +103,33 @@ class showStudent : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Llama a onActivityResult de ImageUploader desde tu fragmento
-        ImagePicker_Uploader.onActivityResult(requestCode, resultCode, data, userViewModel, "Student", alumnoId, prefs.getToken()!!) { downloadUrl ->
+
+        println("Foto desde la bd: "+fotoAlumno)
+        ImagePicker_Uploader.onActivityResult(requireContext(), requestCode, resultCode, data, userViewModel, "Student", alumnoId, prefs.getToken()!!, fotoAlumno) { downloadUrl ->
             // Aquí puedes hacer cualquier cosa con la URL de descarga, como mostrarla en una ImageView
             println(downloadUrl)
+            userViewModel._profesor.observe(viewLifecycleOwner){profesor ->
+//                println(alumnoId)
+//                profesor.cursos?.filter { c -> c.alumnos.contains(c.alumnos.filter { a -> a.id==alumnoId }[0])}
+                    //?.get(0)?.alumnos!!.filter {a -> a.id == alumnoId}[0].foto= downloadUrl
+//                println("Lo hace todo bien, foto: "+profesor.cursos?.filter { c -> c.alumnos.contains(c.alumnos.filter { a -> a.id==alumnoId }[0])}?.get(0)?.alumnos!!.filter {a -> a.id == alumnoId}.get(0).foto)
+                val cursoConAlumno = profesor.cursos?.find { curso ->
+                    curso.alumnos.any { alumno -> alumno.id == alumnoId }
+                }
+
+                // Encuentra el alumno dentro del curso encontrado
+                val alumno = cursoConAlumno?.alumnos?.find { it.id == alumnoId }
+
+                // Actualiza la foto del alumno si el alumno se encontró
+                alumno?.let {
+                    it.foto = downloadUrl
+                    fotoAlumno=downloadUrl
+                    println("Foto actualizada: ${it.foto}")
+                } ?: run {
+                    println("Alumno no encontrado.")
+                }
+
+            }
             Picasso.get().load(downloadUrl.toUri()).into(binding.ivStudent)
         }
     }

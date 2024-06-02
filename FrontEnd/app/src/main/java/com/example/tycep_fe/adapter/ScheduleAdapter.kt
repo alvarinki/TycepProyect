@@ -9,9 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
 import com.example.tycep_fe.R
-import com.example.tycep_fe.databinding.ChatItemBinding
 import com.example.tycep_fe.databinding.ScheduleItemBinding
-import com.example.tycep_fe.models.Chat
 import com.example.tycep_fe.models.Horario
 
 class ScheduleAdapter(private val schedules: Set<Horario>, private val context: Context) :

@@ -2,6 +2,7 @@ package com.example.tycep_fe.services
 
 import com.example.tycep_fe.Dtos.LoginRequestDto
 import com.example.tycep_fe.Dtos.LoginResponseDto
+import com.example.tycep_fe.Dtos.PhotoRequest
 import com.example.tycep_fe.models.Mensaje
 import com.example.tycep_fe.models.Usuario
 import retrofit2.Response
@@ -26,7 +27,7 @@ interface UserApiService{
     @POST("message/subir")
     suspend fun uploadMessage(@Body message: Mensaje, @Header(value = "token") token:String)
     @POST("user/postPhoto")
-    suspend fun postPhoto(@Body envio:String, @Header(value="token") token: String, @Url urlFoto:String)
+    suspend fun postPhoto(@Body request: PhotoRequest, @Header(value="token") token: String )
 }
 
 object UserApi{

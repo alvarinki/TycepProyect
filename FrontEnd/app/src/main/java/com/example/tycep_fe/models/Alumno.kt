@@ -10,7 +10,7 @@ data class Alumno(
     @SerializedName("apellidos")
     val apellidos:String,
     @SerializedName("foto")
-    val foto:String,
+    var foto:String,
     @SerializedName("idCurso")
     val idCurso:Int,
     @SerializedName("dni")
