@@ -21,7 +21,8 @@ public class FirebaseService {
     @PostConstruct
     public void initialize() throws IOException {
         if (firebaseApp == null) {
-            FileInputStream serviceAccount = new FileInputStream("C:\\Users\\alvar\\OneDrive\\Escritorio\\pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
+            FileInputStream serviceAccount = new FileInputStream("C:/Users/acf/Desktop/pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json");
+            //Casa FileInputStream serviceAccount = new FileInputStream("C:\\Users\\alvar\\OneDrive\\Escritorio\\pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://pruebatycep-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -36,6 +37,7 @@ public class FirebaseService {
             }
         }
 //Casa "C:\Users\alvar\OneDrive\Escritorio\pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json"
+//Curro "C:\Users\acf\Desktop\pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json"
     }
 
     public void guardarChat(ChatFB chatFB) {
