@@ -14,6 +14,8 @@ data class Profesor(
     val nombre: String,
     @SerializedName("apellidos")
     val apellidos: String,
+    @SerializedName("foto")
+    var foto:String,
     @SerializedName("dtype")
     val dtype: Char,
     //@SerializedName("chats")

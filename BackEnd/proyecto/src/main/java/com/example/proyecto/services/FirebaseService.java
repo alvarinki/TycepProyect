@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Service
@@ -21,7 +22,11 @@ public class FirebaseService {
     @PostConstruct
     public void initialize() throws IOException {
         if (firebaseApp == null) {
-            FileInputStream serviceAccount = new FileInputStream("C:/Users/acf/Desktop/pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json");
+//            FileInputStream serviceAccount = new FileInputStream("pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
+            try (InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json")) {
+                if (serviceAccount == null) {
+                    throw new IOException("File not found: pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
+                }
             //Casa FileInputStream serviceAccount = new FileInputStream("C:\\Users\\alvar\\OneDrive\\Escritorio\\pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -35,6 +40,7 @@ public class FirebaseService {
             } else {
                 firebaseApp = firebaseApps.get(0); // Obtener la instancia existente
             }
+        }
         }
 //Casa "C:\Users\alvar\OneDrive\Escritorio\pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json"
 //Curro "C:\Users\acf\Desktop\pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json"

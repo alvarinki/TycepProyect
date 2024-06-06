@@ -87,7 +87,7 @@ public class UsuarioController {
         System.out.println(photoRequest.getRequiredId());
         switch (photoRequest.getType()) {
             case "Student"-> alumnoService.saveFotoFromAlumno(photoRequest.getRequiredId(), photoRequest.getPhoto());
-            case "Usuario"->{}
+            case "Profesor"->{profesorService.savePhotoFromProfesor(photoRequest.getRequiredId(), photoRequest.getPhoto());}
 
         }
     }

@@ -52,4 +52,15 @@ public class ProfesorServiceImpl implements ProfesorService {
     public void deleteProfesores(List<Profesor> profesores) {
         profesorRepo.deleteAll(profesores);
     }
+
+    @Override
+    public void savePhotoFromProfesor(int idProfesor, String photo) {
+        Optional<Profesor> profesor= profesorRepo.findProfesorById(idProfesor);
+        if(profesor.isPresent()){
+            Profesor p =profesor.get();
+            p.setFoto(photo);
+            profesorRepo.save(p);
+
+        }
+    }
 }

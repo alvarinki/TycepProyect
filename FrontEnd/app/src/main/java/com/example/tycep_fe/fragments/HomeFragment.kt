@@ -1,6 +1,7 @@
 package com.example.tycep_fe.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat.finishAffinity
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
+import com.example.tycep_fe.Objects.ImagePicker_Uploader
 import com.example.tycep_fe.R
 import com.example.tycep_fe.adapter.ChatAdapter
 import com.example.tycep_fe.databinding.FragmentHomeBinding
@@ -30,11 +33,13 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.auth.User
+import com.squareup.picasso.Picasso
 import java.util.Timer
 import java.util.TimerTask
 
 class HomeFragment : Fragment() {
-    private lateinit var userViewModel: ViewModel
+    private lateinit var userViewModel: UserViewModel
     private lateinit var alumnoViewModel: ViewModel
     private var _binding: FragmentHomeBinding? = null
     private lateinit var navHeaderBinding: NavHeaderPrincipalBinding
@@ -42,6 +47,8 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
     private var backPressed = 0
+    private var fotoProfesor="Nula"
+    private var idProfesor:Int=0
     private val database = FirebaseDatabase.getInstance()
 
     private val binding get() = _binding!!
@@ -83,6 +90,7 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -157,6 +165,17 @@ class HomeFragment : Fragment() {
         menuItemChange = binding.navView.menu.findItem(R.id.nav_studentdata_or_course)
 
         (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
+            navHeaderBinding.tvName.text= "${profesor.nombre} ${profesor.apellidos}"
+            navHeaderBinding.tvUsername.text= profesor.usuario
+            if(profesor.foto.length>2){
+                fotoProfesor=profesor.foto
+                Picasso.get().load(profesor.foto).fit().centerCrop().into(navHeaderBinding.imageView)
+            }
+            idProfesor=profesor.id
+
+            navHeaderBinding.ibImageExchange.setOnClickListener{
+                ImagePicker_Uploader.pickAndUploadImage(this, 100)
+            }
             obtenerChatsDeUsuario(profesor.usuario)
             menuItemChange.setTitle("Cursos")
             binding.navView.setNavigationItemSelectedListener { menuItem ->
@@ -277,7 +296,6 @@ class HomeFragment : Fragment() {
                     backPressed++
                     Handler(Looper.getMainLooper()).postDelayed({
                         backPressed = 0
-                        println("Entra aqui")
                     }, 2000)
                 } else {
                     finishAffinity(requireActivity())
@@ -287,7 +305,6 @@ class HomeFragment : Fragment() {
                     timer?.schedule(object : TimerTask() {
                         override fun run() {
                             backPressed = 0
-                            println("Entra aqui")
                         }
                     }, 2000.toLong())
                 }
@@ -295,8 +312,6 @@ class HomeFragment : Fragment() {
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-
-
     }
 
 //    private fun initReciclerView(nombreUsuario:String,chats: MutableList<ChatFB>) {
@@ -307,7 +322,36 @@ class HomeFragment : Fragment() {
 //    }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        // Llama a onActivityResult de ImageUploader desde tu fragmento
+
+
+        ImagePicker_Uploader.onActivityResult(requireContext(), requestCode, resultCode, data, userViewModel, "Profesor", idProfesor, prefs.getToken()!!, fotoProfesor)
+        { downloadUrl ->
+            // Aquí puedes hacer cualquier cosa con la URL de descarga, como mostrarla en una ImageView
+            println(downloadUrl)
+            userViewModel._profesor.observe(viewLifecycleOwner){profesor ->
+
+
+                profesor?.let {
+                    if (profesor.foto.length > 2) {
+                        it.foto = downloadUrl
+                        fotoProfesor = downloadUrl
+                        println("Foto profesor: "+fotoProfesor)
+                    }
+
+
+                } ?: run {
+                    println("Problemita con foto profe.")
+                }
+
+
+            }
+            Picasso.get().load(downloadUrl.toUri()).fit().centerCrop().into(navHeaderBinding.imageView)
+        }
+    }
 
     fun obtenerChatsDeUsuario(nombreUsuario: String) {
         val usuariosRef = database.getReference("Usuarios")

@@ -32,6 +32,8 @@ public class Profesor extends Usuario{
     @Column(name = "correo")
     private String correo;
 
+    @Column(name="foto")
+    private String foto;
 //    @OneToMany(mappedBy = "idProfesor", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<ProfesorCurso> profesorCursos = new LinkedHashSet<>();
 

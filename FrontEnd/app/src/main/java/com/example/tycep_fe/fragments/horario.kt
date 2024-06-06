@@ -20,24 +20,21 @@ import com.example.tycep_fe.viewModels.UserViewModel
 
 class horario : Fragment() {
     private lateinit var userViewModel: ViewModel
-    private lateinit var _binding: FragmentHorarioBinding
+    private var _binding: FragmentHorarioBinding?=null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHorarioBinding.inflate(inflater, container, false)
-        return _binding.root
+        return _binding!!.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +64,7 @@ class horario : Fragment() {
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         (userViewModel as UserViewModel)._profesor.observe(requireActivity()) {
             (userViewModel as UserViewModel).getHorarioFromProfesor()
-            (userViewModel as UserViewModel)._horarios.observe(requireActivity()) { horario ->
+            (userViewModel as UserViewModel)._horarios.observe(viewLifecycleOwner) { horario ->
                 println(horario)
                 if (horario != null) cargarHorarios(horario)
 

@@ -25,6 +25,7 @@ object ImagePicker_Uploader {
 
     fun onActivityResult(context: Context, requestCode: Int, resultCode: Int, data: Intent?, userViewModel: UserViewModel, tipo: String, requiredId:Int, token:String, imagenAnterior:String,  onSuccess: (downloadUrl: String) -> Unit) {
         if (requestCode == REQUEST_CODE_IMAGE_PICKER && resultCode == Activity.RESULT_OK && data != null) {
+            println("Foto anterior: "+imagenAnterior)
             if(imagenAnterior!="Nula"){
                 FirebaseStorage.getInstance().getReferenceFromUrl(imagenAnterior).delete().addOnSuccessListener {
                     Toast.makeText(context , "Eliminose", Toast.LENGTH_SHORT).show()
