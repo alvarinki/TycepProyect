@@ -181,7 +181,7 @@ public class AdminController {
         } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/FBSaveChat")
+    @PostMapping("/saveChat")
     public ResponseEntity<String> guardarChat(@RequestBody ChatFB chatFB) {
         try {
             // Llama al servicio de Firebase para guardar el usuario

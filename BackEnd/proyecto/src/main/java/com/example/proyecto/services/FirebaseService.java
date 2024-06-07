@@ -23,7 +23,7 @@ public class FirebaseService {
     public void initialize() throws IOException {
         if (firebaseApp == null) {
 //            FileInputStream serviceAccount = new FileInputStream("pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
-            try (InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json")) {
+            try (InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json")) {
                 if (serviceAccount == null) {
                     throw new IOException("File not found: pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json");
                 }
@@ -42,6 +42,8 @@ public class FirebaseService {
             }
         }
         }
+        //CASA
+        //  "pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json"
 //Casa "C:\Users\alvar\OneDrive\Escritorio\pruebatycep-firebase-adminsdk-ud9iq-54eb686358.json"
 //Curro "C:\Users\acf\Desktop\pruebatycep-firebase-adminsdk-ud9iq-5f8a2e4ce7.json"
     }
