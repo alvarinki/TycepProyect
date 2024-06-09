@@ -1,5 +1,6 @@
 package com.example.tycep_fe.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -32,6 +33,7 @@ class InicioSesion : Fragment() {
     lateinit var userViewModel: UserViewModel
 
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,12 +48,19 @@ class InicioSesion : Fragment() {
                 val loginRequestDto = LoginRequestDto("", "", prefs.getToken().toString())
 //
                 userViewModel.userLogin(loginRequestDto)
-                userViewModel.token.observe(viewLifecycleOwner) {
+                userViewModel._profesor.observe(viewLifecycleOwner) {
+                    println("Token: " + prefs.getToken().toString())
+                    findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+                }
+                userViewModel._tutorLegal
+                    .observe(viewLifecycleOwner) {
                     println("Token: " + prefs.getToken().toString())
                     findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
                 }
 
-
+                userViewModel._admin.observe(viewLifecycleOwner){
+                    findNavController().navigate(R.id.action_inicioSesion_to_uploadFragment)
+                }
 //            userViewModel._profesor.observe(requireActivity()){profesor ->
 //
 //            }
@@ -80,12 +89,28 @@ class InicioSesion : Fragment() {
             prefs = Prefs(requireContext())
             if(_binding!!.checkBoxAdmin.isChecked){
                 userViewModel._admin.observe(viewLifecycleOwner){
+                    if (isAdded) {
                     userViewModel.token.observe(viewLifecycleOwner){token->
                         prefs.saveToken(token)
                         findNavController().navigate(R.id.action_inicioSesion_to_uploadFragment)
-                    }
+                    }}
                 }
             }
+            else {
+                userViewModel._profesor.observe(viewLifecycleOwner) {
+                    if (isAdded) {
+                    println("Token: " + prefs.getToken().toString())
+                    findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)}
+                }
+                userViewModel._tutorLegal
+                    .observe(viewLifecycleOwner) {
+                        if (isAdded) {
+                        println("Token: " + prefs.getToken().toString())
+                        findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)}
+                    }
+            }
+
+        }
             //prefs.clearToken()
             //prefs.saveToken(token)
             //findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
@@ -117,7 +142,7 @@ class InicioSesion : Fragment() {
 //                }
 
 
-        }
+
     }
 
 }

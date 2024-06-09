@@ -69,11 +69,19 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/deleteT/{id}")
+    public ResponseEntity<?> deleteT(@PathVariable("id") int id) {
+        tutorService.deleteTutorById(id);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("type") String type, @RequestHeader("authorization") String token) {
         System.out.println(token);
         if (jwtUtil.validate(token)) {
             String nombreUsuario = jwtUtil.getValue(token);
+            System.out.println("Nombre del usuario: " + nombreUsuario);
+            System.out.println(type);
             if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
                 if (file.isEmpty()) {
                     return ResponseEntity.badRequest().body("File is empty");
@@ -82,13 +90,11 @@ public class AdminController {
 
                     case "Profesores" -> {
                         Object o = fileManager.mapProfesores(file);
-                        ;
                         return comprobarRespuestaRegisters(o);
                     }
 
                     case "Tutores legales" -> {
                         Object o = fileManager.mapTutores(file);
-                        System.out.println((String) o);
                         return comprobarRespuestaRegisters(o);
                     }
 
@@ -111,6 +117,10 @@ public class AdminController {
                             return ResponseEntity.badRequest().body(mensaje);
                         } else return ResponseEntity.ok().body(mensaje);
                     }
+
+                    default -> {
+                        return null;
+                    }
                 }
                 List<String> users = new ArrayList<>();
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
@@ -124,17 +134,20 @@ public class AdminController {
                     return ResponseEntity.status(500).body("Error reading file");
                 }
 
-                return ResponseEntity.ok("File processed successfully with " + users.size() + " users.");
+
             } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
         } else {
-            return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
-        }
+            System.out.println("Problema con el token");
+            return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);}
+        return ResponseEntity.status(500).body("Error desconocido en uploadFile");
     }
 
     public ResponseEntity<?> comprobarRespuestaRegisters(Object o) {
         if (o instanceof String) {
+            System.out.println((String) o);
             return ResponseEntity.badRequest().body((String) o);
         } else {
+            System.out.println((List<AdminsUserData>) o);
             return ResponseEntity.ok((List<AdminsUserData>) o);
         }
     }

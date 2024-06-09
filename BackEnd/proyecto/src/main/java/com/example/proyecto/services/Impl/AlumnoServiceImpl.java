@@ -63,4 +63,9 @@ public class AlumnoServiceImpl implements AlumnoService {
         }
     }
 
+    @Override
+    public void deleteAlumnoById(int idAlumno) {
+        alumnoRepo.deleteById(idAlumno);
+    }
+
 }

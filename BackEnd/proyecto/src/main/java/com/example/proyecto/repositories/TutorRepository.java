@@ -23,4 +23,6 @@ public interface TutorRepository extends JpaRepository<TutorLegal, Integer> {
             "FROM TutorLegal t JOIN t.alumnos a " +
             "WHERE a.id = :alumnoId")
     List<String> findTutoresByIdAlumno(@Param("alumnoId") Integer alumnoId);
+
+    void deleteTutorLegalById(Integer userId);
 }

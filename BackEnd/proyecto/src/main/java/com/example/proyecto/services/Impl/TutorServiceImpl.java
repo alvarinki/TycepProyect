@@ -51,4 +51,9 @@ public class TutorServiceImpl implements TutorService {
     public List<String> findTutoresByIdAlumno(Integer alumnoId) {
         return tutorRepo.findTutoresByIdAlumno(alumnoId);
     }
+
+    @Override
+    public void deleteTutorById(Integer id) {
+        tutorRepo.deleteById(id);
+    }
 }

@@ -121,8 +121,8 @@ class UploadFragment : Fragment() {
                         adminsUserData?.let {
                             if(adminsUserData.isNotEmpty()){
                                 insertType += formattedMinutes+formattedSeconds
-                                saveUserDataToFile(requireContext(), insertType, it)
-                                Toast.makeText(requireContext(), "Archivo guardado correctamente", Toast.LENGTH_LONG).show()
+                                val mensaje:String= saveUserDataToFile(requireContext(), insertType, it)
+                                Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
                             }
                             else Toast.makeText(requireContext(), "Todos los datos ya se encontraban en la base de datos", Toast.LENGTH_LONG).show()
                         }
@@ -159,10 +159,12 @@ class UploadFragment : Fragment() {
     private fun saveUserDataToFile(context: Context, dataType: String, adminsUserData: List<AdminsUserData>): String {
         return try {
 
+            if (adminsUserData.isEmpty()) {
                 return "Todos los datos ya están en la base de datos"
+            }
 
             val fileName = "${dataType}${LocalTime.now().hour}_${LocalTime.now().minute}_${LocalTime.now().second}.txt"
-            val directory = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            val directory = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
             if (directory != null && !directory.exists()) {
                 directory.mkdirs()
             }

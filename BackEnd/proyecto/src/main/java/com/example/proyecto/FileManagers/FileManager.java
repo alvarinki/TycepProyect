@@ -88,7 +88,6 @@ public class FileManager {
                         profesor.setContrasena(passwordEncoder.encode(profesor.getContrasena()));
                         fbUsuarios.add(new UsuarioFB(null, profesor.getApellidos(), profesor.getNombre(), profesor.getUsuario(), null));
                         profesores.add(profesor);
-                        System.out.println("Cargo el profesor "+profesor);
 
                     } else insercionCorrecta.append(", se han intentado introducir profesores duplicados por dni");
 
@@ -171,7 +170,8 @@ public class FileManager {
         tutorService.saveTutoresLegales(tutores);
         firebaseService.guardarUsuarios(fbUsuarios);
         //notifyUsersData(ruta, adminsUserData, "Tutor");
-        return adminsUserData;
+        if(adminsUserData.isEmpty()) return "Todos los usuarios se encontraban registrados";
+        else return adminsUserData;
     }
 
     private static String getPrefijo(String nombre, String apellidos) {

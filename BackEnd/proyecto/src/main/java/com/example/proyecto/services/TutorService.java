@@ -20,4 +20,6 @@ public interface TutorService {
     TutorLegal findTutorLegalByDni(String dni);
 
     List<String> findTutoresByIdAlumno(Integer alumnoId);
+
+    void deleteTutorById(Integer id);
 }
