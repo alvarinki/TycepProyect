@@ -66,14 +66,14 @@ public class FileManager {
                     else return "Error en el formato del Dni en la línea" + numeroLinea;
 
                     if (esCorreoValido(datos[3].trim())) profesor.setCorreo(datos[3].trim());
-                    else return "Formateo del correo en la línea " + numeroLinea + " incorrecto";
+                    else return "Error: Formateo del correo en la línea " + numeroLinea + " incorrecto";
 
                     profesor.setContrasena(generarContrasena());
                     profesor.setDtype('P');
                     try {
                         Arrays.stream(datos[4].split(",")).toList().forEach(asig -> profesor.getAsignaturas().add(asignaturaService.findByNombre(asig)));
                     } catch (Exception e) {
-                        return "Alguna asignatura no existe o hay un formateo incorrecto de estas en la línea " + numeroLinea;
+                        return "Error: Alguna asignatura no existe o hay un formateo incorrecto de estas en la línea " + numeroLinea;
                     }
                     String prefijo = getPrefijo(profesor.getNombre(), profesor.getApellidos());
                     String nombreUsuario;
@@ -96,7 +96,7 @@ public class FileManager {
                 numeroLinea++;
             }
         } catch (FileNotFoundException e) {
-            return "No se ha encontrado el archivo";
+            return "Error: No se ha encontrado el archivo";
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -106,11 +106,11 @@ public class FileManager {
         return adminsUserData;
     }
 
-    public String mapTutores(String ruta) {
+    public Object mapTutores(MultipartFile file) {
         List<TutorLegal> tutores = new ArrayList<>();
         List<AdminsUserData> adminsUserData = new ArrayList<>();
         List<UsuarioFB> fbUsuarios = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String linea;
             int numeroLinea = 1;
             while ((linea = br.readLine()) != null) {
@@ -140,7 +140,7 @@ public class FileManager {
                         if (comprobarDNI(dni)) {
                             Alumno a = alumnoService.findAlumnoByDni(dni);
                             if (a != null) alumnos.add(a);
-                            else return "No se encuentra tutelado correspondiente a tutor en la línea " + numeroLinea;
+                            else return "Error: No se encuentra tutelado correspondiente a tutor en la línea " + numeroLinea;
                         } else
                             return "Error en el formato o existencia del dni de uno de los tutelados en la línea " + numeroLinea;
                     }
@@ -164,14 +164,14 @@ public class FileManager {
                 numeroLinea++;
             }
         } catch (FileNotFoundException e) {
-            return "El archivo no ha sido encontrado.";
+            return "Error: El archivo no ha sido encontrado.";
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         tutorService.saveTutoresLegales(tutores);
         firebaseService.guardarUsuarios(fbUsuarios);
         //notifyUsersData(ruta, adminsUserData, "Tutor");
-        return "Tutores registrados correctamente";
+        return adminsUserData;
     }
 
     private static String getPrefijo(String nombre, String apellidos) {
@@ -184,10 +184,10 @@ public class FileManager {
         return prefijo;
     }
 
-    public String mapAdmins(String ruta) {
+    public Object mapAdmins(MultipartFile file) {
         List<Usuario> admins = new ArrayList<>();
         List<AdminsUserData> adminsUserData = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String linea;
             int numeroLinea = 1;
             while ((linea = br.readLine()) != null) {
@@ -199,7 +199,7 @@ public class FileManager {
                         user.setNombre(datos[0].trim());
                         user.setApellidos(datos[1].trim());
                     } else
-                        return "El administrador que se ha intentado registrar en la linea " + numeroLinea + " ya existe";
+                        return "Error: El administrador que se ha intentado registrar en la linea " + numeroLinea + " ya existe";
                 } else return "Error en el formato de nombre o apellidos en línea " + numeroLinea;
                 String contrasena= generarContrasena();
                 System.out.println(contrasena);
@@ -221,18 +221,18 @@ public class FileManager {
                 numeroLinea++;
             }
         } catch (FileNotFoundException e) {
-            return "No se ha encontrado el archivo.";
+            return "Error: No se ha encontrado el archivo.";
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         usuarioService.saveUsers(admins);
         //notifyUsersData(ruta, adminsUserData, "Admin");
-        return "Administradores registrados correctamente";
+        return adminsUserData;
     }
 
-    public String mapAlumnos(String ruta) {
+    public String mapAlumnos(MultipartFile file) {
         List<Alumno> alumnos = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String linea;
             int numeroLinea = 1;
             while ((linea = br.readLine()) != null) {
@@ -246,10 +246,10 @@ public class FileManager {
 
                 int idCurso = cursoService.findCursoByNombre(datos[2].trim());
                 if (idCurso != 0) alumno.setIdCurso(idCurso);
-                else return "Hay un error en la introducción del curso en la línea " + numeroLinea;
+                else return "Error en la introducción del curso en la línea " + numeroLinea;
 
                 if (comprobarDNI(datos[3].trim())) alumno.setDni(datos[3].trim());
-                else return "El dni introducido en la línea " + numeroLinea + " no existe";
+                else return "Error en el dni introducido en la línea " + numeroLinea + ", no existe";
 
                 if (alumnoService.findAlumnoByDni(alumno.getDni()) == null) alumnos.add(alumno);
                 numeroLinea++;
@@ -286,7 +286,7 @@ public class FileManager {
 
                 int idCurso = cursoService.findCursoByNombre(datos[3].trim());
                 if (idCurso != 0) horario.setIdCurso(idCurso);
-                else return "Hay un error en la introducción del curso en la línea " + numeroLinea;
+                else return "Error en la introducción del curso en la línea " + numeroLinea;
 
                 int aula = comprobarFormatoNumero(datos[4].trim());
                 if (aula != 0) horario.setAula(aula);
@@ -295,7 +295,7 @@ public class FileManager {
 
                 Profesor profesor = profesorService.findProfesorByDni(datos[5].trim());
                 if (profesor != null) horario.setIdProfesor(profesor.getId());
-                else return "El dni introducido en la línea " + numeroLinea + " no corresponde a ningún profesor";
+                else return "Error en el dni introducido en la línea " + numeroLinea + ", no corresponde a ningún profesor";
 
                 Horario buscarHorario = horarioService.findHorarioByDiaAndHoraAndIdCurso(dia, hora, idCurso);
                 if (buscarHorario != null) {
@@ -396,38 +396,38 @@ public class FileManager {
 //        }
 //    }
 
-    public String notifyUsersData(MultipartFile file, List<AdminsUserData> adminsUserData, String userType) {
-        try {
-            // Guardar el archivo en una ubicación temporal
-            File tempFile = File.createTempFile("uploaded-", ".tmp");
-            file.transferTo(tempFile);
-
-            // Obtener el directorio del archivo temporal
-            String directorio = tempFile.getParent();
-
-            // Crear el BufferedWriter para escribir en el archivo CSV
-            String tipoUser = "/";
-            if (userType.equalsIgnoreCase("Profesor")) {
-                tipoUser += "profesores";
-            } else if (userType.equalsIgnoreCase("Tutor")) {
-                tipoUser += "tutores";
-            } else if (userType.equalsIgnoreCase("Admin")) {
-                tipoUser += "admins";
-            }
-            String fileName = directorio + tipoUser + LocalTime.now().getHour() + LocalTime.now().getMinute() + LocalTime.now().getSecond() + ".csv";
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-                // Escribir cada objeto AdminsUserData en una línea del archivo CSV
-                for (AdminsUserData userData : adminsUserData) {
-                    writer.write(userData.getUsername() + ";" + userData.getPassword() + ";" + userData.getNombre_Apellidos() + ";" + userData.getDni());
-                    writer.newLine();
-                }
-                return "Tutores registrados correctamente";
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Error al procesar el archivo: " + e.getMessage();
-        }
-    }
+//    public String notifyUsersData(MultipartFile file, List<AdminsUserData> adminsUserData, String userType) {
+//        try {
+//            // Guardar el archivo en una ubicación temporal
+//            File tempFile = File.createTempFile("uploaded-", ".tmp");
+//            file.transferTo(tempFile);
+//
+//            // Obtener el directorio del archivo temporal
+//            String directorio = tempFile.getParent();
+//
+//            // Crear el BufferedWriter para escribir en el archivo CSV
+//            String tipoUser = "/";
+//            if (userType.equalsIgnoreCase("Profesor")) {
+//                tipoUser += "profesores";
+//            } else if (userType.equalsIgnoreCase("Tutor")) {
+//                tipoUser += "tutores";
+//            } else if (userType.equalsIgnoreCase("Admin")) {
+//                tipoUser += "admins";
+//            }
+//            String fileName = directorio + tipoUser + LocalTime.now().getHour() + LocalTime.now().getMinute() + LocalTime.now().getSecond() + ".txt";
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+//                // Escribir cada objeto AdminsUserData en una línea del archivo CSV
+//                for (AdminsUserData userData : adminsUserData) {
+//                    writer.write(userData.getUsername() + ";" + userData.getPassword() + ";" + userData.getNombre_Apellidos() + ";" + userData.getDni());
+//                    writer.newLine();
+//                }
+//                return "Tutores registrados correctamente";
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return "Error al procesar el archivo: " + e.getMessage();
+//        }
+//    }
 
     public static int comprobarFormatoNumero(String numero) {
         try {

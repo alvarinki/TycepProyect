@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.FragmentUploadBinding
 import com.example.tycep_fe.models.AdminsUserData
@@ -37,6 +38,7 @@ class UploadFragment : Fragment() {
     private val REQUEST_CODE = 1
     private var _binding: FragmentUploadBinding? = null
     private var insertType:String=""
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,7 +109,9 @@ class UploadFragment : Fragment() {
                     val (minutes, seconds) = getCurrentMinutesAndSeconds()
                     val formattedMinutes = formatToTwoDigits(minutes)
                     val formattedSeconds = formatToTwoDigits(seconds)
-                    val token = "eyJraWQiOiJ5bm55Z3Q4OXI1Znk5aXV5OTRqZnVleTNoZmtmZHM0bGFza2RmbGFzZGtmMHc5cml3MHA5aXJlb2siLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMyIsImlhdCI6MTcxNzkxMjY2Mywic3ViIjoicnJvXzgwIiwiaXNzIjoiTWFpbiIsImV4cCI6MTcxODUxNzQ2M30.ZMyZy31mvNe1AAL7Sea_hOve20SH6P6_pE8DgSSedLw"
+                    val prefs= Prefs(requireContext())
+                    val token = prefs.getToken()!!
+                    println(token)
 
                     viewModel.uploadFile(filePart, insertType, token) { response, adminsUserData ->
                         if (response.isNotEmpty()) {

@@ -29,7 +29,7 @@ interface AdminApiService{
     fun uploadFile(
         @Part file: MultipartBody.Part,
         @Part("type") type:RequestBody,
-        @Header("token") token: String): Call<ResponseBody>
+        @Header("authorization") token: String): Call<ResponseBody>
 
 }
 

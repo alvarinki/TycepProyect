@@ -70,7 +70,8 @@ public class AdminController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("type") String type, @RequestHeader("token") String token) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("type") String type, @RequestHeader("authorization") String token) {
+        System.out.println(token);
         if (jwtUtil.validate(token)) {
             String nombreUsuario = jwtUtil.getValue(token);
             if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
@@ -80,13 +81,36 @@ public class AdminController {
                 switch (type) {
 
                     case "Profesores" -> {
-                        Object o = registerProfesores(file);
+                        Object o = fileManager.mapProfesores(file);
+                        ;
                         return comprobarRespuestaRegisters(o);
                     }
-//            case "Alumnos"->{
-//                String mensaje= registerAlumnos()
-//            }
 
+                    case "Tutores legales" -> {
+                        Object o = fileManager.mapTutores(file);
+                        System.out.println((String) o);
+                        return comprobarRespuestaRegisters(o);
+                    }
+
+                    case "Administradores" -> {
+                        Object o = fileManager.mapAdmins(file);
+                        return comprobarRespuestaRegisters(o);
+                    }
+
+                    case "Asignaturas" -> {
+
+                    }
+
+                    case "Horarios" -> {
+//                        Object o = fileManager.mapHorarios(file);
+//                        return comprobarRespuestaRegisters(o);
+                    }
+                    case "Alumnos" -> {
+                        String mensaje = fileManager.mapAlumnos(file);
+                        if (mensaje.startsWith("Error")) {
+                            return ResponseEntity.badRequest().body(mensaje);
+                        } else return ResponseEntity.ok().body(mensaje);
+                    }
                 }
                 List<String> users = new ArrayList<>();
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
@@ -107,93 +131,69 @@ public class AdminController {
         }
     }
 
-    public ResponseEntity<?> comprobarRespuestaRegisters(Object o){
-        if(o instanceof String){
-            System.out.println("No devuelve");
-            return ResponseEntity.ok((String)o);
-        }
-        else {
-            System.out.println("Devuelve");
+    public ResponseEntity<?> comprobarRespuestaRegisters(Object o) {
+        if (o instanceof String) {
+            return ResponseEntity.badRequest().body((String) o);
+        } else {
             return ResponseEntity.ok((List<AdminsUserData>) o);
         }
     }
 
-    @PostMapping("/registerProfesores")
-    public Object registerProfesores(MultipartFile file) {
-        System.out.println(file.getOriginalFilename());
-//        if (jwtUtil.validate(token)) {
-//            String nombreUsuario = jwtUtil.getValue(token);
-//            Optional<Usuario> user= usuarioService.findUsuarioByUsuario(nombreUsuario);
-//            if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
-
-        return fileManager.mapProfesores(file);
-
+//    @PostMapping("/registerProfesores")
+//    public Object registerProfesores(MultipartFile file) {
+//        System.out.println(file.getOriginalFilename());
+////        if (jwtUtil.validate(token)) {
+////            String nombreUsuario = jwtUtil.getValue(token);
+////            Optional<Usuario> user= usuarioService.findUsuarioByUsuario(nombreUsuario);
+////            if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
+//
+//        return fileManager.mapProfesores(file);
+//
 
 //            } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
 //        } else return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
-    }
+//    }
 
-    @PostMapping("/registerTutores")
-    public ResponseEntity<?> registerTutores(@RequestBody String ruta, @RequestHeader String token) {
-        if (jwtUtil.validate(token)) {
-            String nombreUsuario = jwtUtil.getValue(token);
-            if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
-                String mensaje = fileManager.mapTutores(ruta);
-                if (mensaje.startsWith("Tutores registrados correctamente")) return ResponseEntity.ok(mensaje);
-                else return ResponseEntity.badRequest().body(mensaje);
-            } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
-        } else return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
-    }
+//    @PostMapping("/registerTutores")
+//    public ResponseEntity<?> registerTutores(MultipartFile file) {
+//                String mensaje = fileManager.mapTutores(file);
+//                if (mensaje.startsWith("Tutores registrados correctamente")) return ResponseEntity.ok(mensaje);
+//                else return ResponseEntity.badRequest().body(mensaje);
+//    }
+//
+//
+//    @PostMapping("/registerAdmins")
+//    public ResponseEntity<String> registerAdmins(MultipartFile file) {
+//                String mensaje = fileManager.mapAdmins(file);
+//                if (mensaje.startsWith("Admins registrados correctamente")) return ResponseEntity.ok(mensaje);
+//                else return ResponseEntity.badRequest().body(mensaje);
+//    }
 
-
-    @PostMapping("/registerAdmins")
-    public ResponseEntity<String> registerAdmins(@RequestBody String ruta) {
-//        if (jwtUtil.validate(token)) {
-//            String nombreUsuario = jwtUtil.getValue(token);
-//            if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
-                String mensaje = fileManager.mapAdmins(ruta);
-                if (mensaje.startsWith("Admins registrados correctamente")) return ResponseEntity.ok(mensaje);
-                else return ResponseEntity.badRequest().body(mensaje);
-//            } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
-//        } else return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
-    }
-
-    @PostMapping("/registerAlumnos")
-    public ResponseEntity<String> registerAlumnos(@RequestBody String ruta, @RequestHeader String token) {
-        if (jwtUtil.validate(token)) {
-            String nombreUsuario = jwtUtil.getValue(token);
-            if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
-                String mensaje = fileManager.mapAlumnos(ruta);
-                if (mensaje.startsWith("Alumnos registrados correctamente")) return ResponseEntity.ok(mensaje);
-                else return ResponseEntity.badRequest().body(mensaje);
-            } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
-        } else return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
-    }
+//    @PostMapping("/registerAlumnos")
+//    public String registerAlumnos(MultipartFile file) {
+//                String mensaje = fileManager.mapAlumnos(file);
+//                if (mensaje.startsWith("Alumnos registrados correctamente")) return mensaje;
+//                else return mensaje;
+//    }
 
     @PostMapping("/saveCurso")
     public ResponseEntity<Curso> saveCurso(@RequestBody String nombreCurso, @RequestHeader String token) {
-        if (jwtUtil.validate(token)) {
+
             Curso curso = cursoService.saveCurso(nombreCurso);
             if (curso != null) return ResponseEntity.ok(curso);
             else return new ResponseEntity<>(HttpStatus.FOUND);
-        } else return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }
-
-    @PostMapping("/registerHorarios")
-    public ResponseEntity<String> registerHorarios(@RequestBody String ruta, @RequestHeader String token) {
-        if (jwtUtil.validate(token)) {
-            String nombreUsuario = jwtUtil.getValue(token);
-            if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
-                String mensaje = fileManager.mapHorarios(ruta);
-                if (mensaje.startsWith("Horarios registrados correctamente")) return ResponseEntity.ok(mensaje);
-                else return ResponseEntity.badRequest().body(mensaje);
-            } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
-        } else return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
 
     }
+
+//    @PostMapping("/registerHorarios")
+//    public ResponseEntity<String> registerHorarios(MultipartFile file) {
+//                String mensaje = fileManager.mapHorarios(file);
+//                if (mensaje.startsWith("Horarios registrados correctamente")) return ResponseEntity.ok(mensaje);
+//                else return ResponseEntity.badRequest().body(mensaje);
+//    }
 
     @PostMapping("/deleteUsersOrStudents")
-    public ResponseEntity<String> deleteUsersOrStudents(@RequestBody String ruta, @RequestHeader String token) {
+    public ResponseEntity<String> deleteUsersOrStudents(String ruta, @RequestHeader String token) {
         if (jwtUtil.validate(token)) {
             String nombreUsuario = jwtUtil.getValue(token);
             if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {

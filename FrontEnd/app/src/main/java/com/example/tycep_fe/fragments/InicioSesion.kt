@@ -42,9 +42,6 @@ class InicioSesion : Fragment() {
         //Linea para pruebas
         prefs.clearToken()
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-
-
-
             if (prefs.getToken()?.length!! > 4) {
                 val loginRequestDto = LoginRequestDto("", "", prefs.getToken().toString())
 //
@@ -83,7 +80,10 @@ class InicioSesion : Fragment() {
             prefs = Prefs(requireContext())
             if(_binding!!.checkBoxAdmin.isChecked){
                 userViewModel._admin.observe(viewLifecycleOwner){
-                    findNavController().navigate(R.id.action_inicioSesion_to_uploadFragment)
+                    userViewModel.token.observe(viewLifecycleOwner){token->
+                        prefs.saveToken(token)
+                        findNavController().navigate(R.id.action_inicioSesion_to_uploadFragment)
+                    }
                 }
             }
             //prefs.clearToken()

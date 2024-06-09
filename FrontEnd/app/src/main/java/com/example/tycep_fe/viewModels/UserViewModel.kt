@@ -90,6 +90,7 @@ class UserViewModel() : ViewModel() {
                     _admin.postValue(admin)
                 }
                 token.postValue(response.body()?.token.toString())
+                println(response.body()?.token.toString())
             }
         }
     }
