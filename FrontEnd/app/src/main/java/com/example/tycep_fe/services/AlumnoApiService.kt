@@ -1,5 +1,7 @@
 package com.example.tycep_fe.services
 
+import com.example.tycep_fe.Dtos.AlumnoDto
+import com.example.tycep_fe.Dtos.TutorDto
 import com.example.tycep_fe.models.Alumno
 
 import retrofit2.Response
@@ -15,7 +17,10 @@ private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(Gs
 
 interface AlumnoApiService{
     @POST("alumno/getAlumno")
-    suspend fun getAlumnoById(@Body idAlumno:Int, @Header(value="token") token:String): Response<Alumno>
+    suspend fun getAlumnoById(@Body idAlumno:Int, @Header(value="token") token:String): Response<AlumnoDto>
+
+    @POST("/getTutoresFromAlumno")
+    suspend fun getTutoresFromAlumno(@Body idAlumno: Int): Response<List<TutorDto>>
  }
 
 object AlumnoApi{

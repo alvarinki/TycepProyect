@@ -33,6 +33,10 @@
     <string name="user_save">Guardado de usuario</string>
     <string name="themes">Temas</string>
     <string name="letter_size">Tamaño de letra</string>
+    <string name="startChat_showStudent">Iniciar chat con tutor/tutores</string>
+    <string name="segunda_instruccion_inserts">2. Asegurarse de que el archivo tiene el formato correcto para la inserción de datos elegida y dividido entre puntos y comas</string>
+    <string name="primera_instruccion_inserts">1. Selecciona los datos a insertar</string>
+    <string name="tercera_instruccion_inserts">3. Seleccione el archivo .txt a cargar.</string>
     <string-array name="themes_array">
         <item>Oscuro</item>
         <item>Claro</item>
@@ -45,5 +49,25 @@
     <string-array name="user_save_array">
         <item>Recordar usuario</item>
         <item>No recordar usuario</item>
+    </string-array>
+
+    <string-array name="datos_a_insertar">
+        <item>Alumnos</item>
+        <item>Cursos</item>
+        <item>Asignaturas</item>
+        <item>Administradores</item>
+        <item>Profesores</item>
+        <item>Tutores legales</item>
+        <item>Horarios</item>
+    </string-array>
+
+    <string-array name="instrucciones_para_inserts">
+        <item>Descripción para Alumnos</item>
+        <item>Descripción para Cursos</item>
+        <item>Descripción para Asignaturas</item>
+        <item>Descripción para Administradores</item>
+        <item>Descripción para Profesores</item>
+        <item>Descripción para Tutores legales</item>
+        <item>Descripción para Horarios</item>
     </string-array>
 </resources>

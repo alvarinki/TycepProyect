@@ -28,8 +28,8 @@
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerChats"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="407dp"
+            android:layout_height="665dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,7 @@
 package com.example.proyecto.controllers;
 
 import com.example.proyecto.model.*;
+import com.example.proyecto.modelFB.ChatFB;
 import com.example.proyecto.services.*;
 import com.example.proyecto.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,12 @@ public class ProfesorController {
 
     @Autowired
     HorarioService horarioService;
+
+    private final FirebaseService firebaseService;
+
+    public ProfesorController(FirebaseService firebaseService) {
+        this.firebaseService = firebaseService;
+    }
 
 
     @GetMapping("/cursos/{id}")
@@ -59,6 +66,17 @@ public class ProfesorController {
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping("/saveChat")
+    public void guardarChat(@RequestBody ChatFB chatFB) {
+        try {
+            // Llama al servicio de Firebase para guardar el usuario
+            //FirebaseService firebaseService = new FirebaseService();
+            firebaseService.comprobarYcrearChat(chatFB);
+
+        } catch (Exception e) {
+
+        }
+    }
 //    @PostMapping("/crearChat")
 //    public ResponseEntity<>
 }

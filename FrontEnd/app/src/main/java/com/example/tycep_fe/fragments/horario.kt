@@ -62,7 +62,7 @@ class horario : Fragment() {
         //cargarHorarios(curso5.horario.filter { h -> h.idProfesor== 1 }.toSet())
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        (userViewModel as UserViewModel)._profesor.observe(requireActivity()) {
+        (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) {
             (userViewModel as UserViewModel).getHorarioFromProfesor()
             (userViewModel as UserViewModel)._horarios.observe(viewLifecycleOwner) { horario ->
                 println(horario)
@@ -71,11 +71,11 @@ class horario : Fragment() {
             }
         }
 
-        (userViewModel as UserViewModel)._tutorLegal.observe(requireActivity()) {
+        (userViewModel as UserViewModel)._tutorLegal.observe(viewLifecycleOwner) {
             val prefs = Prefs(requireContext())
             val idAlumno = prefs.getData()?.toInt()
             (userViewModel as UserViewModel).getHorarioFromAlumno(idAlumno!!, prefs.getToken()!!)
-            (userViewModel as UserViewModel)._horarios.observe(requireActivity()) { horario ->
+            (userViewModel as UserViewModel)._horarios.observe(viewLifecycleOwner) { horario ->
                 if (horario != null) {
                     cargarHorarios(horario)
                 }

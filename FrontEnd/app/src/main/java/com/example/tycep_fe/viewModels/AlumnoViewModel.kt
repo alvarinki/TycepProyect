@@ -1,8 +1,11 @@
 package com.example.tycep_fe.viewModels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tycep_fe.Dtos.AlumnoDto
+import com.example.tycep_fe.Dtos.TutorDto
 import com.example.tycep_fe.models.Alumno
 import com.example.tycep_fe.models.Falta
 import com.example.tycep_fe.repositories.AlumnoRepository
@@ -14,15 +17,18 @@ class AlumnoViewModel : ViewModel() {
     private val alumnoRepo = AlumnoRepository()
     private val faltasRepo = FaltaRepository()
 
+
     var _alumno = MutableLiveData<Alumno>()
     var _faltas = MutableLiveData<Set<Falta>>()
-
+     var _tutores=MutableLiveData<List<String>>()
     fun getAlumnoById(idAlumno: Int, token: String) {
         viewModelScope.launch {
             val response = alumnoRepo.getAlumnoById(idAlumno, token)
             if (response.isSuccessful) {
-                val alumno: Alumno = response.body()!!
-                _alumno.postValue(alumno)
+                val alumnodto: AlumnoDto = response.body()!!
+                _alumno.postValue(alumnodto.alumno)
+                val tutoresFormateados= alumnodto.tutores.map { t -> t.split("_")[0] +" "+ t.split("_")[1] }
+                _tutores.postValue(tutoresFormateados)
             }
         }
     }
@@ -39,7 +45,6 @@ class AlumnoViewModel : ViewModel() {
             if (response.isSuccessful) {
                 val faltasAnadidas = response.body()
                 _alumno.postValue(_alumno.value.apply { this?.faltas = faltasAnadidas })
-
             }
         }
     }
@@ -60,5 +65,14 @@ class AlumnoViewModel : ViewModel() {
         }
     }
 
-
+//    fun getTutoresFromAlumno(idAlumno: Int){
+//        viewModelScope.launch {
+//            val response = alumnoRepo.getTutoresFromAlumno(idAlumno)
+//            println("No va")
+//            if(response.isSuccessful){
+//                val tutors:List<TutorDto> = response.body()!!
+//                _tutores.postValue(tutors)
+//            }
+//        }
+//    }
 }

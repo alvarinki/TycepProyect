@@ -61,6 +61,8 @@ public class UsuarioController {
 
         if (user.isPresent()) {
             String encriptedPassword = user.get().getContrasena();
+            System.out.println(encriptedPassword);
+            System.out.println(loginRequest.getPassword());
             if ((encriptedPassword != null && passwordEncoder.matches(loginRequest.getPassword(), encriptedPassword)) || !loginRequest.getToken().isBlank()) {
                 String token = loginRequest.getToken();
                 Usuario loggedUser = user.get();

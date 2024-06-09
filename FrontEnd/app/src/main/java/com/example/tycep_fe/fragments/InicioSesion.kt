@@ -21,6 +21,7 @@ import com.example.tycep_fe.Dtos.LoginRequestDto
 import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.FragmentInicioSesionBinding
 import com.example.tycep_fe.viewModels.UserViewModel
+import com.google.firebase.firestore.auth.User
 import java.util.Timer
 import java.util.TimerTask
 
@@ -28,7 +29,7 @@ class InicioSesion : Fragment() {
 
     private var _binding: FragmentInicioSesionBinding? = null
     private val binding get() = _binding!!
-    lateinit var userViewModel: ViewModel
+    lateinit var userViewModel: UserViewModel
 
 
     override fun onCreateView(
@@ -37,23 +38,29 @@ class InicioSesion : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val prefs = Prefs(requireContext())
+        _binding = FragmentInicioSesionBinding.inflate(inflater, container, false)
         //Linea para pruebas
         prefs.clearToken()
-        //println(prefs.getToken())
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        if (prefs.getToken()?.length!! > 4) {
-            val loginRequestDto = LoginRequestDto("", "", prefs.getToken().toString())
+
+
+
+            if (prefs.getToken()?.length!! > 4) {
+                val loginRequestDto = LoginRequestDto("", "", prefs.getToken().toString())
 //
-            (userViewModel as UserViewModel).userLogin(loginRequestDto)
-            (userViewModel as UserViewModel).token.observe(requireActivity()) {
-                println("Token: " + prefs.getToken().toString())
-            }
-            //(userViewModel as UserViewModel)._profesor.observe(requireActivity()){profesor ->
-            findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
-            //}
+                userViewModel.userLogin(loginRequestDto)
+                userViewModel.token.observe(viewLifecycleOwner) {
+                    println("Token: " + prefs.getToken().toString())
+                    findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+                }
+
+
+//            userViewModel._profesor.observe(requireActivity()){profesor ->
+//
+//            }
         }
         // Inflate the layout for this fragment
-        _binding = FragmentInicioSesionBinding.inflate(inflater, container, false)
+
 
         return binding.root
     }
@@ -71,19 +78,24 @@ class InicioSesion : Fragment() {
                 binding.editTextPassword.text.toString(),
                 ""
             )
-            (userViewModel as UserViewModel).userLogin(loginRequestDto)
+            userViewModel.userLogin(loginRequestDto)
             //println("Token pre prefs "+token)
             prefs = Prefs(requireContext())
+            if(_binding!!.checkBoxAdmin.isChecked){
+                userViewModel._admin.observe(viewLifecycleOwner){
+                    findNavController().navigate(R.id.action_inicioSesion_to_uploadFragment)
+                }
+            }
             //prefs.clearToken()
             //prefs.saveToken(token)
-            findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+            //findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
 //
-//            (userViewModel as UserViewModel)._profesor.observe(requireActivity()){
+//            userViewModel._profesor.observe(requireActivity()){
 //                findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
 //                Toast.makeText(requireContext(), "AVISO: Se mantendrá su sesión iniciada hasta que la cierre", Toast.LENGTH_SHORT).show()
 //            }
 //
-//            (userViewModel as UserViewModel)._tutorLegal.observe(requireActivity()){
+//            userViewModel._tutorLegal.observe(requireActivity()){
 //
 //                findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
 //                Toast.makeText(requireContext(), "AVISO: Se mantendrá su sesión iniciada hasta que la cierre", Toast.LENGTH_SHORT).show()
@@ -92,7 +104,7 @@ class InicioSesion : Fragment() {
             //if(userType== "Profesor" || userType==" Tutor legal"){
 
 
-//                (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
+//                userViewModel._profesor.observe(viewLifecycleOwner) { profesor ->
 //                    // profesor se ha actualizado, navegar al nuevo Fragmento
 //                    profesor?.let {
 //                        // El profesor está disponible, navega al nuevo Fragmento

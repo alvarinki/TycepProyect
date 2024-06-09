@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.*;
@@ -43,12 +44,12 @@ public class FileManager {
     @Autowired
     FirebaseService firebaseService;
 
-    public String mapProfesores(String ruta) {
+    public Object mapProfesores(MultipartFile file) {
         List<Profesor> profesores = new ArrayList<>();
         List<AdminsUserData> adminsUserData = new ArrayList<>();
         List<UsuarioFB> fbUsuarios = new ArrayList<>();
         StringBuilder insercionCorrecta = new StringBuilder("Profesores registrados correctamente");
-        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String linea;
             int numeroLinea = 1;
             while ((linea = br.readLine()) != null) {
@@ -85,8 +86,9 @@ public class FileManager {
                         adminsUserData.add(new AdminsUserData(nombreUsuario, profesor.getContrasena(), profesor.getNombre()+" "+profesor.getApellidos(), profesor.getDni()));
                         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                         profesor.setContrasena(passwordEncoder.encode(profesor.getContrasena()));
-                        fbUsuarios.add(new UsuarioFB(profesor.getApellidos(), profesor.getNombre(), profesor.getUsuario(), null));
+                        fbUsuarios.add(new UsuarioFB(null, profesor.getApellidos(), profesor.getNombre(), profesor.getUsuario(), null));
                         profesores.add(profesor);
+                        System.out.println("Cargo el profesor "+profesor);
 
                     } else insercionCorrecta.append(", se han intentado introducir profesores duplicados por dni");
 
@@ -100,8 +102,8 @@ public class FileManager {
         }
         profesorService.saveProfesores(profesores);
         firebaseService.guardarUsuarios(fbUsuarios);
-        notifyUsersData(ruta, adminsUserData, "Profesor");
-        return insercionCorrecta.toString();
+        //notifyUsersData(file, adminsUserData, "Profesor");
+        return adminsUserData;
     }
 
     public String mapTutores(String ruta) {
@@ -155,7 +157,7 @@ public class FileManager {
                         adminsUserData.add(new AdminsUserData(nombreUsuario, tutor.getContrasena(),tutor.getNombre()+" "+tutor.getApellidos(), tutor.getDni()));
                         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                         tutor.setContrasena(passwordEncoder.encode(tutor.getContrasena()));
-                        fbUsuarios.add(new UsuarioFB(tutor.getApellidos(), tutor.getNombre(), tutor.getUsuario(), null));
+                        fbUsuarios.add(new UsuarioFB(null, tutor.getApellidos(), tutor.getNombre(), tutor.getUsuario(), null));
                         tutores.add(tutor);
                     }
                 }
@@ -168,7 +170,7 @@ public class FileManager {
         }
         tutorService.saveTutoresLegales(tutores);
         firebaseService.guardarUsuarios(fbUsuarios);
-        notifyUsersData(ruta, adminsUserData, "Tutor");
+        //notifyUsersData(ruta, adminsUserData, "Tutor");
         return "Tutores registrados correctamente";
     }
 
@@ -199,8 +201,9 @@ public class FileManager {
                     } else
                         return "El administrador que se ha intentado registrar en la linea " + numeroLinea + " ya existe";
                 } else return "Error en el formato de nombre o apellidos en línea " + numeroLinea;
-
-                user.setContrasena(generarContrasena());
+                String contrasena= generarContrasena();
+                System.out.println(contrasena);
+                user.setContrasena(contrasena);
                 user.setDtype('A');
                 String prefijo = getPrefijo(user.getNombre(), user.getApellidos());
 
@@ -223,7 +226,7 @@ public class FileManager {
             throw new RuntimeException(e);
         }
         usuarioService.saveUsers(admins);
-        notifyUsersData(ruta, adminsUserData, "Admin");
+        //notifyUsersData(ruta, adminsUserData, "Admin");
         return "Administradores registrados correctamente";
     }
 
@@ -366,13 +369,44 @@ public class FileManager {
         }
     }
 
-    public void notifyUsersData(String ruta, List<AdminsUserData> adminsUserData, String userType) {
-        try {
-            // Obtenemos la ruta del directorio eliminando el nombre del archivo
-            String directorio = obtenerDirectorio(ruta);
+//    public void notifyUsersData(String ruta, List<AdminsUserData> adminsUserData, String userType) {
+//        try {
+//            // Obtenemos la ruta del directorio eliminando el nombre del archivo
+//            String directorio = obtenerDirectorio(ruta);
+//
+//            // Creamos el BufferedWriter para escribir en el archivo CSV
+//            String tipoUser = "\\";
+//            if (userType.equalsIgnoreCase("Profesor")) {
+//                tipoUser += "profesores";
+//            } else if (userType.equalsIgnoreCase("Tutor")) {
+//                tipoUser += "tutores";
+//            } else if (userType.equalsIgnoreCase("Admin")) {
+//                tipoUser += "admins";
+//            }
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(directorio + tipoUser + LocalTime.now().getHour() + LocalTime.now().getMinute() + LocalTime.now().getSecond() + ".csv", true))) {
+//                // Escribimos cada objeto AdminsUserData en una línea del archivo CSV
+//                for (AdminsUserData userData : adminsUserData) {
+//                    writer.write(userData.getUsername() + ";" + userData.getPassword() + ";" + userData.getNombre_Apellidos() + ";" + userData.getDni());
+//                    writer.newLine();
+//                }
+//
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-            // Creamos el BufferedWriter para escribir en el archivo CSV
-            String tipoUser = "\\";
+    public String notifyUsersData(MultipartFile file, List<AdminsUserData> adminsUserData, String userType) {
+        try {
+            // Guardar el archivo en una ubicación temporal
+            File tempFile = File.createTempFile("uploaded-", ".tmp");
+            file.transferTo(tempFile);
+
+            // Obtener el directorio del archivo temporal
+            String directorio = tempFile.getParent();
+
+            // Crear el BufferedWriter para escribir en el archivo CSV
+            String tipoUser = "/";
             if (userType.equalsIgnoreCase("Profesor")) {
                 tipoUser += "profesores";
             } else if (userType.equalsIgnoreCase("Tutor")) {
@@ -380,16 +414,18 @@ public class FileManager {
             } else if (userType.equalsIgnoreCase("Admin")) {
                 tipoUser += "admins";
             }
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(directorio + tipoUser + LocalTime.now().getHour() + LocalTime.now().getMinute() + LocalTime.now().getSecond() + ".csv", true))) {
-                // Escribimos cada objeto AdminsUserData en una línea del archivo CSV
+            String fileName = directorio + tipoUser + LocalTime.now().getHour() + LocalTime.now().getMinute() + LocalTime.now().getSecond() + ".csv";
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+                // Escribir cada objeto AdminsUserData en una línea del archivo CSV
                 for (AdminsUserData userData : adminsUserData) {
                     writer.write(userData.getUsername() + ";" + userData.getPassword() + ";" + userData.getNombre_Apellidos() + ";" + userData.getDni());
                     writer.newLine();
                 }
-
+                return "Tutores registrados correctamente";
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return "Error al procesar el archivo: " + e.getMessage();
         }
     }
 

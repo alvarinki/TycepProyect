@@ -10,6 +10,7 @@ import java.util.Map;
 @NoArgsConstructor
 @ToString
 public class UsuarioFB {
+        private String id;
         private String apellidos;
         private String nombre;
         private String username;
@@ -17,6 +18,7 @@ public class UsuarioFB {
 
         public Map<String, Object> toMap() {
                 Map<String, Object> result = new HashMap<>();
+                result.put("id", id); // Incluir id en el mapa
                 result.put("apellidos", apellidos);
                 result.put("nombre", nombre);
                 result.put("username", username);

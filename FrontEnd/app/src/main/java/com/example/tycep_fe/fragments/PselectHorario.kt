@@ -33,12 +33,12 @@ class PselectHorario : Fragment() {
     ): View? {
 
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        (userViewModel as UserViewModel)._profesor.observe(requireActivity()) { profesor ->
+        (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
             if (profesor.cursos == null) {
                 (userViewModel as UserViewModel).getCursosFromProfesor()
             }
         }
-        (userViewModel as UserViewModel)._profesor.observe(requireActivity()) { profesor ->
+        (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
             (userViewModel as UserViewModel).getHorariosForFaltas(profesor.id)
         }
         // Inflate the layout for this fragment
@@ -48,7 +48,7 @@ class PselectHorario : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (userViewModel as UserViewModel)._horarios.observe(requireActivity()) { horarios ->
+        (userViewModel as UserViewModel)._horarios.observe(viewLifecycleOwner) { horarios ->
 
             val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerHorarios)
             recyclerView?.layoutManager = LinearLayoutManager(this.context)

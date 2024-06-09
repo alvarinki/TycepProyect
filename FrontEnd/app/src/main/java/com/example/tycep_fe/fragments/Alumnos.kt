@@ -44,15 +44,13 @@ class Alumnos : Fragment() {
         val origen = args.origen
         println(origen)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        val idCurso: Int? = prefs.getData()?.toInt()
+
         (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
+            val idCurso: Int? = prefs.getData()?.toInt()
             //He metido esta línea aquí, aunque creo que lo mejor será sacarla y englobarlo en otro observe
             (userViewModel as UserViewModel).getAlumnosFromCurso(idCurso!!)
             profesor?.let {
-                initReciclerView(
-                    profesor.cursos?.filter { c -> c.id == idCurso }!![0].alumnos,
-                    origen
-                )
+                initReciclerView(profesor.cursos?.filter { c -> c.id == idCurso }!![0].alumnos, origen)
             }
         }
 
@@ -62,12 +60,18 @@ class Alumnos : Fragment() {
             //(userViewModel as UserViewModel).getTutorsAlumnos(tutor.id, token)
 
             tutor.alumnos.let { alumnos ->
-                println("Alumnos " + tutor.alumnos)
+
                 if (alumnos?.size!! > 1) {
                     initReciclerView(tutor.alumnos!!, origen)
                 } else {
                     prefs.saveData(alumnos.toList()[0].id.toString())
-                    findNavController().navigate(R.id.action_recyclerAlumnos_to_showStudent)
+                    if(origen=="HomeH"){
+
+                        findNavController().navigate(R.id.action_recyclerAlumnos_to_showStudent)
+                    } else if(origen=="HomeA"){
+                        val action= AlumnosDirections.actionRecyclerAlumnosToFaltasAlumno(origen="recAlumnos")
+                        findNavController().navigate(action)
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.example.tycep_fe.viewModels
 
 import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import com.example.tycep_fe.Dtos.LoginRequestDto
 import com.example.tycep_fe.Dtos.LoginResponseDto
 import com.example.tycep_fe.Dtos.PhotoRequest
 import com.example.tycep_fe.activities.MainActivity
+import com.example.tycep_fe.modelFB.ChatFB
 import com.example.tycep_fe.models.Alumno
 import com.example.tycep_fe.models.Curso
 import com.example.tycep_fe.models.Dia
@@ -43,7 +45,7 @@ class UserViewModel() : ViewModel() {
     val token = MutableLiveData<String>()
 
     //Usuarios
-    val admin = MutableLiveData<Usuario>()
+    val _admin = MutableLiveData<Usuario>()
     var _tutorLegal = MutableLiveData<TutorLegal>()
     var _profesor = MutableLiveData<Profesor>()
     var _horarios = MutableLiveData<Set<Horario>>()
@@ -58,9 +60,7 @@ class UserViewModel() : ViewModel() {
         get() = _tutorLegal
 
 
-    fun userLogin(loginRequestDto: LoginRequestDto): String {
-
-        var typeUser = "Client"
+    fun userLogin(loginRequestDto: LoginRequestDto){
         viewModelScope.launch {
             val response: Response<LoginResponseDto> = userRepo.userLogin(loginRequestDto)
             if (response.isSuccessful) {
@@ -84,13 +84,14 @@ class UserViewModel() : ViewModel() {
                         tutor.alumnos = responseChild.body()
                     }
                     _tutorLegal.postValue(tutor)
-                } else typeUser = "Admin"
+                } else {
+                    val user = response.body()?.userData
+                    val admin: Usuario= Gson().fromJson(Gson().toJson(user), Usuario::class.java)
+                    _admin.postValue(admin)
+                }
                 token.postValue(response.body()?.token.toString())
-
             }
-
         }
-        return typeUser
     }
 
     fun uploadMessage(message: Mensaje, token: String) {
@@ -171,6 +172,12 @@ class UserViewModel() : ViewModel() {
         }
     }
 
+    fun startChatWithTutors(chatFB: ChatFB){
+        viewModelScope.launch {
+            profesorRepo.startChatWithTutors(chatFB)
+        }
+    }
+
     private fun obtenerNombreDiaSemana(): Dia? {
         val dayOfWeek = LocalDate.now().dayOfWeek
         return when (dayOfWeek) {
@@ -179,9 +186,9 @@ class UserViewModel() : ViewModel() {
             java.time.DayOfWeek.WEDNESDAY -> Dia.X
             java.time.DayOfWeek.THURSDAY -> Dia.J
             java.time.DayOfWeek.FRIDAY -> Dia.V
-            else -> null
+            //else -> null
             //Para pruebas
-            //else -> Dia.L
+            else -> Dia.L
         }
     }
 }

@@ -16,7 +16,9 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerrecorridos.preferences.Prefs
@@ -39,8 +41,9 @@ import java.util.Timer
 import java.util.TimerTask
 
 class HomeFragment : Fragment() {
+
     private lateinit var userViewModel: UserViewModel
-    private lateinit var alumnoViewModel: ViewModel
+    private lateinit var alumnoViewModel: AlumnoViewModel
     private var _binding: FragmentHomeBinding? = null
     private lateinit var navHeaderBinding: NavHeaderPrincipalBinding
     private lateinit var menuItemChange: MenuItem
@@ -50,7 +53,7 @@ class HomeFragment : Fragment() {
     private var fotoProfesor="Nula"
     private var idProfesor:Int=0
     private val database = FirebaseDatabase.getInstance()
-
+    val args: HomeFragmentArgs by navArgs()
     private val binding get() = _binding!!
 
     @SuppressLint("FragmentLiveDataObserve")
@@ -60,6 +63,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
 //        recyclerView = requireView().findViewById(R.id.recyclerChats)
 //        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 //        chatAdapter = ChatAdapter(requireContext(), emptyList<ChatFB>().toMutableList()) // Adapter inicialmente vacío
@@ -67,6 +71,8 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+
 
         recyclerView = root.findViewById(R.id.recyclerChats)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -100,7 +106,7 @@ class HomeFragment : Fragment() {
         //findNavController().navigate(R.id.action_homeFragment_to_pselectHorario)
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
-        (userViewModel as UserViewModel).token.observe(viewLifecycleOwner) { token ->
+        userViewModel .token.observe(viewLifecycleOwner) { token ->
             prefs = Prefs(requireContext())
             prefs.saveToken(token)
         }
@@ -164,7 +170,19 @@ class HomeFragment : Fragment() {
         //initReciclerView(chats)
         menuItemChange = binding.navView.menu.findItem(R.id.nav_studentdata_or_course)
 
-        (userViewModel as UserViewModel)._profesor.observe(viewLifecycleOwner) { profesor ->
+        userViewModel ._profesor.observe(viewLifecycleOwner) { profesor ->
+            obtenerChatsDeUsuario(profesor.usuario)
+//            val origen:String= args.origen
+//
+//            when (origen) {
+//                "StartChat" -> {
+//                    val chatId:String= args.chatId
+//                    println(chatId)
+//                    val action = HomeFragmentDirections.actionHomeFragmentToChatDetail(chatId = chatId, nombreUsuario = profesor.usuario)
+//                    findNavController().navigate(action)
+//                }
+//            }
+
             navHeaderBinding.tvName.text= "${profesor.nombre} ${profesor.apellidos}"
             navHeaderBinding.tvUsername.text= profesor.usuario
             if(profesor.foto.length>2){
@@ -176,13 +194,13 @@ class HomeFragment : Fragment() {
             navHeaderBinding.ibImageExchange.setOnClickListener{
                 ImagePicker_Uploader.pickAndUploadImage(this, 100)
             }
-            obtenerChatsDeUsuario(profesor.usuario)
+
             menuItemChange.setTitle("Cursos")
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.nav_studentdata_or_course -> {
                         if (profesor.cursos==null) {
-                            (userViewModel as UserViewModel).getCursosFromProfesor()
+                            userViewModel .getCursosFromProfesor()
                         }
                         val action =
                             HomeFragmentDirections.actionHomeFragmentToCursos(origen = "Home")
@@ -199,7 +217,7 @@ class HomeFragment : Fragment() {
 
                     R.id.nav_absences -> {
                         if (profesor.cursos==null) {
-                            (userViewModel as UserViewModel).getCursosFromProfesor()
+                            userViewModel .getCursosFromProfesor()
                         }
 
                         findNavController().navigate(R.id.action_homeFragment_to_seleccionFaltas)
@@ -230,13 +248,13 @@ class HomeFragment : Fragment() {
 //            }
 
 
-        (userViewModel as UserViewModel)._tutorLegal.observe(viewLifecycleOwner) { tutorLegal ->
+        userViewModel ._tutorLegal.observe(viewLifecycleOwner) { tutorLegal ->
             obtenerChatsDeUsuario(tutorLegal.usuario)
             menuItemChange.setTitle("Alumnos")
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.nav_studentdata_or_course -> {
-                        //(userViewModel as UserViewModel)
+                        //userViewModel 
                         //findNavController().navigate(R.id.action_homeFragment_to_recyclerAlumnos)
                         val action = HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen = "Cursos")
                         findNavController().navigate(action)
@@ -245,19 +263,20 @@ class HomeFragment : Fragment() {
 
                     R.id.nav_schedule -> {
 
+                        val action = HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen = "HomeH")
+                        findNavController().navigate(action)
+                        true
 //                        val origen="Home"
 //                        val fragment = Alumnos.newInstance(origen)
 //                        parentFragmentManager.commit {
 //                            replace(androidx.navigation.fragment.R.id.nav_host_fragment_container, fragment)
 //                            addToBackStack(null)
 //                        }
-                        val action = HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen = "Home")
-                        findNavController().navigate(action)
-                        true
                     }
 
                     R.id.nav_absences -> {
-
+                        val action = HomeFragmentDirections.actionHomeFragmentToRecyclerAlumnos(origen = "HomeA")
+                        findNavController().navigate(action)
                         true
                     }
 
@@ -361,6 +380,7 @@ class HomeFragment : Fragment() {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (usuarioSnapshot in dataSnapshot.children) {
+
                         // Obtenemos el ID del usuario
                         val usuarioId = usuarioSnapshot.key
                         println("Id de usuario: "+usuarioSnapshot.key)
@@ -372,7 +392,7 @@ class HomeFragment : Fragment() {
                                     val chatsList = mutableListOf<ChatFB>()
                                     for (chatSnapshot in chatsDataSnapshot.children) {
                                         val usuarios = chatSnapshot.child("usuarios")
-                                        if (usuarios.hasChild(usuarioId)) {
+                                        if (usuarios.hasChild(usuarioSnapshot.child("username").getValue(String::class.java).toString())) {
                                             val chatFB = chatSnapshot.getValue(ChatFB::class.java)
 
                                             // Por ejemplo, imprimir el nombre del chatFB

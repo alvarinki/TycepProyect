@@ -1,21 +1,29 @@
 package com.example.proyecto.controllers;
 
 import com.example.proyecto.FileManagers.FileManager;
+import com.example.proyecto.dtos.AdminsUserData;
 import com.example.proyecto.model.*;
 import com.example.proyecto.modelFB.ChatFB;
 import com.example.proyecto.modelFB.UsuarioFB;
 import com.example.proyecto.services.*;
 import com.example.proyecto.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -54,17 +62,75 @@ public class AdminController {
     @Autowired
     private FileManager fileManager;
 
-    @PostMapping("/registerProfesores")
-    public ResponseEntity<String> registerProfesores(@RequestBody String ruta, @RequestHeader String token) {
+    @GetMapping("/deleteP/{id}")
+    public ResponseEntity<?> deleteP(@PathVariable("id") int id) {
+
+        profesorService.deleteProfesorById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("type") String type, @RequestHeader("token") String token) {
         if (jwtUtil.validate(token)) {
             String nombreUsuario = jwtUtil.getValue(token);
-            Optional<Usuario> user= usuarioService.findUsuarioByUsuario(nombreUsuario);
             if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
-                String mensaje = fileManager.mapProfesores(ruta);
-                if (mensaje.startsWith("Profesores registrados correctamente")) return ResponseEntity.ok(mensaje);
-                else return ResponseEntity.badRequest().body(mensaje);
+                if (file.isEmpty()) {
+                    return ResponseEntity.badRequest().body("File is empty");
+                }
+                switch (type) {
+
+                    case "Profesores" -> {
+                        Object o = registerProfesores(file);
+                        return comprobarRespuestaRegisters(o);
+                    }
+//            case "Alumnos"->{
+//                String mensaje= registerAlumnos()
+//            }
+
+                }
+                List<String> users = new ArrayList<>();
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        System.out.println(line);
+
+                        users.add(line); // Aquí puedes agregar lógica para procesar y guardar usuarios en la BD
+                    }
+                } catch (IOException e) {
+                    return ResponseEntity.status(500).body("Error reading file");
+                }
+
+                return ResponseEntity.ok("File processed successfully with " + users.size() + " users.");
             } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
-        } else return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    public ResponseEntity<?> comprobarRespuestaRegisters(Object o){
+        if(o instanceof String){
+            System.out.println("No devuelve");
+            return ResponseEntity.ok((String)o);
+        }
+        else {
+            System.out.println("Devuelve");
+            return ResponseEntity.ok((List<AdminsUserData>) o);
+        }
+    }
+
+    @PostMapping("/registerProfesores")
+    public Object registerProfesores(MultipartFile file) {
+        System.out.println(file.getOriginalFilename());
+//        if (jwtUtil.validate(token)) {
+//            String nombreUsuario = jwtUtil.getValue(token);
+//            Optional<Usuario> user= usuarioService.findUsuarioByUsuario(nombreUsuario);
+//            if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
+
+        return fileManager.mapProfesores(file);
+
+
+//            } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
+//        } else return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("/registerTutores")
@@ -79,16 +145,17 @@ public class AdminController {
         } else return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
     }
 
+
     @PostMapping("/registerAdmins")
-    public ResponseEntity<String> registerAdmins(@RequestBody String ruta, @RequestHeader String token) {
-        if (jwtUtil.validate(token)) {
-            String nombreUsuario = jwtUtil.getValue(token);
-            if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
+    public ResponseEntity<String> registerAdmins(@RequestBody String ruta) {
+//        if (jwtUtil.validate(token)) {
+//            String nombreUsuario = jwtUtil.getValue(token);
+//            if (comprobarAdmin(usuarioService.findDTypeFromUsuarioByUsuario(nombreUsuario))) {
                 String mensaje = fileManager.mapAdmins(ruta);
                 if (mensaje.startsWith("Admins registrados correctamente")) return ResponseEntity.ok(mensaje);
                 else return ResponseEntity.badRequest().body(mensaje);
-            } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
-        } else return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
+//            } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
+//        } else return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("/registerAlumnos")
@@ -181,17 +248,7 @@ public class AdminController {
         } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/saveChat")
-    public ResponseEntity<String> guardarChat(@RequestBody ChatFB chatFB) {
-        try {
-            // Llama al servicio de Firebase para guardar el usuario
-            //FirebaseService firebaseService = new FirebaseService();
-            firebaseService.guardarChat(chatFB);
-            return ResponseEntity.ok("Chat guardado exitosamente");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar el chaaat");
-        }
-    }
+
 
     @PostMapping("/prueba")
     public void verUsuariosdeChat(@RequestBody List<UsuarioFB> usuariosFB) {

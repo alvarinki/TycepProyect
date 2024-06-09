@@ -19,13 +19,17 @@ import com.example.tycep_fe.databinding.FragmentFaltasAlumnoBinding
 import com.example.tycep_fe.models.Alumno
 import com.example.tycep_fe.models.Falta
 import com.example.tycep_fe.viewModels.AlumnoViewModel
+import com.example.tycep_fe.viewModels.UserViewModel
+import com.google.firebase.firestore.auth.User
 
 class FaltasAlumno : Fragment() {
     private lateinit var binding: FragmentFaltasAlumnoBinding
 
     //private lateinit var alumno: Alumno
-    private lateinit var alumnoViewModel: ViewModel
+    private lateinit var alumnoViewModel: AlumnoViewModel
+    private lateinit var userViewModel: UserViewModel
     private lateinit var recyclerView: RecyclerView
+    private var userType:String=""
     val args: FaltasAlumnoArgs by navArgs()
     private lateinit var origen: String
 
@@ -34,6 +38,10 @@ class FaltasAlumno : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFaltasAlumnoBinding.inflate(inflater, container, false)
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+        userViewModel._tutorLegal.observe(viewLifecycleOwner){
+           userType="TutorLegal"
+        }
         origen = args.origen
         val root: View = binding.root
         return root
@@ -45,28 +53,26 @@ class FaltasAlumno : Fragment() {
         val prefs = Prefs(requireContext())
         println("Faltas alumno y llega de "+origen)
         alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
-        if (origen == "ShowStudent") {
+        if (origen == "ShowStudent" || origen =="recAlumnos") {
             binding.headerAsignaturaNombre.text="Asignatura"
-            (alumnoViewModel as AlumnoViewModel).getFaltasFromAlumno(prefs.getToken().toString())
+            alumnoViewModel.getFaltasFromAlumno(prefs.getToken().toString())
         } else if (origen == "Cursos") {
-            println("Entra en primer if de cursos")
             binding.headerAsignaturaNombre.text="Nombre"
-            (alumnoViewModel as AlumnoViewModel).getFaltasFromCurso(
+            alumnoViewModel.getFaltasFromCurso(
                 prefs.getData()!!.toInt(),
                 prefs.getToken().toString()
             )
         }
-        (alumnoViewModel as AlumnoViewModel)._alumno.observe(viewLifecycleOwner) { alumno ->
-            if (alumno.faltas != null && origen == "ShowStudent"){
-                println("llega aqui")
-                initReciclerView(alumno.faltas!!, alumnoViewModel as AlumnoViewModel)}
+
+        alumnoViewModel._alumno.observe(viewLifecycleOwner) { alumno ->
+            if (alumno.faltas != null && (origen == "ShowStudent" || origen=="recAlumnos")){
+                initReciclerView(alumno.faltas!!, alumnoViewModel , userType)}
             }
 
         if (origen == "Cursos") {
-            (alumnoViewModel as AlumnoViewModel)._faltas.observe(viewLifecycleOwner) { faltas ->
-                println("Llega " +faltas)
+            alumnoViewModel._faltas.observe(viewLifecycleOwner) { faltas ->
                 if (faltas != null) {
-                    initReciclerView(faltas, alumnoViewModel as AlumnoViewModel)
+                    initReciclerView(faltas, alumnoViewModel, userType)
                 }
             }
         }
@@ -112,7 +118,7 @@ class FaltasAlumno : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun initReciclerView(faltas: Set<Falta>?, viewModel: AlumnoViewModel) {
+    private fun initReciclerView(faltas: Set<Falta>?, viewModel: AlumnoViewModel, userType:String) {
         recyclerView = view?.findViewById(R.id.rvShowFaltas)!!
         recyclerView.layoutManager = LinearLayoutManager(view?.context)
         if (faltas.isNullOrEmpty()) {
@@ -122,7 +128,7 @@ class FaltasAlumno : Fragment() {
             val faltasOrdenadas: LinkedHashSet<Falta> =
                 faltas.sortedWith(compareByDescending<Falta> { it.fecha }.thenBy { it.hora })
                     .toSet() as LinkedHashSet<Falta>
-            recyclerView.adapter = ShowFaltasAdapter(faltasOrdenadas, viewModel, requireContext())
+            recyclerView.adapter = ShowFaltasAdapter(faltasOrdenadas, viewModel, userType)
         }
     }
 

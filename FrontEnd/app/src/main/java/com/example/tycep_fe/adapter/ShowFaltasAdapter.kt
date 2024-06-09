@@ -17,9 +17,9 @@ import com.example.tycep_fe.viewModels.AlumnoViewModel
 class ShowFaltasAdapter(
     private val faltas: LinkedHashSet<Falta>,
     private val alumnoViewModel: AlumnoViewModel,
-    private val context: Context
+    private val userType:String
 ) : RecyclerView.Adapter<ShowFaltasAdapter.ItemViewHolder>() {
-
+    private val userTypeCondition:Boolean= userType!="TutorLegal"
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -29,14 +29,21 @@ class ShowFaltasAdapter(
         return ItemViewHolder(binding)
     }
 
+    @SuppressLint("CutPasteId")
     override fun onBindViewHolder(holder: ShowFaltasAdapter.ItemViewHolder, position: Int) {
         val falta = faltas.toList()[position]
         holder.render(falta)
-
-        holder.itemView.findViewById<ImageButton>(R.id.ivEliminar).setOnClickListener {
-            val absolutePosition = holder.adapterPosition // Obtener la posición absoluta
-            if (absolutePosition != RecyclerView.NO_POSITION) { // Verificar si la posición es válida
-                confirmAndRemoveFalta(absolutePosition, holder.itemView.context, falta)
+        if (userTypeCondition) {
+            holder.itemView.findViewById<ImageButton>(R.id.ivEliminar).isEnabled = false
+            holder.itemView.findViewById<ImageButton>(R.id.ivEliminar).visibility = View.GONE
+            holder.itemView.findViewById<ImageButton>(R.id.ivEditar).isEnabled = false
+            holder.itemView.findViewById<ImageButton>(R.id.ivEditar).visibility = View.GONE
+        } else {
+            holder.itemView.findViewById<ImageButton>(R.id.ivEliminar).setOnClickListener {
+                val absolutePosition = holder.adapterPosition // Obtener la posición absoluta
+                if (absolutePosition != RecyclerView.NO_POSITION) { // Verificar si la posición es válida
+                    confirmAndRemoveFalta(absolutePosition, holder.itemView.context, falta)
+                }
             }
         }
     }

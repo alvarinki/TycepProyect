@@ -63,4 +63,9 @@ public class ProfesorServiceImpl implements ProfesorService {
 
         }
     }
+
+    @Override
+    public void deleteProfesorById(int id) {
+        profesorRepo.deleteById(id);
+    }
 }

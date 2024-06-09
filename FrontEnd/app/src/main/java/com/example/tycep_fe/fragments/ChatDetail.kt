@@ -3,24 +3,34 @@ package com.example.tycep_fe.fragments
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication
 import com.example.tycep_fe.R
 import com.example.tycep_fe.adapter.MessageAdapter
 import com.example.tycep_fe.databinding.FragmentChatDetailBinding
 import com.example.tycep_fe.modelFB.MensajeFB
+import com.example.tycep_fe.viewModels.AlumnoViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.Timer
+import java.util.TimerTask
 
 
 class ChatDetail : Fragment() {
@@ -63,6 +73,16 @@ class ChatDetail : Fragment() {
                 binding.messageContainer.setPadding(0, 0, 0, 0)
             }
         }
+
+        view.setOnKeyListener { _, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                val action = showStudentDirections.actionShowStudentToHomeFragment(chatId = "", origen = "ChatDetail")
+                findNavController().navigate(action)
+                return@setOnKeyListener true // Devuelve true para indicar que el evento ha sido consumido
+            }
+            return@setOnKeyListener false // Devuelve false para indicar que no has manejado el evento
+        }
+
 
         return view
     }
@@ -114,6 +134,15 @@ class ChatDetail : Fragment() {
                 // Manejo de errores
             }
         })
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val action = showStudentDirections.actionShowStudentToHomeFragment(chatId = "", origen = "ChatDetail")
+                findNavController().navigate(action)
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun subirMensajeAlChat(chatId: String, mensaje: MensajeFB) {
@@ -130,5 +159,9 @@ class ChatDetail : Fragment() {
 //                // Muestra un mensaje de error o realiza acciones de manejo de errores
 //            }
     }
+
+
+
+
 }
 

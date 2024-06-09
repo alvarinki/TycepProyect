@@ -16,5 +16,7 @@ data class Alumno(
     @SerializedName("dni")
     val dni:String,
     @SerializedName("faltas")
-    var faltas:Set<Falta>?
+    var faltas:Set<Falta>?,
+
+
 )

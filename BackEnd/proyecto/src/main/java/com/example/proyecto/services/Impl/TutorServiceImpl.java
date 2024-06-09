@@ -46,4 +46,9 @@ public class TutorServiceImpl implements TutorService {
     public TutorLegal findTutorLegalByDni(String dni) {
         return tutorRepo.findTutorLegalByDni(dni).orElse(null);
     }
+
+    @Override
+    public List<String> findTutoresByIdAlumno(Integer alumnoId) {
+        return tutorRepo.findTutoresByIdAlumno(alumnoId);
+    }
 }

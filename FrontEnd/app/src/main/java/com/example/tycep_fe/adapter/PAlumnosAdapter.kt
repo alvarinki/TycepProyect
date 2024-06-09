@@ -35,12 +35,20 @@ class PAlumnosAdapter(
             TokenUsuarioApplication.prefs = Prefs(context)
             TokenUsuarioApplication.prefs.saveData(alumno.id.toString())
 
-            if (origen == "Home") {
-                holder.itemView.findNavController().navigate(R.id.action_recyclerAlumnos_to_horario)
-            } else if (origen == "Cursos") {
-                holder.itemView.findNavController()
-                    .navigate(R.id.action_recyclerAlumnos_to_showStudent)
+            holder.itemView.setOnClickListener {
+                when (origen) {
+                    "HomeH" -> {
+                        holder.itemView.findNavController().navigate(R.id.action_recyclerAlumnos_to_horario)
+                    }
+                    "HomeA" -> {
+                        holder.itemView.findNavController().navigate(R.id.action_recyclerAlumnos_to_faltasAlumno)
+                    }
+                    "Cursos" -> {
+                        holder.itemView.findNavController().navigate(R.id.action_recyclerAlumnos_to_showStudent)
+                    }
+                }
             }
+
         }
     }
 
