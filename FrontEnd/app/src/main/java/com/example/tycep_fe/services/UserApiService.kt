@@ -22,10 +22,6 @@ private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(Gs
 interface UserApiService{
     @POST("user/login")
     suspend fun loginUser(@Body loginRequestDto: LoginRequestDto): Response<LoginResponseDto>
-    @POST("user/recovery")
-    suspend fun userRecovery(@Header("Authorization") token:String, userType:String): Response<Any>
-    @POST("message/subir")
-    suspend fun uploadMessage(@Body message: Mensaje, @Header(value = "token") token:String)
     @POST("user/postPhoto")
     suspend fun postPhoto(@Body request: PhotoRequest, @Header(value="token") token: String )
 }

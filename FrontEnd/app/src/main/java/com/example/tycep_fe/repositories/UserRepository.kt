@@ -12,7 +12,5 @@ import retrofit2.http.Header
 
 class UserRepository {
     suspend fun userLogin(loginRequestDto: LoginRequestDto):Response<LoginResponseDto> = UserApi.retrofitService.loginUser(loginRequestDto)
-    suspend fun userRecovery(token:String, userType:String):Response<Any> = UserApi.retrofitService.userRecovery(token, userType)
-    suspend fun uploadMessage(message: Mensaje, token:String) = UserApi.retrofitService.uploadMessage(message, token)
     suspend fun postPhoto(@Body envio:PhotoRequest, @Header(value="token") token: String)= UserApi.retrofitService.postPhoto(envio, token)
 }

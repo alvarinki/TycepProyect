@@ -6,6 +6,7 @@ import com.example.proyecto.services.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,16 @@ public class CursoServiceImpl implements CursoService {
         Optional<Curso> curso= cursoRepo.findCursoByNombre(nombre);
         if(curso.isPresent()) return curso.get().getId();
         return 0;
+    }
+
+    @Override
+    public Curso getCursoByNombre(String nombre) {
+        return cursoRepo.findCursoByNombre(nombre).orElse(null);
+    }
+
+    @Override
+    public void saveCursos(List<Curso> cursos) {
+        cursoRepo.saveAll(cursos);
     }
 
     @Override

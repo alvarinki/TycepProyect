@@ -14,6 +14,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,18 +24,21 @@ import com.example.tycep_fe.adapter.MessageAdapter
 import com.example.tycep_fe.databinding.FragmentChatDetailBinding
 import com.example.tycep_fe.modelFB.MensajeFB
 import com.example.tycep_fe.viewModels.AlumnoViewModel
+import com.example.tycep_fe.viewModels.UserViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.auth.User
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.Timer
 import java.util.TimerTask
+import kotlin.properties.Delegates
 
 
 class ChatDetail : Fragment() {
-
+    private lateinit var userViewModel: UserViewModel
     private var chatId: String? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var messageAdapter: MessageAdapter
@@ -42,11 +46,15 @@ class ChatDetail : Fragment() {
     private lateinit var nombreUsuario: String
     private lateinit var binding: FragmentChatDetailBinding
     private val database = FirebaseDatabase.getInstance()
+    private var boletin=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             chatId = it.getString("chatId")
             nombreUsuario= it.getString("nombreUsuario")!!
+            if(it.getBoolean("boletin")){
+                boletin=1
+            }
         }
         messages = mutableSetOf()
         messageAdapter = MessageAdapter(messages, nombreUsuario)
@@ -59,7 +67,15 @@ class ChatDetail : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentChatDetailBinding.inflate(inflater, container, false)
         val view: View = binding.getRoot()
-
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+        if(boletin==1){
+            userViewModel._tutorLegal.observe(viewLifecycleOwner){
+                binding.btEnvio.isEnabled=false
+                binding.btEnvio.visibility= View.GONE
+                binding.edMensaje.isEnabled=false
+                binding.edMensaje.visibility=View.GONE
+            }
+        }
         view.getViewTreeObserver().addOnGlobalLayoutListener {
             val r = Rect()
             view.getWindowVisibleDisplayFrame(r)
@@ -135,14 +151,14 @@ class ChatDetail : Fragment() {
             }
         })
 
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                val action = showStudentDirections.actionShowStudentToHomeFragment(chatId = "", origen = "ChatDetail")
-                findNavController().navigate(action)
-            }
-        }
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+//        val callback = object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                val action = showStudentDirections.actionShowStudentToHomeFragment(chatId = "", origen = "ChatDetail")
+//                findNavController().navigate(action)
+//            }
+//        }
+//
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun subirMensajeAlChat(chatId: String, mensaje: MensajeFB) {

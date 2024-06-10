@@ -62,6 +62,13 @@ public class AdminController {
     @Autowired
     private FileManager fileManager;
 
+    @GetMapping("/deleteA/{id}")
+    public ResponseEntity<?> deleteA(@PathVariable("id") int id) {
+
+        alumnoService.deleteAlumnoById(id);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/deleteP/{id}")
     public ResponseEntity<?> deleteP(@PathVariable("id") int id) {
 
@@ -104,42 +111,52 @@ public class AdminController {
                     }
 
                     case "Asignaturas" -> {
-
+                        String mensaje= fileManager.mapAsignaturas(file);
+                        return ResponseEntity.ok().body(mensaje);
                     }
 
-                    case "Horarios" -> {
-//                        Object o = fileManager.mapHorarios(file);
-//                        return comprobarRespuestaRegisters(o);
-                    }
                     case "Alumnos" -> {
                         String mensaje = fileManager.mapAlumnos(file);
                         if (mensaje.startsWith("Error")) {
+                            System.out.println(mensaje);
                             return ResponseEntity.badRequest().body(mensaje);
                         } else return ResponseEntity.ok().body(mensaje);
+                    }
+                    case "Horarios" -> {
+                        String mensaje  = fileManager.mapHorarios(file);
+                        if (mensaje.startsWith("Error")) {
+                            System.out.println(mensaje);
+                            return ResponseEntity.badRequest().body(mensaje);
+                        } else return ResponseEntity.ok().body(mensaje);
+                    }
+
+                    case "Cursos" ->{
+                        String mensaje = fileManager.mapCursos(file);
+                        return ResponseEntity.ok().body(mensaje);
                     }
 
                     default -> {
                         return null;
                     }
                 }
-                List<String> users = new ArrayList<>();
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        System.out.println(line);
-
-                        users.add(line); // Aquí puedes agregar lógica para procesar y guardar usuarios en la BD
-                    }
-                } catch (IOException e) {
-                    return ResponseEntity.status(500).body("Error reading file");
-                }
+//                List<String> users = new ArrayList<>();
+//                try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+//                    String line;
+//                    while ((line = br.readLine()) != null) {
+//                        System.out.println(line);
+//
+//                        users.add(line); // Aquí puedes agregar lógica para procesar y guardar usuarios en la BD
+//                    }
+//                } catch (IOException e) {
+//                    return ResponseEntity.status(500).body("Error reading file");
+//                }
 
 
             } else return ResponseEntity.badRequest().body("El usuario no es un administrador");
         } else {
             System.out.println("Problema con el token");
             return new ResponseEntity<>("Token inválido o caducado", HttpStatus.UNAUTHORIZED);}
-        return ResponseEntity.status(500).body("Error desconocido en uploadFile");
+        //return ResponseEntity.status(500).body("Error desconocido en uploadFile");
     }
 
     public ResponseEntity<?> comprobarRespuestaRegisters(Object o) {

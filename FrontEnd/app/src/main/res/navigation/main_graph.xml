@@ -157,12 +157,11 @@
         <action
             android:id="@+id/action_chatDetail_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="boletin"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
-    <fragment
-        android:id="@+id/dataInsert"
-        android:name="com.example.tycep_fe.fragments.DataInsert"
-        android:label="fragment_data_insert"
-        tools:layout="@layout/fragment_data_insert" />
     <fragment
         android:id="@+id/uploadFragment"
         android:name="com.example.tycep_fe.fragments.UploadFragment"

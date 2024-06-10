@@ -84,7 +84,7 @@ class UserViewModel() : ViewModel() {
                         tutor.alumnos = responseChild.body()
                     }
                     _tutorLegal.postValue(tutor)
-                } else {
+                } else if(response.body()?.userType == "Admin"){
                     val user = response.body()?.userData
                     val admin: Usuario= Gson().fromJson(Gson().toJson(user), Usuario::class.java)
                     _admin.postValue(admin)
@@ -95,11 +95,6 @@ class UserViewModel() : ViewModel() {
         }
     }
 
-    fun uploadMessage(message: Mensaje, token: String) {
-        viewModelScope.launch {
-            userRepo.uploadMessage(message, token)
-        }
-    }
 
     fun getCursosFromProfesor() {
         val idProfesor = _profesor.value?.id

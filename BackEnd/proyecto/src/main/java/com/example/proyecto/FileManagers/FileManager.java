@@ -30,7 +30,7 @@ public class FileManager {
     AlumnoService alumnoService;
 
     @Autowired
-    CursoService cursoService;
+    CursoService  cursoService;
 
     @Autowired
     ProfesorService profesorService;
@@ -174,16 +174,6 @@ public class FileManager {
         else return adminsUserData;
     }
 
-    private static String getPrefijo(String nombre, String apellidos) {
-        String prefijo;
-        if (apellidos.split(" ").length > 1) {
-            if (apellidos.split("-").length > 1)
-                prefijo = nombre.substring(0, 1) + apellidos.charAt(0) + apellidos.split("-")[1].charAt(0);
-            else prefijo = nombre.substring(0, 1) + apellidos.charAt(0) + apellidos.split(" ")[1].charAt(0);
-        } else prefijo = nombre.substring(0, 1) + apellidos.charAt(0) + apellidos.charAt(1);
-        return prefijo;
-    }
-
     public Object mapAdmins(MultipartFile file) {
         List<Usuario> admins = new ArrayList<>();
         List<AdminsUserData> adminsUserData = new ArrayList<>();
@@ -238,7 +228,6 @@ public class FileManager {
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";");
                 Alumno alumno = new Alumno();
-
                 if (comprobarNombre_Apellidos(datos[0].trim()) && comprobarNombre_Apellidos(datos[1].trim())) {
                     alumno.setNombre(datos[0].trim());
                     alumno.setApellidos(datos[1].trim());
@@ -262,10 +251,10 @@ public class FileManager {
 
     }
 
-    public String mapHorarios(String ruta) {
+    public String mapHorarios(MultipartFile file) {
         List<Horario> horarios = new ArrayList<>();
         StringBuilder insercionCorrecta = new StringBuilder("Horarios registrados correctamente");
-        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))){
             String linea;
             int numeroLinea = 1;
             while ((linea = br.readLine()) != null) {
@@ -309,12 +298,68 @@ public class FileManager {
                 numeroLinea++;
             }
 
-            horarioService.saveHorarios(horarios);
-            return insercionCorrecta.toString();
+            if(horarios.isEmpty()){
+                return "Todos los horarios ya se encontraban registrados";
+            }
+            else{
+                horarioService.saveHorarios(horarios);
+                return insercionCorrecta.toString();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public String mapCursos(MultipartFile file) {
+        List<Curso> cursos = new ArrayList<>();
+        StringBuilder insercionCorrecta = new StringBuilder("Cursos registrados correctamente");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))){
+            String linea;
+            while((linea = br.readLine()) != null){
+                String[] datos = linea.split(";");
+                for(String posibleCurso: datos){
+                    Curso c= cursoService.getCursoByNombre(posibleCurso);
+                    if(c==null) cursos.add(new Curso(null, posibleCurso, "", null, null));
+                    else insercionCorrecta.append(", algunos cursos estaban ya en la base de datos");
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if(cursos.isEmpty()){
+            return "Todos los cursos ya estaban registrados";
+        }
+        else{
+            cursoService.saveCursos(cursos);
+            return insercionCorrecta.toString();
+        }
+    }
+
+    public String mapAsignaturas(MultipartFile file) {
+        List<Asignatura> asignaturas = new ArrayList<>();
+        StringBuilder insercionCorrecta = new StringBuilder("Asignaturas registradas correctamente");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))){
+            String linea;
+            while((linea = br.readLine()) != null){
+                String[] datos = linea.split(";");
+                for(String posibleAsignatura: datos){
+                    Asignatura a= asignaturaService.findByNombre(posibleAsignatura);
+                    if(a==null) asignaturas.add(new Asignatura(null, posibleAsignatura));
+                    else insercionCorrecta.append(", algunas ya se encontraban en la base de datos");
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if(asignaturas.isEmpty()){
+            return "Todas las asignaturas ya estaban registradas";
+        }
+        else{
+            asignaturaService.saveAsignaturas(asignaturas);
+            return insercionCorrecta.toString();
+        }
     }
 
     public String deleteByDniList(String ruta) {
@@ -369,65 +414,15 @@ public class FileManager {
         }
     }
 
-//    public void notifyUsersData(String ruta, List<AdminsUserData> adminsUserData, String userType) {
-//        try {
-//            // Obtenemos la ruta del directorio eliminando el nombre del archivo
-//            String directorio = obtenerDirectorio(ruta);
-//
-//            // Creamos el BufferedWriter para escribir en el archivo CSV
-//            String tipoUser = "\\";
-//            if (userType.equalsIgnoreCase("Profesor")) {
-//                tipoUser += "profesores";
-//            } else if (userType.equalsIgnoreCase("Tutor")) {
-//                tipoUser += "tutores";
-//            } else if (userType.equalsIgnoreCase("Admin")) {
-//                tipoUser += "admins";
-//            }
-//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(directorio + tipoUser + LocalTime.now().getHour() + LocalTime.now().getMinute() + LocalTime.now().getSecond() + ".csv", true))) {
-//                // Escribimos cada objeto AdminsUserData en una línea del archivo CSV
-//                for (AdminsUserData userData : adminsUserData) {
-//                    writer.write(userData.getUsername() + ";" + userData.getPassword() + ";" + userData.getNombre_Apellidos() + ";" + userData.getDni());
-//                    writer.newLine();
-//                }
-//
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    public String notifyUsersData(MultipartFile file, List<AdminsUserData> adminsUserData, String userType) {
-//        try {
-//            // Guardar el archivo en una ubicación temporal
-//            File tempFile = File.createTempFile("uploaded-", ".tmp");
-//            file.transferTo(tempFile);
-//
-//            // Obtener el directorio del archivo temporal
-//            String directorio = tempFile.getParent();
-//
-//            // Crear el BufferedWriter para escribir en el archivo CSV
-//            String tipoUser = "/";
-//            if (userType.equalsIgnoreCase("Profesor")) {
-//                tipoUser += "profesores";
-//            } else if (userType.equalsIgnoreCase("Tutor")) {
-//                tipoUser += "tutores";
-//            } else if (userType.equalsIgnoreCase("Admin")) {
-//                tipoUser += "admins";
-//            }
-//            String fileName = directorio + tipoUser + LocalTime.now().getHour() + LocalTime.now().getMinute() + LocalTime.now().getSecond() + ".txt";
-//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-//                // Escribir cada objeto AdminsUserData en una línea del archivo CSV
-//                for (AdminsUserData userData : adminsUserData) {
-//                    writer.write(userData.getUsername() + ";" + userData.getPassword() + ";" + userData.getNombre_Apellidos() + ";" + userData.getDni());
-//                    writer.newLine();
-//                }
-//                return "Tutores registrados correctamente";
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return "Error al procesar el archivo: " + e.getMessage();
-//        }
-//    }
+    private static String getPrefijo(String nombre, String apellidos) {
+        String prefijo;
+        if (apellidos.split(" ").length > 1) {
+            if (apellidos.split("-").length > 1)
+                prefijo = nombre.substring(0, 1) + apellidos.charAt(0) + apellidos.split("-")[1].charAt(0);
+            else prefijo = nombre.substring(0, 1) + apellidos.charAt(0) + apellidos.split(" ")[1].charAt(0);
+        } else prefijo = nombre.substring(0, 1) + apellidos.charAt(0) + apellidos.charAt(1);
+        return prefijo;
+    }
 
     public static int comprobarFormatoNumero(String numero) {
         try {
@@ -452,15 +447,6 @@ public class FileManager {
 
         // Comprueba si el correo coincide con el patrón
         return pattern.matcher(correo).matches();
-    }
-
-    private String obtenerDirectorio(String ruta) {
-        int lastIndex = ruta.lastIndexOf("\\");
-        if (lastIndex != -1) {
-            return ruta.substring(0, lastIndex);
-        } else {
-            return ruta;
-        }
     }
 
     public String generarContrasena() {
@@ -549,5 +535,76 @@ public class FileManager {
 
         // Comprueba si el nombre normalizado coincide con el patrón
         return pattern.matcher(normalized).matches();
+    }
+
+
+//    public void notifyUsersData(String ruta, List<AdminsUserData> adminsUserData, String userType) {
+//        try {
+//            // Obtenemos la ruta del directorio eliminando el nombre del archivo
+//            String directorio = obtenerDirectorio(ruta);
+//
+//            // Creamos el BufferedWriter para escribir en el archivo CSV
+//            String tipoUser = "\\";
+//            if (userType.equalsIgnoreCase("Profesor")) {
+//                tipoUser += "profesores";
+//            } else if (userType.equalsIgnoreCase("Tutor")) {
+//                tipoUser += "tutores";
+//            } else if (userType.equalsIgnoreCase("Admin")) {
+//                tipoUser += "admins";
+//            }
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(directorio + tipoUser + LocalTime.now().getHour() + LocalTime.now().getMinute() + LocalTime.now().getSecond() + ".csv", true))) {
+//                // Escribimos cada objeto AdminsUserData en una línea del archivo CSV
+//                for (AdminsUserData userData : adminsUserData) {
+//                    writer.write(userData.getUsername() + ";" + userData.getPassword() + ";" + userData.getNombre_Apellidos() + ";" + userData.getDni());
+//                    writer.newLine();
+//                }
+//
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//    }
+//    public String notifyUsersData(MultipartFile file, List<AdminsUserData> adminsUserData, String userType) {
+//        try {
+//            // Guardar el archivo en una ubicación temporal
+//            File tempFile = File.createTempFile("uploaded-", ".tmp");
+//            file.transferTo(tempFile);
+//
+//            // Obtener el directorio del archivo temporal
+//            String directorio = tempFile.getParent();
+//
+//            // Crear el BufferedWriter para escribir en el archivo CSV
+//            String tipoUser = "/";
+//            if (userType.equalsIgnoreCase("Profesor")) {
+//                tipoUser += "profesores";
+//            } else if (userType.equalsIgnoreCase("Tutor")) {
+//                tipoUser += "tutores";
+//            } else if (userType.equalsIgnoreCase("Admin")) {
+//                tipoUser += "admins";
+//            }
+//            String fileName = directorio + tipoUser + LocalTime.now().getHour() + LocalTime.now().getMinute() + LocalTime.now().getSecond() + ".txt";
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+//                // Escribir cada objeto AdminsUserData en una línea del archivo CSV
+//                for (AdminsUserData userData : adminsUserData) {
+//                    writer.write(userData.getUsername() + ";" + userData.getPassword() + ";" + userData.getNombre_Apellidos() + ";" + userData.getDni());
+//                    writer.newLine();
+//                }
+//                return "Tutores registrados correctamente";
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return "Error al procesar el archivo: " + e.getMessage();
+//        }
+
+//    }
+
+    private String obtenerDirectorio(String ruta) {
+        int lastIndex = ruta.lastIndexOf("\\");
+        if (lastIndex != -1) {
+            return ruta.substring(0, lastIndex);
+        } else {
+            return ruta;
+        }
     }
 }

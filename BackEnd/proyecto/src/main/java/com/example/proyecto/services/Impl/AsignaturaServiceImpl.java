@@ -6,6 +6,8 @@ import com.example.proyecto.services.AsignaturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AsignaturaServiceImpl implements AsignaturaService {
 
@@ -15,5 +17,10 @@ public class AsignaturaServiceImpl implements AsignaturaService {
     @Override
     public Asignatura findByNombre(String nombre) {
         return asignaturaRepo.findByNombre(nombre).orElse(null);
+    }
+
+    @Override
+    public void saveAsignaturas(List<Asignatura> asignaturas) {
+        asignaturaRepo.saveAll(asignaturas);
     }
 }

@@ -39,7 +39,7 @@ public class Alumno {
     @Column(name = "dni")
     private String dni;
 
-    @OneToMany(mappedBy = "idAlumno")
+    @OneToMany(mappedBy = "idAlumno", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Falta> faltas = new LinkedHashSet<>();
 

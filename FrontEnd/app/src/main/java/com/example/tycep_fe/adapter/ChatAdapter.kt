@@ -27,7 +27,7 @@ class ChatAdapter(private var nombreUsuario:String, private val chats:MutableLis
             // Aquí puedes definir la acción al hacer clic en un elemento del RecyclerView
             // Por ejemplo, navegar a otro fragmento utilizando Navigation Component
 
-            val action = HomeFragmentDirections.actionHomeFragmentToChatDetail(chatId = chat.id!!, nombreUsuario = nombreUsuario)
+            val action = HomeFragmentDirections.actionHomeFragmentToChatDetail(chatId = chat.id!!, nombreUsuario = nombreUsuario, boletin = chat.boletin)
             holder.itemView.findNavController().navigate(action)
         }
     }
