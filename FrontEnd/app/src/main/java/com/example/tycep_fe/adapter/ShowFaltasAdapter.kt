@@ -19,7 +19,7 @@ class ShowFaltasAdapter(
     private val alumnoViewModel: AlumnoViewModel,
     private val userType:String
 ) : RecyclerView.Adapter<ShowFaltasAdapter.ItemViewHolder>() {
-    private val userTypeCondition:Boolean= userType!="TutorLegal"
+    private val userTypeCondition:Boolean= userType=="TutorLegal"
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

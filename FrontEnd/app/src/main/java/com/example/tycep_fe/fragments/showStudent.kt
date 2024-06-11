@@ -77,7 +77,7 @@ class showStudent : Fragment() {
         alumnoViewModel._alumno.observe(viewLifecycleOwner) { alumno ->
             alumno?.let {
                 println(alumno)
-                _binding!!.tvShowStudentName.text = alumno.nombre
+                _binding!!.tvShowStudentName.text = alumno.nombre + " "+alumno.apellidos
                 alumnoId = alumno.id
                 if (alumno.foto.length > 2) {
                     Picasso.get().load(alumno.foto).into(binding.ivStudent)

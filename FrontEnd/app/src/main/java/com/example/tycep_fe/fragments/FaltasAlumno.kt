@@ -64,10 +64,14 @@ class FaltasAlumno : Fragment() {
             )
         }
 
+
         alumnoViewModel._alumno.observe(viewLifecycleOwner) { alumno ->
-            if (alumno.faltas != null && (origen == "ShowStudent" || origen=="recAlumnos")){
-                initReciclerView(alumno.faltas!!, alumnoViewModel , userType)}
+            alumno.faltas.let {
+                if (alumno.faltas != null && (origen == "ShowStudent" || origen=="recAlumnos")){
+                    initReciclerView(alumno.faltas!!, alumnoViewModel , userType)}
             }
+            }
+
 
         if (origen == "Cursos") {
             alumnoViewModel._faltas.observe(viewLifecycleOwner) { faltas ->
