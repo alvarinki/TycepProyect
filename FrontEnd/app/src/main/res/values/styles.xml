@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <style name="cabeceraHorario">
+        <item name="android:background">@color/primary</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="cuerpoHorario">
+        <item name="android:background">@color/gray</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+</resources>

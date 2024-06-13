@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@color/white">
+    android:background="@color/black">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivStudent"
@@ -37,7 +37,6 @@
         tools:ignore="MissingConstraints" />
 
 
-
     <TextView
         android:id="@+id/tvShowStudentName"
         android:layout_width="wrap_content"
@@ -47,7 +46,7 @@
         android:layout_marginBottom="12dp"
         android:gravity="center"
         android:text="Nombre del estudiante"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/tvStudentsCourse"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,10 +60,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivStudent"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="52dp"
         android:gravity="center"
         android:text="Curso del estudiante"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/btnToAbscenses"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +74,7 @@
         android:id="@+id/btnToAbscenses"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="90dp"
+        android:layout_marginBottom="352dp"
         android:backgroundTint="@color/primary"
         android:text="Ver faltas"
         app:layout_constraintBottom_toBottomOf="parent"

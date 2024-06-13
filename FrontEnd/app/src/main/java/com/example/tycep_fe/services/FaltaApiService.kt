@@ -13,7 +13,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 private const val urlBase = "http://192.168.56.1:8080/"
-
+//"http://alvarocf24.iesmontenaranco.com/"
 private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(GsonConverterFactory.create()).build()
 
 interface FaltaApiService{

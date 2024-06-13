@@ -4,53 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context="com.example.tycep_fe.fragments.UploadFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center_horizontal">
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/headerImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="30dp"
             android:layout_gravity="center"
+            android:layout_marginTop="30dp"
             android:src="@drawable/tornadog" />
 
         <TextView
             android:id="@+id/step1Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/primera_instruccion_inserts"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_gravity="start"
             android:layout_marginTop="50dp"
             android:paddingBottom="40dp"
-            android:layout_gravity="start"/>
+            android:text="@string/primera_instruccion_inserts"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/dataTypeSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/datos_a_insertar"
             android:layout_gravity="center"
-            android:paddingBottom="20dp"
-            />
+            android:backgroundTint="@color/black"
+            android:popupBackground="@color/black"
+            android:dropDownSelector="@color/white"
+            android:entries="@array/datos_a_insertar"
+            android:foregroundTint="@color/white"
+            android:paddingBottom="20dp" />
 
         <TextView
             android:id="@+id/step2Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/segunda_instruccion_inserts"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_gravity="start"
             android:paddingTop="32dp"
             android:paddingBottom="8dp"
-            android:layout_gravity="start"/>
+            android:text="@string/segunda_instruccion_inserts"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/formatInfoText"
@@ -58,26 +64,29 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:text=""
             android:paddingTop="16dp"
-            android:paddingBottom="32dp"/>
+            android:paddingBottom="32dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/step3Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tercera_instruccion_inserts"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_gravity="start"
             android:paddingTop="32dp"
             android:paddingBottom="16dp"
-            android:layout_gravity="start"/>
+            android:text="@string/tercera_instruccion_inserts"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/ibUpload"
             android:layout_width="191dp"
             android:layout_height="203dp"
-            android:src="@drawable/upload"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:src="@drawable/upload" />
     </LinearLayout>
 </ScrollView>

@@ -1,54 +1,72 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.ChatDetail">
 
-    <TextView
-        android:id="@+id/tvChatName"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/swiperefresh"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="34dp"
-        android:gravity="center"
-        android:text="Chat Name"
-        android:textAlignment="gravity" />
+        android:layout_height="match_parent"
+        android:background="@color/black">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerMensajes"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_below="@id/tvChatName"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_above="@id/messageContainer" />
 
-    <RelativeLayout
-        android:id="@+id/messageContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="13dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/black"
+            tools:context=".messages.ChatLogActivity">
 
-        <EditText
-            android:id="@+id/edMensaje"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/btEnvio"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="8dp"
-            android:hint="Enter text here"
-            android:layout_weight="1" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerMensajes"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="0dp"
+                android:background="#e4e4e4"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@+id/buttons_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="@color/black"/>
 
-        <Button
-            android:id="@+id/btEnvio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text="Send" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/buttons_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#e4e4e4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:backgroundTint="@color/black">
 
-    </RelativeLayout>
+                <EditText
+                    android:id="@+id/edMensaje"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/rounded_edittext_register_login"
+                    android:ems="10"
+                    android:hint="Escribe un mensaje"
+                    android:inputType="text"
+                    android:paddingLeft="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btEnvio"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btEnvio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_send_black_24dp"
+                    app:fabCustomSize="45dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

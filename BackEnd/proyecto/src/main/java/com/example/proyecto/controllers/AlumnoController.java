@@ -45,7 +45,7 @@ public class AlumnoController {
     @PostMapping("/getTutoresFromAlumno")
     public ResponseEntity<List<TutorDataDto>> getTutoresFromAlumno(@RequestBody int idAlumno){
         List<String> tutores = tutorService.findTutoresByIdAlumno(idAlumno);
-        List<TutorDataDto> tutoresFormat= tutores.stream().map(tutor -> new TutorDataDto(tutor.split("_")[0], tutor.split("_")[1])).toList();
+        List<TutorDataDto> tutoresFormat= tutores.stream().map(tutor -> new TutorDataDto(tutor.split("-")[0], tutor.split("-")[1])).toList();
         System.out.println(tutoresFormat.toString());
         if(tutores != null) return ResponseEntity.ok(tutoresFormat);
         else return ResponseEntity.notFound().build();

@@ -37,6 +37,13 @@
     <string name="segunda_instruccion_inserts">2. Asegurarse de que el archivo tiene el formato correcto para la inserción de datos elegida y dividido entre puntos y comas</string>
     <string name="primera_instruccion_inserts">1. Selecciona los datos a insertar</string>
     <string name="tercera_instruccion_inserts">3. Seleccione el archivo .txt a cargar.</string>
+    <string name="inicio_username">Nombre de usuario</string>
+    <string name="inicio_password">Contraseña</string>
+    <string name="day5">Viernes</string>
+    <string name="day4">Jueves</string>
+    <string name="day3">Miércoles</string>
+    <string name="day2">Martes</string>
+    <string name="day1">Lunes</string>
     <string-array name="themes_array">
         <item>Oscuro</item>
         <item>Claro</item>
@@ -62,12 +69,12 @@
     </string-array>
 
     <string-array name="instrucciones_para_inserts">
-        <item>Descripción para Alumnos</item>
-        <item>Descripción para Cursos</item>
-        <item>Descripción para Asignaturas</item>
-        <item>Descripción para Administradores</item>
-        <item>Descripción para Profesores</item>
-        <item>Descripción para Tutores legales</item>
-        <item>Descripción para Horarios</item>
+        <item>Introducir nombre, apellidos y DNI respectivamente entre puntos y comas. A cada alumno le corresponde una línea.</item>
+        <item>Introducir nombre de los cursos separados entre puntos y comas. No es necesario que cada uno vaya en una línea.</item>
+        <item>Introducir nombre de las asignaturas separadas entre puntos y comas. No es necesario que cada una vaya en una línea.</item>
+        <item>Introducir dos palabras separadas por punto y coma para generar el usuario. Cada usuario debe ir en una línea y se generará un txt si la inserción ha sido correcta en la carpeta privada de la aplicación con el resultado. </item>
+        <item>Introducir nombre, apellidos, DNI, correo y asignaturas que imparte el profesor. Los datos deben de ir separados por puntos y comas, y en el caso de las asignaturas estas se separarán con comas entre ellas. Cada usuario puede ocupar una línea y, si la inserción ha sido correcta, se generará un txt en la carpeta privada de la aplicación con el resultado del registro.</item>
+        <item>Introducir nombre, apellidos, DNI, teléfono de contacto, dirección y DNIs de los tutelados correspondientes. Los datos serán separados por puntos y comas a excepción de los dnis que se dividirán entre comas. Cada usuario puede ocupar una línea y, si la inserción ha sido correcta, se generará un txt en la carpeta privada de la aplicación con el resultado del registro.</item>
+        <item>Introducir nombre de asignatura, primera letra del día (L, M, X, J, V), hora (1 a 6), número del aula y DNI del profesor que imparte esa hora. Cada dato debe de estar separado de otro por puntos y comas y cada horario tiene que ir en una línea.</item>
     </string-array>
 </resources>

@@ -21,7 +21,7 @@ class ScheduleAdapter(private val schedules: Set<Horario>, private val context: 
         @SuppressLint("SetTextI18n")
         fun render(horario: Horario) {
             binding.tvNombre.text = horario.asignatura.nombre
-            binding.tvDescripcion.text = "Aula ${horario.aula}"
+            binding.tvDescripcion.text = "Aula: ${horario.aula}"
         }
     }
 

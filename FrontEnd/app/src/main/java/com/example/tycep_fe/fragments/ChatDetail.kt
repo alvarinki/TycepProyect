@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import java.time.format.DateTimeFormatter
 import android.os.Looper
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -31,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.auth.User
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.Timer
 import java.util.TimerTask
@@ -76,28 +78,28 @@ class ChatDetail : Fragment() {
                 binding.edMensaje.visibility=View.GONE
             }
         }
-        view.getViewTreeObserver().addOnGlobalLayoutListener {
-            val r = Rect()
-            view.getWindowVisibleDisplayFrame(r)
-            val screenHeight = view.getRootView().height
-            val keypadHeight = screenHeight - r.bottom
-            if (keypadHeight > screenHeight * 0.15) { // if more than 15% of the screen is occupied by the keyboard
-                // Keyboard is opened
-                binding.messageContainer.setPadding(0, 0, 0, keypadHeight)
-            } else {
-                // Keyboard is closed
-                binding.messageContainer.setPadding(0, 0, 0, 0)
-            }
-        }
+//        view.getViewTreeObserver().addOnGlobalLayoutListener {
+//            val r = Rect()
+//            view.getWindowVisibleDisplayFrame(r)
+//            val screenHeight = view.getRootView().height
+//            val keypadHeight = screenHeight - r.bottom
+////            if (keypadHeight > screenHeight * 0.15) { // if more than 15% of the screen is occupied by the keyboard
+////                // Keyboard is opened
+////                binding.messageContainer.setPadding(0, 0, 0, keypadHeight)
+////            } else {
+////                // Keyboard is closed
+////                binding.messageContainer.setPadding(0, 0, 0, 0)
+////            }
+//        }
 
-        view.setOnKeyListener { _, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                val action = showStudentDirections.actionShowStudentToHomeFragment(chatId = "", origen = "ChatDetail")
-                findNavController().navigate(action)
-                return@setOnKeyListener true // Devuelve true para indicar que el evento ha sido consumido
-            }
-            return@setOnKeyListener false // Devuelve false para indicar que no has manejado el evento
-        }
+//        view.setOnKeyListener { _, keyCode, event ->
+//            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+//                val action = showStudentDirections.actionShowStudentToHomeFragment(chatId = "", origen = "ChatDetail")
+//                findNavController().navigate(action)
+//                return@setOnKeyListener true // Devuelve true para indicar que el evento ha sido consumido
+//            }
+//            return@setOnKeyListener false // Devuelve false para indicar que no has manejado el evento
+//        }
 
 
         return view
@@ -117,10 +119,13 @@ class ChatDetail : Fragment() {
         binding.btEnvio.setOnClickListener {
             val contenidoMensaje = binding.edMensaje.text.toString()
             if (contenidoMensaje.isNotEmpty()) {
+                val currentDateTime = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("HH:mm")
+                val formattedTime = currentDateTime.format(formatter)
                 val mensaje = MensajeFB(
                     contenido = contenidoMensaje,
                     fecha = LocalDate.now().toString(), // Suponiendo que tienes una función para obtener la fecha actual
-                    hora = LocalTime.now().toString(),   // Suponiendo que tienes una función para obtener la hora actual
+                    hora = formattedTime,   // Suponiendo que tienes una función para obtener la hora actual
                     nombreUsuario = nombreUsuario // El nombre de usuario pasado por argumento
                 )
                 // Luego, subes el mensaje a la base de datos Firebase
@@ -142,6 +147,7 @@ class ChatDetail : Fragment() {
                     val mensaje = mensajeSnapshot.getValue(MensajeFB::class.java)
                     mensaje?.let { messages.add(it) }
                 }
+
                 messageAdapter.notifyDataSetChanged()
                 recyclerView.scrollToPosition(messages.size - 1)  // Scroll to the bottom to show the latest message
             }

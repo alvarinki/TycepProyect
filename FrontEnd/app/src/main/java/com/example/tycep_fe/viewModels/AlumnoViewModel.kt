@@ -27,7 +27,8 @@ class AlumnoViewModel : ViewModel() {
             if (response.isSuccessful) {
                 val alumnodto: AlumnoDto = response.body()!!
                 _alumno.postValue(alumnodto.alumno)
-                val tutoresFormateados= alumnodto.tutores.map { t -> t.split("_")[0] +" "+ t.split("_")[1] }
+                println(alumnodto.tutores.get(0).toString())
+                val tutoresFormateados= alumnodto.tutores.map { t -> t.split("-")[0] +" "+ t.split("-")[1] }
                 _tutores.postValue(tutoresFormateados)
             }
         }

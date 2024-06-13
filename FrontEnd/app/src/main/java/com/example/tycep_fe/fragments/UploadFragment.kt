@@ -7,16 +7,19 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.FragmentUploadBinding
@@ -67,7 +70,25 @@ class UploadFragment : Fragment() {
             )
         }
 
-        val datosAinsertar = resources.getStringArray(R.array.datos_a_insertar)
+        val spinner = _binding!!.dataTypeSpinner
+        val adapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.datos_a_insertar,
+            R.layout.selected_spinner_item
+        )
+        adapter.setDropDownViewResource(R.layout.dropdown_spinner_item)
+        spinner.adapter = adapter
+
+        view.setOnKeyListener { _, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                val prefs= Prefs(requireContext())
+                prefs.clearToken()
+                return@setOnKeyListener true // Devuelve true para indicar que el evento ha sido consumido
+            }
+            return@setOnKeyListener false // Devuelve false para indicar que no has manejado el evento
+        }
+
+        val instrucciones_inserts = resources.getStringArray(R.array.instrucciones_para_inserts)
 
         _binding!!.dataTypeSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -78,8 +99,9 @@ class UploadFragment : Fragment() {
                     id: Long
                 ) {
                     // Actualizar el TextView con el texto correspondiente basado en la posición del Spinner
-                    _binding!!.formatInfoText.text = datosAinsertar[position]
+                    _binding!!.formatInfoText.text = instrucciones_inserts[position]
                     insertType = parent?.getItemAtPosition(position).toString()
+
 
                 }
 

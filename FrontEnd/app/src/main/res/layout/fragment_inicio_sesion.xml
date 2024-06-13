@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".fragments.InicioSesion">
+    tools:context=".fragments.InicioSesion"
+    android:background="@color/black">
 
     <ImageView
         android:id="@+id/imageViewLogo"
@@ -24,9 +25,11 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:hint="Nombre de usuario"
+
+        android:hint="@string/inicio_username"
         android:inputType="text"
-        android:textColor="@color/black" />
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <!-- EditText para la contraseña -->
     <EditText
@@ -36,9 +39,10 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:hint="Contraseña"
+        android:hint="@string/inicio_password"
         android:inputType="textPassword"
-        android:textColor="@color/black" />
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <!-- Botón para iniciar sesión -->
 
@@ -49,12 +53,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/primary"
-        android:text="Iniciar sesión" />
+        android:text="Iniciar sesión"
+        android:textColor="@color/white" />
 
     <CheckBox
         android:id="@+id/checkBoxAdmin"
         android:layout_width="wrap_content"
         android:layout_height="29dp"
         android:layout_marginTop="20dp"
-        android:text="Inicio como admin" />
+        android:shadowColor="@color/white"
+        android:text="Inicio como admin"
+        android:textColor="@color/white" />
 </LinearLayout>

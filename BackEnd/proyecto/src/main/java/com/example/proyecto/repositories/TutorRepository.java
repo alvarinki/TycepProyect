@@ -19,7 +19,7 @@ public interface TutorRepository extends JpaRepository<TutorLegal, Integer> {
 
     Optional<TutorLegal> findTutorLegalByAlumnosContaining(Alumno alumno);
 
-    @Query("SELECT CONCAT(t.nombre,' ',t.apellidos, '_', t.usuario) " +
+    @Query("SELECT CONCAT(t.nombre,' ',t.apellidos, '-', t.usuario) " +
             "FROM TutorLegal t JOIN t.alumnos a " +
             "WHERE a.id = :alumnoId")
     List<String> findTutoresByIdAlumno(@Param("alumnoId") Integer alumnoId);

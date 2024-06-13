@@ -8,15 +8,16 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/cardview_light_background"
+    android:backgroundTint="@color/primary"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
+        android:background="@color/primary"
         android:foreground="?attr/selectableItemBackground"
         android:padding="16dp">
 
@@ -26,8 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="112dp"
-            android:text="Titulo del recorrido"
+            android:text="Titulo del horario"
             android:textAlignment="viewStart"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvDescripcion"
@@ -44,8 +46,9 @@
             android:layout_marginEnd="112dp"
             android:ellipsize="end"
             android:maxLines="4"
-            android:text="Descripción del recorrido"
+            android:text="Aula: "
             android:textAlignment="viewStart"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

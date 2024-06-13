@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tycep_fe.databinding.ChatItemBinding
 import com.example.tycep_fe.fragments.HomeFragmentDirections
 import com.example.tycep_fe.modelFB.ChatFB
+import com.example.tycep_fe.modelFB.MensajeFB
+import com.squareup.picasso.Picasso
 
 class ChatAdapter(private var nombreUsuario:String, private val chats:MutableList<ChatFB>) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
@@ -47,7 +49,24 @@ class ChatAdapter(private var nombreUsuario:String, private val chats:MutableLis
         RecyclerView.ViewHolder(binding.root) {
         fun render(chat: ChatFB) {
             binding.tvChatName.text = chat.nombreChat
+            var ultimoMensaje:MensajeFB?= chat.mensajes.toSortedMap().values.lastOrNull()
+            if(ultimoMensaje!=null){
+                var mensaje= ultimoMensaje.contenido
+                if(mensaje.length>20){
+                    mensaje= mensaje.substring(0, 20)+"..."
+                }
+                if (ultimoMensaje.nombreUsuario==nombreUsuario){
+                    mensaje= "Usted: "+mensaje
+                }
+                else {
+                    mensaje= "Sin contestar: "+mensaje
+                }
+                binding.tvLastMessage.text = mensaje
+            }
 
+            if(chat.foto.length>10){
+                Picasso.get().load(chat.foto).into(binding.ivChat)
+            }
         }
     }
 }

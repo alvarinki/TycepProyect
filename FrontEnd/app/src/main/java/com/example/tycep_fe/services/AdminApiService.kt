@@ -16,7 +16,7 @@ import retrofit2.http.Part
 import java.util.StringTokenizer
 
 private const val urlBase = "http://192.168.56.1:8080/admin/"
-
+//"http://alvarocf24.iesmontenaranco.com/admin/"
 private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(GsonConverterFactory.create()).build()
 
 interface AdminApiService{
