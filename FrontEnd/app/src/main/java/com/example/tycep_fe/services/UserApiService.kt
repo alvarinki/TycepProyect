@@ -15,7 +15,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Url
 
-private const val urlBase ="http://alvarocf24.iesmontenaranco.com/"
+private const val urlBase ="http://192.168.7.64/"
 
     //"http://192.168.56.1:8080/"
 

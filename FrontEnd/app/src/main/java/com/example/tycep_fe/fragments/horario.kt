@@ -85,7 +85,7 @@ class horario : Fragment() {
     }
 
     private fun cargarHorarios(horarios: Set<Horario>) {
-
+        val asignaturas:Set<String> = horarios.map { h -> h.asignatura.nombre }.toSet()
         for (horario in horarios) {
 
             val textViewId = resources.getIdentifier(
@@ -108,7 +108,27 @@ class horario : Fragment() {
             }
             // Establecer el nombre de la asignatura en el TextView
             textView?.text = asignatura + "\n" + horario.aula
+        }
+        var descripcionHorario:String= "El número que se encuentra debajo de las abreviaturas es el aula en la que la clase es impartida. \n"
+        asignaturas.forEach{asignatura ->
+            descripcionHorario+= getDescripcionAbreviatura(asignatura)
+        }
 
+        _binding!!.descripcionHorario.text = descripcionHorario
+    }
+
+    private fun getDescripcionAbreviatura(asignatura:String):String{
+        return when(asignatura){
+            "Mates"-> "Mat: ${asignatura}\n"
+            "Geografía" -> "Geo: ${asignatura}\n"
+            "Física" -> "FyQ: ${asignatura}\n"
+            "Historia" -> "His: ${asignatura}\n"
+            "Inglés" -> "Ing: ${asignatura}\n"
+            "Química" -> "Qui: ${asignatura}\n"
+            "Educación Física" -> "EdF: ${asignatura}\n"
+            "Lengua" -> "LyL: ${asignatura}\n"
+            "Sociales" -> "Soc: ${asignatura}\n"
+            else -> "Error en la lectura de la asignatura"
         }
     }
 

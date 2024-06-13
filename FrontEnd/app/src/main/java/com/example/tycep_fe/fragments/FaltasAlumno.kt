@@ -25,8 +25,28 @@ import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.auth.User
 
 class FaltasAlumno : Fragment() {
-    private lateinit var binding: FragmentFaltasAlumnoBinding
 
+
+//    binding.toolbar.setOnMenuItemClickListener { menuItem ->
+//        val listaOrdenada = when (menuItem.itemId) {
+//
+//            R.id.option1 -> {
+//                rutas.filter { it.publica==publicaPrivada }.sortedBy { it.dificultad }
+//
+//            }R.id.option2 -> {
+//                rutas.filter { it.publica==publicaPrivada }.sortedBy { it.duracion }
+//            }
+//
+//            R.id.option3 -> {
+//                rutas.filter { it.publica==publicaPrivada }.sortedBy{it.puntoInteres.size }
+//            }
+//            else -> rutas // Si no se selecciona ninguna opción, muestra la lista completa
+//        }
+//        actualizarRecycler(listaOrdenada)
+//        true
+//    }
+
+    private lateinit var binding: FragmentFaltasAlumnoBinding
     //private lateinit var alumno: Alumno
     private lateinit var alumnoViewModel: AlumnoViewModel
     private lateinit var userViewModel: UserViewModel

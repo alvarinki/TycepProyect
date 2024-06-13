@@ -24,17 +24,6 @@ import com.example.tycep_fe.viewModels.UserViewModel
 class Alumnos : Fragment() {
     private lateinit var userViewModel: ViewModel
     val args: AlumnosArgs by navArgs()
-    private lateinit var origen: String
-//    companion object{
-//
-//        fun newInstance(origen: String):Alumnos{
-//            val fragment= Alumnos()
-//            val bundle = Bundle()
-//            bundle.putString(ARG_ORIGEN, origen)
-//            return fragment
-//        }
-//
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
