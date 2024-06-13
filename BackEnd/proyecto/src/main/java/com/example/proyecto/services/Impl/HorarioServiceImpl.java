@@ -47,4 +47,9 @@ public class HorarioServiceImpl implements HorarioService {
         horarioRepo.delete(horario);
     }
 
+    @Override
+    public List<Horario> findHorariosByIdProfesorAndIdCurso(int idProfesor, int idCurso) {
+        return horarioRepo.findHorariosByIdProfesorAndIdCurso(idProfesor, idCurso);
+    }
+
 }

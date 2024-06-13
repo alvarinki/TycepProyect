@@ -75,4 +75,23 @@ public class FaltaServiceImpl implements FaltaService {
         else return null;
     }
 
+    @Override
+    public List<Falta> findFaltasByIdAlumnoAndAsignatura(Integer idAlumno, String asignatura) {
+        List<Falta> faltas=faltaRepo.findFaltasByIdAlumnoAndAsignatura(idAlumno,asignatura).orElse(null);
+        return adaptarParaMostrarAlumnos(faltas);
+    }
+
+    private List<Falta> adaptarParaMostrarAlumnos(List<Falta> faltas) {
+        if(faltas !=null){
+            for(Falta f: faltas){
+                Alumno alumno= alumnoRepository.findAlumnoById(f.getIdAlumno()).orElse(null);
+                if(alumno!=null){
+                    f.setAsignatura(alumno.getNombre()+" "+alumno.getApellidos());
+                }
+            }
+            return faltas;
+        }
+        else return null;
+    }
+
 }

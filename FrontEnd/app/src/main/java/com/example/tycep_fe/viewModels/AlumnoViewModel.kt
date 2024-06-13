@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tycep_fe.Dtos.AlumnoDto
+import com.example.tycep_fe.Dtos.FaltasCursoRequest
 import com.example.tycep_fe.Dtos.TutorDto
 import com.example.tycep_fe.models.Alumno
 import com.example.tycep_fe.models.Falta
@@ -56,11 +57,12 @@ class AlumnoViewModel : ViewModel() {
         }
     }
 
-    fun getFaltasFromCurso(idCurso: Int, token: String) {
+    fun getFaltasFromCurso(faltasCursoRequest: FaltasCursoRequest, token: String) {
         viewModelScope.launch {
-            val response = faltasRepo.getFaltasFromCurso(idCurso, token)
+            val response = faltasRepo.getFaltasFromCurso(faltasCursoRequest, token)
             if (response.isSuccessful) {
                 val faltas = response.body()
+                println(faltas)
                 _faltas.postValue(faltas!!)
             }
         }

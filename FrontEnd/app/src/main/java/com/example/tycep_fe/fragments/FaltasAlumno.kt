@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pruebapantallas.ShowFaltasAdapter
 import com.example.recyclerrecorridos.preferences.Prefs
+import com.example.tycep_fe.Dtos.FaltasCursoRequest
 import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.FragmentFaltasAlumnoBinding
 import com.example.tycep_fe.models.Alumno
 import com.example.tycep_fe.models.Falta
 import com.example.tycep_fe.viewModels.AlumnoViewModel
 import com.example.tycep_fe.viewModels.UserViewModel
+import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.auth.User
 
 class FaltasAlumno : Fragment() {
@@ -53,33 +55,57 @@ class FaltasAlumno : Fragment() {
         val prefs = Prefs(requireContext())
         println("Faltas alumno y llega de "+origen)
         alumnoViewModel = ViewModelProvider(requireActivity())[AlumnoViewModel::class.java]
+        var idTutor=100
+        var idProfesor=100
+        userViewModel._profesor.observe(viewLifecycleOwner){profesor ->
+            idTutor=profesor.idTutor
+            idProfesor=profesor.id
+
+            if (origen == "Cursos") {
+                binding.headerAsignaturaNombre.text="Nombre"
+                if(idTutor==prefs.getData()?.toInt()){
+                    alumnoViewModel.getFaltasFromCurso(
+                        FaltasCursoRequest(prefs.getData()!!.toInt(), idProfesor),
+                        prefs.getToken().toString()
+                    )
+                }
+                else {
+                    alumnoViewModel.getFaltasFromCurso(
+                        FaltasCursoRequest(prefs.getData()!!.toInt(), idProfesor),
+                        prefs.getToken().toString())
+                    println("Entra por el lado malo")
+
+                }
+            }
+
+            alumnoViewModel._faltas.observe(viewLifecycleOwner){faltas ->
+                initReciclerView(faltas!!, alumnoViewModel , userType)
+
+            }
+        }
         if (origen == "ShowStudent" || origen =="recAlumnos") {
             binding.headerAsignaturaNombre.text="Asignatura"
             alumnoViewModel.getFaltasFromAlumno(prefs.getToken().toString())
-        } else if (origen == "Cursos") {
-            binding.headerAsignaturaNombre.text="Nombre"
-            alumnoViewModel.getFaltasFromCurso(
-                prefs.getData()!!.toInt(),
-                prefs.getToken().toString()
-            )
-        }
+            alumnoViewModel._alumno.observe(viewLifecycleOwner) { alumno ->
 
-
-        alumnoViewModel._alumno.observe(viewLifecycleOwner) { alumno ->
-            alumno.faltas.let {
-                if (alumno.faltas != null && (origen == "ShowStudent" || origen=="recAlumnos")){
-                    initReciclerView(alumno.faltas!!, alumnoViewModel , userType)}
-            }
-            }
-
-
-        if (origen == "Cursos") {
-            alumnoViewModel._faltas.observe(viewLifecycleOwner) { faltas ->
-                if (faltas != null) {
-                    initReciclerView(faltas, alumnoViewModel, userType)
+                if(alumno.faltas!=null){
+                    alumno.faltas.let {
+                        initReciclerView(alumno.faltas!!, alumnoViewModel , userType)}
                 }
             }
+
         }
+
+
+
+
+//        if (origen == "Cursos") {   ESTO ES DE ARRIBA -> && (origen == "ShowStudent" || origen=="recAlumnos")
+//            alumnoViewModel._faltas.observe(viewLifecycleOwner) { faltas ->
+//                if (faltas != null) {
+//                    initReciclerView(faltas, alumnoViewModel, userType)
+//                }
+//            }
+//        }
 
 
 //        val faltas = setOf(

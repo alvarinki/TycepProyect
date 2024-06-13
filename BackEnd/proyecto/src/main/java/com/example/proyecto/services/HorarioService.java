@@ -20,4 +20,6 @@ public interface HorarioService {
     Horario findHorarioByDiaAndHoraAndIdCurso(Dia dia, int hora, int idCurso);
 
     void deleteHorario(Horario horario);
+
+    List<Horario> findHorariosByIdProfesorAndIdCurso(int idProfesor, int idCurso);
 }

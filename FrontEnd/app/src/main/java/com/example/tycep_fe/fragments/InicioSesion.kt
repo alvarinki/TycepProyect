@@ -42,15 +42,16 @@ class InicioSesion : Fragment() {
         val prefs = Prefs(requireContext())
         _binding = FragmentInicioSesionBinding.inflate(inflater, container, false)
         //Linea para pruebas
-        prefs.clearToken()
+        //prefs.clearToken()
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
             if (prefs.getToken()?.length!! > 4) {
                 val loginRequestDto = LoginRequestDto("", "", prefs.getToken().toString())
 //
                 userViewModel.userLogin(loginRequestDto)
-                userViewModel._profesor.observe(viewLifecycleOwner) {
-                    println("Token: " + prefs.getToken().toString())
+                userViewModel._profesor.observe(viewLifecycleOwner) {profe ->
+
                     findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)
+                    println("Idtutor: "+ profe.idTutor)
                 }
                 userViewModel._tutorLegal
                     .observe(viewLifecycleOwner) {
@@ -99,13 +100,13 @@ class InicioSesion : Fragment() {
             else {
                 userViewModel._profesor.observe(viewLifecycleOwner) {
                     if (isAdded) {
-                    println("Token: " + prefs.getToken().toString())
+
                     findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)}
                 }
                 userViewModel._tutorLegal
                     .observe(viewLifecycleOwner) {
                         if (isAdded) {
-                        println("Token: " + prefs.getToken().toString())
+
                         findNavController().navigate(R.id.action_inicioSesion_to_homeFragment)}
                     }
             }

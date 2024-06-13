@@ -383,7 +383,7 @@ class HomeFragment : Fragment() {
 
                         // Obtenemos el ID del usuario
                         val usuarioId = usuarioSnapshot.key
-                        println("Id de usuario: "+usuarioSnapshot.key)
+
                         // Ahora, con el ID del usuario, buscamos sus chats en la base de datos
                         if (usuarioId != null) {
                             val chatsRef = database.getReference("Chat")
@@ -401,8 +401,6 @@ class HomeFragment : Fragment() {
                                                 // Asignar el ID del chatFB al atributo "id" del objeto chatFB
                                                 it.id = chatId!!
                                                 chatsList.add(it) }
-                                            val nombreChat = chatFB?.nombreChat
-                                            println("Nombre del chat: $nombreChat")
                                         }
                                     }
                                     chatAdapter.updateData(nombreUsuario, chatsList)

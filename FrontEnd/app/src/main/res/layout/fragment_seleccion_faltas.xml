@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/primary"
-            android:text="Ver faltas por curso"
+            android:text="Ver faltas"
             android:textSize="28sp" />
 
         <Button
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/primary"
-            android:text="Poner faltas de hoy"
+            android:text="Poner faltas"
             android:textSize="28sp" />
 
     </LinearLayout>

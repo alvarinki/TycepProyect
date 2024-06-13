@@ -77,4 +77,15 @@
         <item>Introducir nombre, apellidos, DNI, teléfono de contacto, dirección y DNIs de los tutelados correspondientes. Los datos serán separados por puntos y comas a excepción de los dnis que se dividirán entre comas. Cada usuario puede ocupar una línea y, si la inserción ha sido correcta, se generará un txt en la carpeta privada de la aplicación con el resultado del registro.</item>
         <item>Introducir nombre de asignatura, primera letra del día (L, M, X, J, V), hora (1 a 6), número del aula y DNI del profesor que imparte esa hora. Cada dato debe de estar separado de otro por puntos y comas y cada horario tiene que ir en una línea.</item>
     </string-array>
+
+    <string-array name="filtrado_faltas">
+        <item>Buscar faltas...</item>
+        <item>Justificadas</item>
+        <item>Injustificadas</item>
+        <item>Entre dos fechas</item>
+        <item>De un día</item>
+        <item>Profesores</item>
+        <item>Tutores legales</item>
+        <item>Horarios</item>
+    </string-array>
 </resources>

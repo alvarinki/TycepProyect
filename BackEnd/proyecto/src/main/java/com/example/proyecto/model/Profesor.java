@@ -49,4 +49,7 @@ public class Profesor extends Usuario{
             {@JoinColumn(name="id_profesor")},
             inverseJoinColumns = {@JoinColumn(name = "id_asignatura")})
     private Set<Asignatura> asignaturas= new LinkedHashSet<>();
+
+    @Column(name="tutor")
+    private int idTutor;
 }

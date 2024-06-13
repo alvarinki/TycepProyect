@@ -11,12 +11,12 @@
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Título"
+        android:layout_marginTop="40dp"
+        android:text="Faltas"
         android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Nueva fila de encabezado -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,5 +86,15 @@
         app:layout_constraintTop_toBottomOf="@id/headerRow"
         app:layout_constraintVertical_bias="0.065"
         tools:layout_editor_absoluteX="0dp" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="125dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/headerRow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,8 +11,8 @@ import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
 
-private const val urlBase = "http://192.168.56.1:8080/"
-//"http://alvarocf24.iesmontenaranco.com/"
+private const val urlBase = "http://alvarocf24.iesmontenaranco.com/"
+//"http://192.168.56.1:8080/"
 private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(GsonConverterFactory.create()).build()
 
 interface AlumnoApiService{

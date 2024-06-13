@@ -8,65 +8,68 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="309dp"
+        android:gravity="center_vertical"
         android:orientation="vertical"
-        android:padding="5dp"
-        >
-
-
+        android:padding="3dp">
 
         <!-- Tabla -->
         <TableLayout
             android:id="@+id/tableLayout"
-            android:layout_width="395dp"
+            android:layout_width="401dp"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="40dp"
+            android:padding="3dp">
 
             <!-- Encabezado de la tabla (opcional) -->
             <TableRow>
 
                 <TextView
                     android:id="@+id/d1"
+                    style="@style/cabeceraHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/header_border"
                     android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/day1"
-                    style="@style/cabeceraHorario"/>
+                    android:padding="3dp"
+                    android:text="@string/day1" />
 
                 <TextView
                     android:id="@+id/d2"
+                    style="@style/cabeceraHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/header_border"
                     android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/day2"
-                    style="@style/cabeceraHorario"/>
+                    android:padding="3dp"
+                    android:text="@string/day2" />
 
                 <TextView
                     android:id="@+id/d3"
+                    style="@style/cabeceraHorario"
                     android:layout_width="115dp"
                     android:layout_weight="1"
+                    android:background="@drawable/header_border"
                     android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/day3"
-                    style="@style/cabeceraHorario"/>
+                    android:padding="3dp"
+                    android:text="@string/day3" />
 
                 <TextView
                     android:id="@+id/d4"
+                    style="@style/cabeceraHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/header_border"
                     android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/day4"
-                    style="@style/cabeceraHorario"/>
+                    android:padding="3dp"
+                    android:text="@string/day4" />
 
                 <TextView
                     android:id="@+id/d5"
+                    style="@style/cabeceraHorario"
                     android:layout_width="85dp"
                     android:layout_weight="1"
+                    android:background="@drawable/header_border"
                     android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/day5"
-                    style="@style/cabeceraHorario"/>
+                    android:padding="3dp"
+                    android:text="@string/day5" />
             </TableRow>
 
             <!-- Filas de la tabla -->
@@ -74,220 +77,277 @@
                 <!-- Columna 1 -->
                 <TextView
                     android:id="@+id/row1_col1"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp"
-                    style="@style/cuerpoHorario"/>
+                    android:padding="3dp" />
                 <!-- Columna 2 -->
                 <TextView
                     android:id="@+id/row1_col2"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp"
-                    style="@style/cuerpoHorario"/>
+                    android:padding="3dp" />
                 <!-- Columna 3 -->
                 <TextView
                     android:id="@+id/row1_col3"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp"
-                    style="@style/cuerpoHorario"/>
+                    android:padding="3dp" />
                 <!-- Columna 4 -->
                 <TextView
                     android:id="@+id/row1_col4"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp"
-                    style="@style/cuerpoHorario"/>
+                    android:padding="3dp" />
                 <!-- Columna 5 -->
                 <TextView
                     android:id="@+id/row1_col5"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp"
-                    style="@style/cuerpoHorario"/>
+                    android:padding="3dp" />
             </TableRow>
 
             <TableRow android:id="@+id/row2">
                 <!-- Columna 1 -->
                 <TextView
                     android:id="@+id/row2_col1"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 2 -->
                 <TextView
                     android:id="@+id/row2_col2"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 3 -->
                 <TextView
                     android:id="@+id/row2_col3"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 4 -->
                 <TextView
                     android:id="@+id/row2_col4"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 5 -->
                 <TextView
                     android:id="@+id/row2_col5"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
             </TableRow>
 
             <TableRow android:id="@+id/row3">
                 <!-- Columna 1 -->
                 <TextView
                     android:id="@+id/row3_col1"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 2 -->
                 <TextView
                     android:id="@+id/row3_col2"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 3 -->
                 <TextView
                     android:id="@+id/row3_col3"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 4 -->
                 <TextView
                     android:id="@+id/row3_col4"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 5 -->
                 <TextView
                     android:id="@+id/row3_col5"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
             </TableRow>
 
             <TableRow android:id="@+id/row4">
                 <!-- Columna 1 -->
                 <TextView
                     android:id="@+id/row4_col"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="3dp"
                     android:text="Recreo" />
-
             </TableRow>
 
             <TableRow android:id="@+id/row5">
                 <!-- Columna 1 -->
                 <TextView
                     android:id="@+id/row5_col1"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 2 -->
                 <TextView
                     android:id="@+id/row5_col2"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 3 -->
                 <TextView
                     android:id="@+id/row5_col3"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 4 -->
                 <TextView
                     android:id="@+id/row5_col4"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 5 -->
                 <TextView
                     android:id="@+id/row5_col5"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
             </TableRow>
 
             <TableRow android:id="@+id/row6">
                 <!-- Columna 1 -->
                 <TextView
                     android:id="@+id/row6_col1"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 2 -->
                 <TextView
                     android:id="@+id/row6_col2"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 3 -->
                 <TextView
                     android:id="@+id/row6_col3"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 4 -->
                 <TextView
                     android:id="@+id/row6_col4"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 5 -->
                 <TextView
                     android:id="@+id/row6_col5"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
             </TableRow>
 
             <TableRow android:id="@+id/row7">
                 <!-- Columna 1 -->
                 <TextView
                     android:id="@+id/row7_col1"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 2 -->
                 <TextView
                     android:id="@+id/row7_col2"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 3 -->
                 <TextView
                     android:id="@+id/row7_col3"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 4 -->
                 <TextView
                     android:id="@+id/row7_col4"
+                    style="@style/cuerpoHorario"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
                 <!-- Columna 5 -->
                 <TextView
                     android:id="@+id/row7_col5"
+                    style="@style/cuerpoHorario"
+                    android:layout_width="89dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@drawable/body_border"
                     android:gravity="center"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
             </TableRow>
 
             <!-- Más filas aquí... -->
 
         </TableLayout>
     </LinearLayout>
-
 
 </FrameLayout>

@@ -1,5 +1,7 @@
 package com.example.proyecto.repositories;
 
+import com.example.proyecto.model.Alumno;
+import com.example.proyecto.model.Asignatura;
 import com.example.proyecto.model.Falta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +23,11 @@ public interface FaltaRepository extends JpaRepository<Falta, Integer> {
 
     @Query("SELECT f FROM Falta f WHERE f.idAlumno IN (SELECT a.id FROM Alumno a WHERE a.idCurso = :idCurso)")
     Optional<Set<Falta>> findFaltasByIdCurso(int idCurso);
+
+    Optional<List<Falta>> findFaltasByIdAlumnoAndAsignatura(Integer idAlumno, String asignatura);
+
+//    @Query("SELECT f FROM Falta f WHERE f.idAlumno = :idAlumno and f.asignatura= :nombreAsignatura")
+//    List<Falta> findFaltasByIdAlumnoAndAsignaturaByNoTutor(@Param("idAlumno") Integer idAlumno, @Param("nombreAsignatura") String nombreAsignatura);
 }
+
+

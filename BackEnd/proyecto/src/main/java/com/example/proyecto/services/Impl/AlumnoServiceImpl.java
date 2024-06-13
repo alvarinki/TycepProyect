@@ -68,4 +68,9 @@ public class AlumnoServiceImpl implements AlumnoService {
         alumnoRepo.deleteById(idAlumno);
     }
 
+    @Override
+    public List<Integer> getAlumnosIdByIdCurso(int idCurso) {
+        return alumnoRepo.getAlumnosIdByIdCurso(idCurso).orElse(null);
+    }
+
 }

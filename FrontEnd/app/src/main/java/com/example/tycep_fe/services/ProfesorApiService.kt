@@ -14,8 +14,8 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-private const val urlBase = "http://192.168.56.1:8080/profesor/"
-//"http://alvarocf24.iesmontenaranco.com/profesor/"
+private const val urlBase ="http://alvarocf24.iesmontenaranco.com/profesor/"
+// "http://192.168.56.1:8080/profesor/"
 private val retrofit= Retrofit.Builder().baseUrl(urlBase).addConverterFactory(GsonConverterFactory.create()).build()
 
 interface ProfesorApiService{

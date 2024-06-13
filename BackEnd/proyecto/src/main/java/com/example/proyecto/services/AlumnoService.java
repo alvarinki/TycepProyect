@@ -25,4 +25,6 @@ public interface AlumnoService {
     void saveFotoFromAlumno(int idAlumno, String foto);
 
     void deleteAlumnoById(int idAlumno);
+
+    List<Integer> getAlumnosIdByIdCurso(int idCurso);
 }

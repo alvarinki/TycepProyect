@@ -27,5 +27,7 @@ data class Profesor(
     @SerializedName("cursos")
     var cursos:Set<Curso>?,
     @SerializedName("asignaturas")
-    val asignaturas:Set<Asignatura>
+    val asignaturas:Set<Asignatura>,
+    @SerializedName("idTutor")
+    val idTutor:Int
 )
