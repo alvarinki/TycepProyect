@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -46,20 +47,20 @@ class PutFaltasAdapter(private val alumnos: Set<Alumno>) :
             holder.itemView.layoutParams = layoutParams
 
             if (color == 0) {
-                holder.itemView.findViewById<LinearLayout>(R.id.backTwoSpan)
-                    .setBackgroundColor(Color.RED)
+                holder.itemView.findViewById<CardView>(R.id.cvTwoSpan)
+                    .setCardBackgroundColor(Color.RED)
                 color = 1
                 faltas.add("I" + alumno.id)
             } else if (color == 1) {
-                holder.itemView.findViewById<LinearLayout>(R.id.backTwoSpan)
-                    .setBackgroundColor(Color.YELLOW)
+                holder.itemView.findViewById<CardView>(R.id.cvTwoSpan)
+                    .setCardBackgroundColor(Color.YELLOW)
                 color = 2
 
                 faltas.remove("I" + alumno.id)
                 faltas.add("J" + alumno.id)
             } else {
-                holder.itemView.findViewById<LinearLayout>(R.id.backTwoSpan)
-                    .setBackgroundColor(Color.WHITE)
+                holder.itemView.findViewById<CardView>(R.id.cvTwoSpan)
+                    .setCardBackgroundColor(Color.GRAY)
 
                 faltas.remove("J" + alumno.id)
                 color = 0

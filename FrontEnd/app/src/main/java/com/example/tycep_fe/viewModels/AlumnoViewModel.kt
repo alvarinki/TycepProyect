@@ -12,6 +12,8 @@ import com.example.tycep_fe.models.Falta
 import com.example.tycep_fe.repositories.AlumnoRepository
 import com.example.tycep_fe.repositories.FaltaRepository
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class AlumnoViewModel : ViewModel() {
 
@@ -68,6 +70,33 @@ class AlumnoViewModel : ViewModel() {
         }
     }
 
+    fun filtrarJustificadas() {
+        val faltasFiltradas = _faltas.value?.filter { it.justificada }?.toSet() ?: emptySet()
+        _faltas.value = faltasFiltradas
+    }
+
+    fun filtrarInjustificadas() {
+        val faltasFiltradas = _faltas.value?.filter { !it.justificada }?.toSet() ?: emptySet()
+        _faltas.value = faltasFiltradas
+    }
+
+    fun filtrarPorAsignatura(asignatura: String) {
+        val faltasFiltradas = _faltas.value?.filter { it.asignatura == asignatura }?.toSet() ?: emptySet()
+        _faltas.value = faltasFiltradas
+    }
+
+    fun filtrarEntreFechas(fechaInicio: Date, fechaFin: Date) {
+        val faltasFiltradas = _faltas.value?.filter {
+            val fecha = SimpleDateFormat("yyyy-MM-dd").parse(it.fecha)
+            fecha.after(fechaInicio) && fecha.before(fechaFin)
+        }?.toSet() ?: emptySet()
+        _faltas.value = faltasFiltradas
+    }
+
+    // Restaura la lista original de _faltas
+    fun restaurarFaltas(originalFaltas: Set<Falta>) {
+        _faltas.value = originalFaltas
+    }
 //    fun getTutoresFromAlumno(idAlumno: Int){
 //        viewModelScope.launch {
 //            val response = alumnoRepo.getTutoresFromAlumno(idAlumno)

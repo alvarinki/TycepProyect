@@ -62,8 +62,9 @@ public class FileManager {
                         profesor.setApellidos(datos[1].trim());
                     } else return "Error en el formato del nombre o apellidos en la línea " + numeroLinea;
 
-                    if (comprobarDNI(datos[2].trim())) profesor.setDni(datos[2].trim());
-                    else return "Error en el formato del Dni en la línea" + numeroLinea;
+                    profesor.setDni(datos[2].trim());
+//                    if (comprobarDNI(datos[2].trim()))
+//                    else return "Error en el formato del Dni en la línea" + numeroLinea;
 
                     if (esCorreoValido(datos[3].trim())) profesor.setCorreo(datos[3].trim());
                     else return "Error: Formateo del correo en la línea " + numeroLinea + " incorrecto";
@@ -121,8 +122,9 @@ public class FileManager {
                         tutor.setApellidos(datos[1].trim());
                     } else return "Error en el formato del nombre o apellidos en la línea " + numeroLinea;
 
-                    if (comprobarDNI(datos[2].trim())) tutor.setDni(datos[2].trim());
-                    else return "Error en el formato del Dni en la línea" + numeroLinea;
+                    tutor.setDni(datos[2].trim());
+//                    if (comprobarDNI(datos[2].trim()))
+//                    else return "Error en el formato del Dni en la línea" + numeroLinea;
 
                     try {
                         comprobarFormatoNumero(datos[3].trim());
@@ -136,12 +138,12 @@ public class FileManager {
                     Set<Alumno> alumnos = new HashSet<>();
                     String[] dnis = datos[5].split(",");
                     for (String dni : dnis) {
-                        if (comprobarDNI(dni)) {
+                        //if (comprobarDNI(dni)) {
                             Alumno a = alumnoService.findAlumnoByDni(dni);
                             if (a != null) alumnos.add(a);
                             else return "Error: No se encuentra tutelado correspondiente a tutor en la línea " + numeroLinea;
-                        } else
-                            return "Error en el formato o existencia del dni de uno de los tutelados en la línea " + numeroLinea;
+                        //} else
+                          //  return "Error en el formato o existencia del dni de uno de los tutelados en la línea " + numeroLinea;
                     }
 
                     tutor.setAlumnos(alumnos);
@@ -237,8 +239,9 @@ public class FileManager {
                 if (idCurso != 0) alumno.setIdCurso(idCurso);
                 else return "Error en la introducción del curso en la línea " + numeroLinea;
 
-                if (comprobarDNI(datos[3].trim())) alumno.setDni(datos[3].trim());
-                else return "Error en el dni introducido en la línea " + numeroLinea + ", no existe";
+                alumno.setDni(datos[3].trim());
+//                if (comprobarDNI(datos[3].trim()))
+//                else return "Error en el dni introducido en la línea " + numeroLinea + ", no existe";
 
                 if (alumnoService.findAlumnoByDni(alumno.getDni()) == null) alumnos.add(alumno);
                 numeroLinea++;

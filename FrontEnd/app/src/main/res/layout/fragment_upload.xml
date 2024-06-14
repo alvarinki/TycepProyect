@@ -14,6 +14,25 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- New LinearLayout for the Logout Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="start">
+
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:backgroundTint="@color/primary"
+                android:padding="8dp"
+                android:text="Salir"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/headerImage"
             android:layout_width="100dp"
@@ -34,17 +53,20 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
+        <!-- Spinner with the style applied -->
         <Spinner
             android:id="@+id/dataTypeSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/black"
-            android:popupBackground="@color/black"
+            android:backgroundTint="@color/white"
+            android:popupBackground="@color/white"
             android:dropDownSelector="@color/white"
             android:entries="@array/datos_a_insertar"
             android:foregroundTint="@color/white"
-            android:paddingBottom="20dp" />
+            android:paddingBottom="20dp"
+            android:spinnerMode="dropdown"
+            android:theme="@style/SpinnerTextStyle" />
 
         <TextView
             android:id="@+id/step2Text"

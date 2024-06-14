@@ -6,26 +6,27 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerrecorridos.preferences.Prefs
 import com.example.tycep_fe.R
-import com.example.tycep_fe.databinding.ShowfaltaItemBinding
+import com.example.tycep_fe.databinding.FaltasItemBinding
 import com.example.tycep_fe.models.Falta
 import com.example.tycep_fe.viewModels.AlumnoViewModel
 
 class ShowFaltasAdapter(
-    private val faltas: LinkedHashSet<Falta>,
+    private var faltas: LinkedHashSet<Falta>,
     private val alumnoViewModel: AlumnoViewModel,
-    private val userType:String
+    private val userType: String
 ) : RecyclerView.Adapter<ShowFaltasAdapter.ItemViewHolder>() {
-    private val userTypeCondition:Boolean= userType=="TutorLegal"
+    private val userTypeCondition: Boolean = userType == "TutorLegal"
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ShowFaltasAdapter.ItemViewHolder {
         val binding =
-            ShowfaltaItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            FaltasItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding)
     }
 
@@ -34,12 +35,16 @@ class ShowFaltasAdapter(
         val falta = faltas.toList()[position]
         holder.render(falta)
         if (userTypeCondition) {
-            holder.itemView.findViewById<ImageButton>(R.id.ivEliminar).isEnabled = false
-            holder.itemView.findViewById<ImageButton>(R.id.ivEliminar).visibility = View.GONE
-            holder.itemView.findViewById<ImageButton>(R.id.ivEditar).isEnabled = false
-            holder.itemView.findViewById<ImageButton>(R.id.ivEditar).visibility = View.GONE
+            holder.binding.btnAction1.isEnabled = false
+            holder.binding.btnAction1.visibility = View.GONE
+            holder.binding.btnAction2.isEnabled = false
+            holder.binding.btnAction2.visibility = View.GONE
         } else {
-            holder.itemView.findViewById<ImageButton>(R.id.ivEliminar).setOnClickListener {
+            holder.binding.btnAction1.setOnClickListener {
+
+            }
+            // Añade la lógica para el segundo botón si es necesario
+            holder.binding.btnAction2.setOnClickListener {
                 val absolutePosition = holder.adapterPosition // Obtener la posición absoluta
                 if (absolutePosition != RecyclerView.NO_POSITION) { // Verificar si la posición es válida
                     confirmAndRemoveFalta(absolutePosition, holder.itemView.context, falta)
@@ -68,22 +73,19 @@ class ShowFaltasAdapter(
             .show()
     }
 
-    inner class ItemViewHolder(private val binding: ShowfaltaItemBinding) :
+    inner class ItemViewHolder(val binding: FaltasItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun render(falta: Falta) {
-            binding.tvFecha.text = falta.fecha
-            binding.tvAsignatura.text = falta.asignatura
-            if (falta.justificada) binding.tvJustificacion.text = "J"
-            else binding.tvJustificacion.text = "IN"
-            binding.tvHora.text = falta.hora.toString()
-
-            //Esto pa los padres que la pantalla va a ser la misma
-            binding.ivEditar.visibility = View.INVISIBLE
-            binding.ivEditar.isEnabled = false
-
+            binding.tvText1.text = falta.asignatura
+            binding.tvText2.text = falta.fecha +" Hora: "+falta.hora
+            binding.tvText3.text = if (falta.justificada) "Justificada" else "Injustificada"
         }
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun actualizarFaltas(nuevasFaltas: Set<Falta>) {
+        this.faltas = nuevasFaltas.sortedBy { f -> f.fecha } as LinkedHashSet<Falta>
+        notifyDataSetChanged()
+    }
 }
-
-

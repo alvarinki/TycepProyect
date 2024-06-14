@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/justificadas"
+        android:title="Jusificadas" />
+    <item
+        android:id="@+id/injustificadas"
+        android:title="Injusificadas" />
+    <item
+        android:id="@+id/entreFechas"
+        android:title="Entre dos fechas" />
+    <item
+        android:id="@+id/asignatura"
+        android:title="Asignatura" />
+
+</menu>

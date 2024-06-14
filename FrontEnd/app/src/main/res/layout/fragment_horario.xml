@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="710dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="3dp">
@@ -16,9 +16,9 @@
         <!-- Tabla -->
         <TableLayout
             android:id="@+id/tableLayout"
-            android:layout_width="401dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_width="389dp"
+            android:layout_height="315dp"
+            android:layout_marginTop="50dp"
             android:padding="3dp">
 
             <!-- Encabezado de la tabla (opcional) -->
@@ -300,6 +300,8 @@
                 <TextView
                     android:id="@+id/row6_col5"
                     style="@style/cuerpoHorario"
+                    android:layout_width="99dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/body_border"
                     android:gravity="center"
@@ -311,6 +313,7 @@
                 <TextView
                     android:id="@+id/row7_col1"
                     style="@style/cuerpoHorario"
+                    android:layout_height="47dp"
                     android:layout_weight="1"
                     android:background="@drawable/body_border"
                     android:gravity="center"
@@ -319,6 +322,7 @@
                 <TextView
                     android:id="@+id/row7_col2"
                     style="@style/cuerpoHorario"
+                    android:layout_height="47dp"
                     android:layout_weight="1"
                     android:background="@drawable/body_border"
                     android:gravity="center"
@@ -327,6 +331,7 @@
                 <TextView
                     android:id="@+id/row7_col3"
                     style="@style/cuerpoHorario"
+                    android:layout_height="47dp"
                     android:layout_weight="1"
                     android:background="@drawable/body_border"
                     android:gravity="center"
@@ -335,6 +340,7 @@
                 <TextView
                     android:id="@+id/row7_col4"
                     style="@style/cuerpoHorario"
+                    android:layout_height="47dp"
                     android:layout_weight="1"
                     android:background="@drawable/body_border"
                     android:gravity="center"
@@ -369,8 +375,8 @@
         <!-- TextView que abarca casi todo el ancho y lo que quede de alto -->
         <TextView
             android:id="@+id/descripcionHorario"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="381dp"
+            android:layout_height="320dp"
             android:layout_margin="16dp"
             android:layout_weight="1"
             android:background="@android:color/darker_gray"

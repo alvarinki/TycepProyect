@@ -1,11 +1,17 @@
 package com.example.tycep_fe.fragments
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +29,7 @@ import com.example.tycep_fe.viewModels.AlumnoViewModel
 import com.example.tycep_fe.viewModels.UserViewModel
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.auth.User
+import java.util.Calendar
 
 class FaltasAlumno : Fragment() {
 
@@ -82,7 +89,7 @@ class FaltasAlumno : Fragment() {
             idProfesor=profesor.id
 
             if (origen == "Cursos") {
-                binding.headerAsignaturaNombre.text="Nombre"
+
                 if(idTutor==prefs.getData()?.toInt()){
                     alumnoViewModel.getFaltasFromCurso(
                         FaltasCursoRequest(prefs.getData()!!.toInt(), idProfesor),
@@ -104,7 +111,7 @@ class FaltasAlumno : Fragment() {
             }
         }
         if (origen == "ShowStudent" || origen =="recAlumnos") {
-            binding.headerAsignaturaNombre.text="Asignatura"
+
             alumnoViewModel.getFaltasFromAlumno(prefs.getToken().toString())
             alumnoViewModel._alumno.observe(viewLifecycleOwner) { alumno ->
 
@@ -116,8 +123,74 @@ class FaltasAlumno : Fragment() {
 
         }
 
+        val btnAction = binding.btnFiltros
+        btnAction.setOnClickListener {
+            showPopupMenu(it)
+        }
+    }
 
+    private fun showPopupMenu(view: View) {
+        val popup = PopupMenu(requireContext(), view)
+        val inflater: MenuInflater = popup.menuInflater
+        inflater.inflate(R.menu.menu_filtrado, popup.menu)
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.justificadas -> {
+                    alumnoViewModel.filtrarJustificadas()
+                    true
+                }
+                R.id.injustificadas -> {
+                    alumnoViewModel.filtrarInjustificadas()
+                    true
+                }
+                R.id.entreFechas -> {
 
+                    // Aquí puedes implementar un diálogo para seleccionar las fechas
+//                    val fechaInicio = ... // Obtén la fecha de inicio
+//                    val fechaFin = ... // Obtén la fecha de fin
+//                    alumnoViewModel.filtrarEntreFechas(fechaInicio, fechaFin)
+                    true
+                }
+                R.id.asignatura -> {
+                    // Aquí puedes implementar un diálogo para seleccionar la asignatura
+//                    val asignatura = ... // Obtén la asignatura
+//                    alumnoViewModel.filtrarPorAsignatura(asignatura)
+                    true
+                }
+
+                else -> false
+            }
+        }
+        popup.show()
+    }
+
+//        val spinner = binding.spinnerFaltas
+//        val adapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
+//            requireContext(),
+//            R.array.filtrado_faltas,
+//            R.layout.selected_spinner_item
+//        )
+//        adapter.setDropDownViewResource(R.layout.dropdown_spinner_item)
+//        spinner.adapter = adapter
+//
+//        binding.spinnerFaltas.onItemSelectedListener =
+//            object : AdapterView.OnItemSelectedListener {
+//                override fun onItemSelected(
+//                    parent: AdapterView<*>?,
+//                    view: View?,
+//                    position: Int,
+//                    id: Long
+//                ) {
+//
+//
+//
+//                }
+//
+//                override fun onNothingSelected(parent: AdapterView<*>?) {
+//
+//                }
+//            }
+//    }
 
 //        if (origen == "Cursos") {   ESTO ES DE ARRIBA -> && (origen == "ShowStudent" || origen=="recAlumnos")
 //            alumnoViewModel._faltas.observe(viewLifecycleOwner) { faltas ->
@@ -165,7 +238,7 @@ class FaltasAlumno : Fragment() {
 //                }
 //            })
 //        )
-    }
+
 
     @SuppressLint("SetTextI18n")
     private fun initReciclerView(faltas: Set<Falta>?, viewModel: AlumnoViewModel, userType:String) {
@@ -182,7 +255,32 @@ class FaltasAlumno : Fragment() {
         }
     }
 
+    private fun actualizarRecycler(faltas: Set<Falta>) {
+        val adapter = recyclerView.adapter as ShowFaltasAdapter
+        adapter.actualizarFaltas(faltas)
+    }
 
+    private fun showDatePickerDialog(editText: EditText) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                val selectedDate = "$dayOfMonth/${month + 1}/$year"
+                editText.setText(selectedDate)
+            },
+            year,
+            month,
+            day
+        )
+        //Limitar edad minima a 12 años
+        calendar.add(Calendar.YEAR, -12)
+        datePickerDialog.datePicker.maxDate = calendar.timeInMillis
+        datePickerDialog.show()
+    }
 //    @SuppressLint("NotifyDataSetChanged")
 //    override fun onFaltaDelete(falta: Falta) {
 //        val nuevasFaltas= alumno.faltas!!.toMutableSet()

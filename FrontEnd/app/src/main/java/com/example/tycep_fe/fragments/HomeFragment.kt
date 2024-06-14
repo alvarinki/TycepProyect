@@ -249,6 +249,8 @@ class HomeFragment : Fragment() {
 
 
         userViewModel ._tutorLegal.observe(viewLifecycleOwner) { tutorLegal ->
+            navHeaderBinding.tvName.text = tutorLegal.nombre +" "+tutorLegal.apellidos
+            navHeaderBinding.tvUsername.text = tutorLegal.usuario
             obtenerChatsDeUsuario(tutorLegal.usuario)
             menuItemChange.setTitle("Alumnos")
             binding.navView.setNavigationItemSelectedListener { menuItem ->

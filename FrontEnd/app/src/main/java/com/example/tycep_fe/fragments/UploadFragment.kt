@@ -21,10 +21,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.recyclerrecorridos.preferences.Prefs
+import com.example.recyclerrecorridos.preferences.TokenUsuarioApplication.Companion.prefs
 import com.example.tycep_fe.R
 import com.example.tycep_fe.databinding.FragmentUploadBinding
 import com.example.tycep_fe.models.AdminsUserData
 import com.example.tycep_fe.viewModels.AdminViewModel
+import com.example.tycep_fe.viewModels.UserViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -35,7 +37,7 @@ import java.io.IOException
 import java.time.LocalTime
 
 class UploadFragment : Fragment() {
-
+    private lateinit var  userViewModel: UserViewModel
     private lateinit var viewModel: AdminViewModel
     private val FILE_SELECT_CODE = 0
     private val REQUEST_CODE = 1
@@ -79,14 +81,21 @@ class UploadFragment : Fragment() {
         adapter.setDropDownViewResource(R.layout.dropdown_spinner_item)
         spinner.adapter = adapter
 
-        view.setOnKeyListener { _, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+//        view.setOnKeyListener { _, keyCode, event ->
+//            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+//                val prefs= Prefs(requireContext())
+//                prefs.clearToken()
+//                ActivityCompat.finishAffinity(this.requireActivity())
+//                return@setOnKeyListener false // Devuelve true para indicar que el evento ha sido consumido
+//            }
+//            return@setOnKeyListener false // Devuelve false para indicar que no has manejado el evento
+//        }
+            _binding!!.btnLogout.setOnClickListener{
                 val prefs= Prefs(requireContext())
                 prefs.clearToken()
-                return@setOnKeyListener true // Devuelve true para indicar que el evento ha sido consumido
+                ActivityCompat.finishAffinity(this.requireActivity())
             }
-            return@setOnKeyListener false // Devuelve false para indicar que no has manejado el evento
-        }
+
 
         val instrucciones_inserts = resources.getStringArray(R.array.instrucciones_para_inserts)
 

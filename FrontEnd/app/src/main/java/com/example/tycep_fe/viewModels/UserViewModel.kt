@@ -84,7 +84,8 @@ class UserViewModel() : ViewModel() {
                         tutor.alumnos = responseChild.body()
                     }
                     _tutorLegal.postValue(tutor)
-                } else if(response.body()?.userType == "Admin"){
+                }
+                else if(response.body()?.userType == "Admin"){
                     val user = response.body()?.userData
                     val admin: Usuario= Gson().fromJson(Gson().toJson(user), Usuario::class.java)
                     _admin.postValue(admin)
